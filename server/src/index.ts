@@ -4,12 +4,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
+const connectDB = require("./config/connectDB");
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("My server?ad?daf");
+  res.json({
+    message: "Server is running at " + PORT,
+  });
 });
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`[server]: Server is running at http://localhost:${PORT}`);
+  });
 });
