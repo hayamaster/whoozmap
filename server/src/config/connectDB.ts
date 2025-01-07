@@ -1,8 +1,10 @@
-const mongoose = require("mongoose");
+import { Mongoose } from "mongoose";
+
+const mongoose: Mongoose = require("mongoose");
 
 async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI || "");
 
     const connection = mongoose.connection;
 
