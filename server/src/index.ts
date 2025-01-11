@@ -7,6 +7,14 @@ const app: Express = express();
 const PORT = process.env.PORT || 8080;
 const connectDB = require("./config/connectDB");
 const router = require("./routes");
+const cors = require("cors");
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
