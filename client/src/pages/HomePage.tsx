@@ -6,7 +6,7 @@ interface ListItem {
   userName: string;
 }
 
-const Home = () => {
+const HomePage = () => {
   const { data } = useGetListItems();
   console.log(data);
 
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
