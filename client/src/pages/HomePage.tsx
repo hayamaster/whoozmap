@@ -1,4 +1,4 @@
-import { useGetListItems } from "../apis/hooks";
+import { useGetListItems } from "@/apis/hooks";
 
 interface ListItem {
   _id: string;

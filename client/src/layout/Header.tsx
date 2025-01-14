@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Logo } from "../assets/icons";
+import { Logo } from "@/assets/icons";
 
 const Header = ({ children }: { children: ReactNode }) => {
   return (
