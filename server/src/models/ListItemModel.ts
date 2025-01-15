@@ -1,8 +1,6 @@
-import { Mongoose } from "mongoose";
+import { Schema, model } from "mongoose";
 
-const mongoose: Mongoose = require("mongoose");
-
-const ListItemSchema = new mongoose.Schema(
+const ListItemSchema = new Schema(
   {
     title: {
       type: String,
@@ -16,6 +14,12 @@ const ListItemSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    imageUrl: {
+      type: String,
+      default: "",
+    },
+
     // postByUserId: {
     //   type: mongoose.Schema.ObjectId,
     //   ref: "User",
@@ -23,9 +27,10 @@ const ListItemSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 
-const ListItemModel = mongoose.model("List", ListItemSchema);
+const ListItemModel = model("List", ListItemSchema);
 
 module.exports = ListItemModel;

@@ -16,6 +16,8 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 app.get("/", (req: Request, res: Response) => {
   res.json({
     message: "Server is running at " + PORT,
