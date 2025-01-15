@@ -1,12 +1,16 @@
 import { useEffect, useState, MouseEvent } from "react";
 import { useGetListItems } from "@/apis/hooks";
-import { Logo, SearchIcon } from "@/assets/icons";
+import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
+import { likeToThousandsUnit } from "@/utils";
 
 interface ListItem {
   _id: string;
   title: string;
   userName: string;
+  imageUrl: string;
+  updatedAt: string;
+  likeCount: number;
 }
 
 const HomePage = () => {
@@ -33,7 +37,7 @@ const HomePage = () => {
   }, [data]);
 
   return (
-    <div>
+    <div className="w-full h-full flex flex-col items-center">
       <header className="w-full h-28 grid grid-cols-[2fr_5fr_5fr] lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center py-6">
         <i className="w-full flex justify-start items-center">
           <Logo className="w-24 h-8" />
@@ -60,121 +64,142 @@ const HomePage = () => {
         </div>
       </header>
 
-      <div className="w-full flex flex-col justify-center items-center text-3xl lg:text-4xl xl:text-5xl font-bold py-10">
-        <h1>Find out people's</h1>
-        <h1>favorite places on maps!</h1>
-      </div>
-
-      <div className="flex w-full py-4 items-center">
-        <div className="flex w-full gap-1 items-center justify-start">
-          <Button
-            onClick={handleCategoryClick}
-            id="all"
-            variant={`${clickedCategory === "all" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            All
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="eats-drinks"
-            variant={`${clickedCategory === "eats-drinks" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Eats & Drinks
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="dates"
-            variant={`${clickedCategory === "dates" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Dates
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="hangouts"
-            variant={`${clickedCategory === "hangouts" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Hangouts
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="shops"
-            variant={`${clickedCategory === "shops" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Shops
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="adventures"
-            variant={`${clickedCategory === "adventures" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Adventures
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="relaxations"
-            variant={`${clickedCategory === "relaxations" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Relaxations
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="attractions"
-            variant={`${clickedCategory === "attractions" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Attractions
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="celebrations"
-            variant={`${clickedCategory === "celebrations" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Celebrations
-          </Button>
-          <Button
-            onClick={handleCategoryClick}
-            id="others"
-            variant={`${clickedCategory === "others" ? "default" : "outline"}`}
-            className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
-          >
-            Others
-          </Button>
+      <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
+        <div className="w-full flex flex-col justify-center items-center text-3xl lg:text-4xl xl:text-5xl font-bold py-10">
+          <h1>Find out people's</h1>
+          <h1>favorite places on maps!</h1>
         </div>
-        <div className="flex gap-0.5 items-center w-full justify-end">
-          <Button
-            onClick={handleSortClick}
-            id="newest"
-            variant="ghost"
-            className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
-          >
-            Newest
-          </Button>
-          <Button
-            onClick={handleSortClick}
-            id="popular"
-            variant="ghost"
-            className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
-          >
-            Most Popular
-          </Button>
-        </div>
-      </div>
 
-      {data &&
-        data.map((item: ListItem) => (
-          <div key={item._id}>
-            <p>{item.title}</p>
-            <p>{item.userName}</p>
+        <div className="flex w-full py-4 items-center sticky top-0 bg-white z-10">
+          <div className="flex w-full gap-1 items-center justify-start">
+            <Button
+              onClick={handleCategoryClick}
+              id="all"
+              variant={`${clickedCategory === "all" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              All
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="eats-drinks"
+              variant={`${clickedCategory === "eats-drinks" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Eats & Drinks
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="dates"
+              variant={`${clickedCategory === "dates" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Dates
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="hangouts"
+              variant={`${clickedCategory === "hangouts" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Hangouts
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="shops"
+              variant={`${clickedCategory === "shops" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Shops
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="adventures"
+              variant={`${clickedCategory === "adventures" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Adventures
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="relaxations"
+              variant={`${clickedCategory === "relaxations" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Relaxations
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="attractions"
+              variant={`${clickedCategory === "attractions" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Attractions
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="celebrations"
+              variant={`${clickedCategory === "celebrations" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Celebrations
+            </Button>
+            <Button
+              onClick={handleCategoryClick}
+              id="others"
+              variant={`${clickedCategory === "others" ? "default" : "outline"}`}
+              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+            >
+              Others
+            </Button>
           </div>
-        ))}
+          <div className="flex gap-0.5 items-center w-full justify-end">
+            <Button
+              onClick={handleSortClick}
+              id="newest"
+              variant="ghost"
+              className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
+            >
+              Newest
+            </Button>
+            <Button
+              onClick={handleSortClick}
+              id="popular"
+              variant="ghost"
+              className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
+            >
+              Most Popular
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full h-full gap-3 items-center justify-items-center pt-10 pb-4">
+          {data &&
+            data.map((item: ListItem) => (
+              <div
+                key={item._id}
+                className="rounded-xl w-72 h-[412px] overflow-hidden flex flex-col gap-px"
+              >
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className="w-72 h-72 object-cover"
+                />
+                <div className="flex justify-between items-center w-full pt-2.5 pb-1">
+                  <h2 className="font-bold text-xl">{item.title}</h2>
+                  <SaveIcon className="w-6 h-6" />
+                </div>
+                <p className="text-[#444444] text-sm">{item.userName}</p>
+                <p className="text-[#444444] text-sm">
+                  {String(item.updatedAt).split("T")[0]}
+                </p>
+                <p className="text-[#444444] text-sm">
+                  {likeToThousandsUnit(item.likeCount)}
+                </p>
+              </div>
+            ))}
+        </div>
+      </div>
     </div>
   );
 };
