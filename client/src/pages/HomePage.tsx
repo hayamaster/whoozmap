@@ -174,15 +174,16 @@ const HomePage = () => {
               onClick={handleSortClick}
               id="newest"
               variant="ghost"
-              className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
+              className={`text-xs xl:text-sm font-normal px-1 py-0.5 h-6 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
             >
               Newest
             </Button>
+            <div className="border-r border-[#EDEDED] h-2.5" />
             <Button
               onClick={handleSortClick}
               id="popular"
               variant="ghost"
-              className={`text-xs xl:text-sm font-normal px-2 py-0.5 h-6 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
+              className={`text-xs xl:text-sm font-normal px-1 py-0.5 h-6 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
             >
               Most Popular
             </Button>
@@ -199,7 +200,7 @@ const HomePage = () => {
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-72 h-72 object-cover"
+                  className="w-72 h-72 object-cover rounded-xl"
                 />
                 <div className="flex justify-between items-center w-full pt-2.5 pb-1">
                   <h2 className="font-bold text-xl">{item.title}</h2>
