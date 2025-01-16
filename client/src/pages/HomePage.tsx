@@ -3,7 +3,7 @@ import { useGetListItems } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { likeToThousandsUnit } from "@/utils";
-import { LoginModal } from "@/components";
+import { LoginModal, SignupModal } from "@/components";
 
 interface ListItem {
   _id: string;
@@ -21,6 +21,7 @@ const HomePage = () => {
   const [clickedCategory, setClickedCategory] = useState<string>("all");
   const [clickedSort, setClickedSort] = useState<string>("newest");
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+  const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
 
   const handleCategoryClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -216,7 +217,18 @@ const HomePage = () => {
         </div>
       </div>
 
-      {openLoginModal && <LoginModal onClose={setOpenLoginModal} />}
+      {openLoginModal && (
+        <LoginModal
+          onClose={setOpenLoginModal}
+          setOpenSignupModal={setOpenSignupModal}
+        />
+      )}
+      {openSignupModal && (
+        <SignupModal
+          onClose={setOpenSignupModal}
+          setOpenLoginModal={setOpenLoginModal}
+        />
+      )}
     </div>
   );
 };
