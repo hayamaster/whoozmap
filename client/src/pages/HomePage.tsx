@@ -3,6 +3,7 @@ import { useGetListItems } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { likeToThousandsUnit } from "@/utils";
+import { LoginModal } from "@/components";
 
 interface ListItem {
   _id: string;
@@ -19,6 +20,7 @@ const HomePage = () => {
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
   const [clickedSort, setClickedSort] = useState<string>("newest");
+  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
 
   const handleCategoryClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -30,6 +32,10 @@ const HomePage = () => {
     const target = e.target as HTMLButtonElement;
 
     setClickedSort(target.id);
+  };
+
+  const handleClickLogin = () => {
+    setOpenLoginModal(true);
   };
 
   useEffect(() => {
@@ -55,10 +61,19 @@ const HomePage = () => {
           </i>
         </div>
         <div className="flex w-full items-center justify-end gap-1 shrink-0 text-xs lg:text-sm">
-          <button className="px-1 py-0.5 shrink-0">Maps</button>
-          <button className="px-1 py-0.5 shrink-0">About us</button>
-          <button className="px-1 py-0.5 shrink-0">My Account</button>
-          <button className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0">
+          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+            Maps
+          </button>
+          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+            About us
+          </button>
+          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+            My Account
+          </button>
+          <button
+            className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0"
+            onClick={handleClickLogin}
+          >
             Create a Map
           </button>
         </div>
@@ -200,6 +215,8 @@ const HomePage = () => {
             ))}
         </div>
       </div>
+
+      {openLoginModal && <LoginModal onClose={setOpenLoginModal} />}
     </div>
   );
 };
