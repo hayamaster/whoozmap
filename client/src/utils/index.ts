@@ -1,2 +1,2 @@
 export { default as likeToThousandsUnit } from "./likeToThousandsUnit";
-export { checkEmailPattern } from "./userAuthentication";
+export { checkEmailPattern, checkUserNamePattern } from "./userAuthentication";

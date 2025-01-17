@@ -45,7 +45,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               type="email-login"
               id="email"
               autoComplete="email"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              className="border border-[#cccccc] rounded-lg py-2 px-4 focus:outline-none"
             />
           </div>
           <div className="flex flex-col gap-2 py-1">
@@ -56,7 +56,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               type="password"
               id="password"
               autoComplete="current-password"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              className="border border-[#cccccc] rounded-lg py-2 px-4 focus:outline-none"
             />
           </div>
           <div className="flex justify-between items-center py-1">

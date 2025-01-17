@@ -1,6 +1,8 @@
 import { CloseIcon, GoogleLoginIcon } from "@/assets/icons";
 import { MouseEvent } from "react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
+import { checkEmailPattern, checkUserNamePattern } from "@/utils";
+import { usePostRegister } from "@/apis/hooks";
 
 interface SignupModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -8,8 +10,49 @@ interface SignupModalProps {
 }
 
 const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
+  const { mutate: registerMutate } = usePostRegister();
+
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [validUserName, setValidUserName] = useState(true);
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
+  const [validRePassword, setValidRePassword] = useState(true);
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
+
   const handleSignupClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    const { isValidUserName } = checkUserNamePattern({ userName });
+    const { isValidEmail } = checkEmailPattern({ email });
+
+    setValidUserName(isValidUserName);
+    setValidEmail(isValidEmail);
+    setValidPassword(password !== "" ? true : false);
+    setValidRePassword(rePassword === password ? true : false);
+
+    if (
+      isValidUserName &&
+      isValidEmail &&
+      password !== "" &&
+      rePassword === password
+    ) {
+      registerMutate(
+        { userName, email, password },
+        {
+          onSuccess: () => {
+            onClose(false);
+            console.log("User created successfully");
+          },
+          onError: (error) => {
+            setDuplicatedEmail(true);
+            console.log(error);
+          },
+        }
+      );
+    }
   };
 
   const handleLoginClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -44,8 +87,16 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             <input
               type="text"
               id="username"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setUserName(e.target.value)
+              }
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${validUserName ? "border-[#cccccc]" : "border-red-400"}`}
             />
+            {!validUserName && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Letters and numbers only, 2-8 characters
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2 py-1">
             <label htmlFor="email" className="flex gap-1 text-sm font-bold">
@@ -56,8 +107,21 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
               type="email"
               id="email-signup"
               autoComplete="email"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${validEmail && !duplicatedEmail ? "border-[#cccccc]" : "border-red-400"}`}
             />
+            {!validEmail && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Please enter a valid email address
+              </p>
+            )}
+            {validEmail && duplicatedEmail && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Email already exists
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2 py-1">
             <label htmlFor="password" className="flex gap-1 text-sm font-bold">
@@ -67,9 +131,16 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             <input
               type="password"
               id="password-signup"
-              autoComplete="new-password"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setPassword(e.target.value)
+              }
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${validPassword ? "border-[#cccccc]" : "border-red-400"}`}
             />
+            {!validPassword && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Please fill out this field
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2 py-1">
             <label htmlFor="password" className="flex gap-1 text-sm font-bold">
@@ -79,9 +150,16 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             <input
               type="password"
               id="re-password-signup"
-              autoComplete="new-password"
-              className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setRePassword(e.target.value)
+              }
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${validRePassword ? "border-[#cccccc]" : "border-red-400"}`}
             />
+            {!validRePassword && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Please enter the same password
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2 py-6">
             <button
