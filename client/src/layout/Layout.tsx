@@ -1,10 +1,14 @@
 import { Outlet } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   return (
-    <div className="border-x-1 relative mx-auto flex h-dvh px-12 flex-col overflow-hidden border-black bg-white">
-      <Outlet />
-    </div>
+    <>
+      <Toaster />
+      <main className="border-x-1 relative mx-auto flex h-dvh px-12 flex-col overflow-hidden border-black bg-white">
+        <Outlet />
+      </main>
+    </>
   );
 };
 

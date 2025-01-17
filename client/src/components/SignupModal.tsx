@@ -3,6 +3,7 @@ import { MouseEvent } from "react";
 import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
 import { checkEmailPattern, checkUserNamePattern } from "@/utils";
 import { usePostRegister } from "@/apis/hooks";
+import toast from "react-hot-toast";
 
 interface SignupModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -44,6 +45,7 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
         {
           onSuccess: () => {
             onClose(false);
+            toast.success("User created successfully");
             console.log("User created successfully");
           },
           onError: (error) => {
