@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const ListItemSchema = new Schema(
+const listItemSchema = new Schema(
   {
     title: {
       type: String,
@@ -31,6 +31,6 @@ const ListItemSchema = new Schema(
   }
 );
 
-const ListItemModel = model("List", ListItemSchema);
+const ListItemModel = model("List", listItemSchema);
 
 module.exports = ListItemModel;

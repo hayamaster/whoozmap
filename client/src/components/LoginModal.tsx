@@ -42,8 +42,9 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               Email
             </label>
             <input
-              type="email"
+              type="email-login"
               id="email"
+              autoComplete="email"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>
@@ -54,6 +55,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             <input
               type="password"
               id="password"
+              autoComplete="current-password"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>

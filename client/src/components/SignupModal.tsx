@@ -42,8 +42,8 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
               <span className="text-red-400">*</span>
             </label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="username"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>
@@ -54,7 +54,8 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             </label>
             <input
               type="email"
-              id="email"
+              id="email-signup"
+              autoComplete="email"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>
@@ -65,7 +66,8 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             </label>
             <input
               type="password"
-              id="password"
+              id="password-signup"
+              autoComplete="new-password"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>
@@ -76,7 +78,8 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             </label>
             <input
               type="password"
-              id="password"
+              id="re-password-signup"
+              autoComplete="new-password"
               className="border border-[#cccccc] rounded-lg py-1 px-2 focus:outline-none"
             />
           </div>
