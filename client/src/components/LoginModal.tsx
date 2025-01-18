@@ -4,6 +4,8 @@ import { Dispatch, SetStateAction } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setToken } from "../redux/userSlice";
 
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -18,6 +20,8 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [validEmailAndPassword, setValidEmailAndPassword] = useState(true);
 
+  const dispatch = useDispatch();
+
   const handleLoginClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -28,11 +32,12 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
       loginMutate(
         { email, password },
         {
-          onSuccess: (data) => {
-            onClose(false);
+          onSuccess: (res) => {
             toast.success("Login successfully");
-            console.log(data);
+            dispatch(setToken(res.data.token));
+            localStorage.setItem("token", res.data.token);
             setValidEmailAndPassword(true);
+            onClose(false);
           },
           onError: (error) => {
             toast.error("Login failed");
