@@ -1,7 +1,9 @@
 import { CloseIcon, GoogleLoginIcon } from "@/assets/icons";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { usePostLogin } from "@/apis/hooks";
+import toast from "react-hot-toast";
 
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -9,8 +11,37 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
+  const { mutate: loginMutate } = usePostLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emptyEmail, setEmptyEmail] = useState(false);
+  const [emptyPassword, setEmptyPassword] = useState(false);
+  const [validEmailAndPassword, setValidEmailAndPassword] = useState(true);
+
   const handleLoginClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    setEmptyEmail(email == "" ? true : false);
+    setEmptyPassword(password == "" ? true : false);
+
+    if (email !== "" && password !== "") {
+      loginMutate(
+        { email, password },
+        {
+          onSuccess: (data) => {
+            onClose(false);
+            toast.success("Login successfully");
+            console.log(data);
+            setValidEmailAndPassword(true);
+          },
+          onError: (error) => {
+            toast.error("Login failed");
+            console.log(error);
+            setValidEmailAndPassword(false);
+          },
+        }
+      );
+    }
   };
 
   const handleSignupClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -37,6 +68,11 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
         <h1 className="text-xl font-bold py-3 sm:py-6 sm:text-2xl">Log in</h1>
 
         <form className="flex flex-col py-2 gap-2">
+          {!validEmailAndPassword && (
+            <p className="text-red-400 text-xs 2xl:text-sm">
+              Incorrect email or password
+            </p>
+          )}
           <div className="flex flex-col gap-2 py-1">
             <label htmlFor="email" className="text-sm font-bold">
               Email
@@ -45,8 +81,14 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               type="email-login"
               id="email"
               autoComplete="email"
-              className="border border-[#cccccc] rounded-lg py-2 px-4 focus:outline-none"
+              onChange={(e) => setEmail(e.target.value)}
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${emptyEmail ? "border-red-400" : "border-[#cccccc]"}`}
             />
+            {emptyEmail && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Please fill out this field
+              </p>
+            )}
           </div>
           <div className="flex flex-col gap-2 py-1">
             <label htmlFor="password" className="text-sm font-bold">
@@ -56,8 +98,14 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               type="password"
               id="password"
               autoComplete="current-password"
-              className="border border-[#cccccc] rounded-lg py-2 px-4 focus:outline-none"
+              onChange={(e) => setPassword(e.target.value)}
+              className={`border rounded-lg py-2 px-4 focus:outline-none ${emptyPassword ? "border-red-400" : "border-[#cccccc]"}`}
             />
+            {emptyPassword && (
+              <p className="text-red-400 text-xs 2xl:text-sm">
+                Please fill out this field
+              </p>
+            )}
           </div>
           <div className="flex justify-between items-center py-1">
             <div className="flex items-center gap-1 xl:gap-2">
