@@ -1,9 +1,12 @@
 import { useEffect, useState, MouseEvent } from "react";
-import { useGetListItems } from "@/apis/hooks";
+import { useGetListItems, useGetUserDetails } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { likeToThousandsUnit } from "@/utils";
 import { LoginModal, SignupModal } from "@/components";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setUser } from "../redux/userSlice";
+import { RootState } from "../redux/store";
 
 interface ListItem {
   _id: string;
@@ -15,13 +18,29 @@ interface ListItem {
 }
 
 const HomePage = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+
   const { data } = useGetListItems();
+  const { data: userDetails, refetch: userDetailsRefetch } =
+    useGetUserDetails();
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
   const [clickedSort, setClickedSort] = useState<string>("newest");
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
   const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
+
+  console.log("redux", user);
+
+  useEffect(() => {
+    if (userDetails && userDetails.logout) {
+      dispatch(logout());
+    }
+    if (userDetails && userDetails._id) {
+      dispatch(setUser(userDetails));
+    }
+  }, [userDetails, dispatch]);
 
   const handleCategoryClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
@@ -36,7 +55,9 @@ const HomePage = () => {
   };
 
   const handleClickLogin = () => {
-    setOpenLoginModal(true);
+    if (!user.token) {
+      setOpenLoginModal(true);
+    }
   };
 
   useEffect(() => {
@@ -222,6 +243,7 @@ const HomePage = () => {
         <LoginModal
           onClose={setOpenLoginModal}
           setOpenSignupModal={setOpenSignupModal}
+          userDetailsRefetch={userDetailsRefetch}
         />
       )}
       {openSignupModal && (

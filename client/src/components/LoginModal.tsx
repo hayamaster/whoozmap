@@ -10,9 +10,14 @@ import { setToken } from "../redux/userSlice";
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
   setOpenSignupModal: Dispatch<SetStateAction<boolean>>;
+  userDetailsRefetch: () => void;
 }
 
-const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
+const LoginModal = ({
+  onClose,
+  setOpenSignupModal,
+  userDetailsRefetch,
+}: LoginModalProps) => {
   const { mutate: loginMutate } = usePostLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,6 +42,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             dispatch(setToken(res.data.token));
             localStorage.setItem("token", res.data.token);
             setValidEmailAndPassword(true);
+            userDetailsRefetch();
             onClose(false);
           },
           onError: (error) => {
