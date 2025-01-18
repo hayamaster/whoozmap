@@ -10,7 +10,7 @@ interface User {
 const UserModel: Model<User> = require("../models/UserModel");
 const bcryptjs = require("bcryptjs");
 
-async function registerUser(req: Request, res: Response) {
+async function register(req: Request, res: Response) {
   try {
     const { userName, email, password } = req.body;
 
@@ -49,4 +49,4 @@ async function registerUser(req: Request, res: Response) {
   }
 }
 
-module.exports = registerUser;
+module.exports = register;

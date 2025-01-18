@@ -18,6 +18,7 @@ const userModelSchema = new Schema(
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 
