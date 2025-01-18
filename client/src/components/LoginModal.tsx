@@ -67,7 +67,7 @@ const LoginModal = ({
       onClick={() => onClose(false)}
     >
       <div
-        className="relative flex flex-col w-full h-full bg-white px-4 py-6 z-30 sm:px-12 sm:justify-center sm:rounded-xl sm:w-3/5 sm:h-3/5 md:w-1/2 lg:w-2/5 xl:px-16 xl:py-8 xl:w-1/3"
+        className="relative flex flex-col w-full h-full bg-white px-4 py-6 z-30 sm:px-12 sm:justify-center sm:rounded-xl sm:w-3/5 sm:h-fit md:w-1/2 lg:w-2/5 xl:px-16 xl:py-8 xl:w-1/3"
         onClick={(e) => e.stopPropagation()}
       >
         <button
