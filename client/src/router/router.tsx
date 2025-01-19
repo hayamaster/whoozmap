@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout, Header } from "@/layout";
-import { HomePage, CreateMapPage } from "@/pages";
+import { HomePage, CreateMapPage, AboutUsPage } from "@/pages";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,14 @@ const router = createBrowserRouter([
         element: (
           <Header>
             <CreateMapPage />
+          </Header>
+        ),
+      },
+      {
+        path: "/about-us",
+        element: (
+          <Header>
+            <AboutUsPage />
           </Header>
         ),
       },
