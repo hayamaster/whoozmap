@@ -37,7 +37,7 @@ async function login(req: Request, res: Response) {
       email: user.email,
     };
     const token = jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1d",
+      expiresIn: "1m",
     });
     const cookieOption = {
       http: true,
