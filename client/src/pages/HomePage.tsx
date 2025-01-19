@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent } from "react";
+import { useEffect, useState, MouseEvent, useCallback } from "react";
 import { useGetListItems, useGetUserDetails } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { LoginModal, SignupModal } from "@/components";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, setUser } from "../redux/userSlice";
 import { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
 interface ListItem {
   _id: string;
@@ -18,6 +19,7 @@ interface ListItem {
 }
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
 
@@ -42,6 +44,16 @@ const HomePage = () => {
     }
   }, [userDetails, dispatch]);
 
+  const isLogin = useCallback(() => {
+    if (!user._id) {
+      setOpenLoginModal(true);
+
+      return false;
+    }
+
+    return true;
+  }, [user]);
+
   const handleCategoryClick = (e: MouseEvent<HTMLButtonElement>) => {
     const target = e.target as HTMLButtonElement;
 
@@ -55,9 +67,17 @@ const HomePage = () => {
   };
 
   const handleClickLogin = () => {
-    if (!user.token) {
+    if (!user._id) {
       setOpenLoginModal(true);
     }
+  };
+
+  const handleClickNav = (e: MouseEvent<HTMLButtonElement>) => {
+    const buttonId = (e.target as HTMLButtonElement).id;
+
+    if (!isLogin()) return;
+
+    navigate(buttonId);
   };
 
   useEffect(() => {
@@ -83,18 +103,31 @@ const HomePage = () => {
           </i>
         </div>
         <div className="flex w-full items-center justify-end gap-1 shrink-0 text-xs lg:text-sm">
-          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+          <button
+            className="px-1 py-0.5 shrink-0"
+            id="maps"
+            onClick={handleClickLogin}
+          >
             Maps
           </button>
-          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+          <button
+            className="px-1 py-0.5 shrink-0"
+            id="about-us"
+            onClick={handleClickNav}
+          >
             About us
           </button>
-          <button className="px-1 py-0.5 shrink-0" onClick={handleClickLogin}>
+          <button
+            className="px-1 py-0.5 shrink-0"
+            id="my-account"
+            onClick={handleClickLogin}
+          >
             My Account
           </button>
           <button
             className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0"
-            onClick={handleClickLogin}
+            id="create-map"
+            onClick={handleClickNav}
           >
             Create a Map
           </button>
