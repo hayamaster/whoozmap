@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, setUser } from "../redux/userSlice";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
+import { getUserWithGoogle } from "@/appwrite/auth";
 
 interface ListItem {
   _id: string;
@@ -36,13 +37,31 @@ const HomePage = () => {
   console.log("redux", user);
 
   useEffect(() => {
+    const checkGoogleLogin = async () => {
+      const userData = await getUserWithGoogle();
+
+      if (!userData) return;
+
+      dispatch(
+        setUser({
+          _id: userData?.$id,
+          email: userData?.email,
+          userName: userData?.name,
+        })
+      );
+    };
+
+    checkGoogleLogin();
+
+    // If the user is logged out, remove the user from the redux store
     if (userDetails && userDetails.logout) {
       dispatch(logout());
     }
-    if (userDetails && userDetails._id) {
+    // If the user is logged in, set the user to the redux store
+    if (userDetails && user.token) {
       dispatch(setUser(userDetails));
     }
-  }, [userDetails, dispatch]);
+  }, [userDetails, dispatch, user.token]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
@@ -120,7 +139,7 @@ const HomePage = () => {
           <button
             className="px-1 py-0.5 shrink-0"
             id="my-account"
-            onClick={handleClickLogin}
+            onClick={handleClickNav}
           >
             My Account
           </button>

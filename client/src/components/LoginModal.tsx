@@ -6,6 +6,7 @@ import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setToken } from "../redux/userSlice";
+import { loginWithGoogle } from "@/appwrite/auth";
 
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -59,6 +60,16 @@ const LoginModal = ({
     e.preventDefault();
     onClose(false);
     setOpenSignupModal(true);
+  };
+
+  const handleLoginWithGoogle = async () => {
+    try {
+      await loginWithGoogle();
+
+      onClose(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -147,6 +158,7 @@ const LoginModal = ({
             <button
               type="button"
               className="flex items-center justify-center gap-2 w-full border border-[#cccccc] py-2 rounded-full text-sm font-semibold lg:text-base xl:py-2.5"
+              onClick={handleLoginWithGoogle}
             >
               <GoogleLoginIcon className="w-5 h-5 lg:w-6 lg:h-6" />
               <p>Log in with Google</p>
