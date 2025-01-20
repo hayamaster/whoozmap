@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
 import { checkEmailPattern, checkUserNamePattern } from "@/utils";
 import { usePostRegister } from "@/apis/hooks";
 import toast from "react-hot-toast";
+import { loginWithGoogle } from "@/appwrite/auth";
 
 interface SignupModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -61,6 +62,16 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
     e.preventDefault();
     onClose(false);
     setOpenLoginModal(true);
+  };
+
+  const handleLoginWithGoogle = async () => {
+    try {
+      await loginWithGoogle();
+
+      onClose(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -174,6 +185,7 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
             <button
               type="button"
               className="flex items-center justify-center gap-2 w-full border border-[#cccccc] py-2 rounded-full text-sm font-semibold lg:text-base xl:py-2.5"
+              onClick={handleLoginWithGoogle}
             >
               <GoogleLoginIcon className="w-5 h-5 lg:w-6 lg:h-6" />
               <p>Sign up with Google</p>
