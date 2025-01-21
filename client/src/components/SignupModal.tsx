@@ -2,9 +2,12 @@ import { CloseIcon, GoogleLoginIcon } from "@/assets/icons";
 import { MouseEvent } from "react";
 import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
 import { checkEmailPattern, checkUserNamePattern } from "@/utils";
-import { usePostRegister } from "@/apis/hooks";
+import { usePostRegister, usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { loginWithGoogle } from "@/appwrite/auth";
+import { useDispatch } from "react-redux";
+import { setToken } from "@/redux/userSlice";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface SignupModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -13,6 +16,7 @@ interface SignupModalProps {
 
 const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
   const { mutate: registerMutate } = usePostRegister();
+  const { mutate: loginMutate } = usePostLogin();
 
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,6 +27,9 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
   const [validPassword, setValidPassword] = useState(true);
   const [validRePassword, setValidRePassword] = useState(true);
   const [duplicatedEmail, setDuplicatedEmail] = useState(false);
+
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   const handleSignupClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -45,9 +52,24 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
         { userName, email, password },
         {
           onSuccess: () => {
-            onClose(false);
             toast.success("User created successfully");
             console.log("User created successfully");
+
+            // sign up success, then login
+            loginMutate(
+              { email, password },
+              {
+                onSuccess: (res) => {
+                  dispatch(setToken(res.data.token));
+                  localStorage.setItem("token", res.data.token);
+                  queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+                  onClose(false);
+                },
+                onError: (error) => {
+                  console.log(error);
+                },
+              }
+            );
           },
           onError: (error) => {
             setDuplicatedEmail(true);
