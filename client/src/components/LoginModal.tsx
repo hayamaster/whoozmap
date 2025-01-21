@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { setToken } from "../redux/userSlice";
+import { setToken, isGoogleLogin } from "../redux/userSlice";
 import { loginWithGoogle } from "@/appwrite/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -62,6 +62,8 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
   const handleLoginWithGoogle = async () => {
     try {
       await loginWithGoogle();
+      dispatch(isGoogleLogin(true));
+      localStorage.setItem("token", "google-login");
 
       onClose(false);
     } catch (error) {

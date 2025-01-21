@@ -38,15 +38,17 @@ const HomePage = () => {
 
   useEffect(() => {
     const checkGoogleLogin = async () => {
-      const userData = await getUserWithGoogle();
-      if (!userData) return;
-      dispatch(
-        setUser({
-          _id: userData?.$id,
-          email: userData?.email,
-          userName: userData?.name,
-        })
-      );
+      if (user.isGoogleLogin) {
+        const userData = await getUserWithGoogle();
+
+        dispatch(
+          setUser({
+            _id: userData?.$id,
+            email: userData?.email,
+            userName: userData?.name,
+          })
+        );
+      }
     };
 
     checkGoogleLogin();
@@ -57,7 +59,7 @@ const HomePage = () => {
     if (userDetails && userDetails._id) {
       dispatch(setUser(userDetails));
     }
-  }, [userDetails, dispatch]);
+  }, [userDetails, dispatch, user.isGoogleLogin]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {

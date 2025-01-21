@@ -5,6 +5,7 @@ const initialState = {
   userName: "",
   email: "",
   token: "",
+  isGoogleLogin: false,
 };
 
 export const userSlice = createSlice({
@@ -25,9 +26,12 @@ export const userSlice = createSlice({
       state.email = "";
       state.token = "";
     },
+    isGoogleLogin: (state, action) => {
+      state.isGoogleLogin = action.payload;
+    },
   },
 });
 
-export const { setUser, setToken, logout } = userSlice.actions;
+export const { setUser, setToken, logout, isGoogleLogin } = userSlice.actions;
 
 export default userSlice.reducer;

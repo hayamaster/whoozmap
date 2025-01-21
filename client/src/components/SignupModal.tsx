@@ -6,7 +6,7 @@ import { usePostRegister, usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { loginWithGoogle } from "@/appwrite/auth";
 import { useDispatch } from "react-redux";
-import { setToken } from "@/redux/userSlice";
+import { setToken, isGoogleLogin } from "@/redux/userSlice";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface SignupModalProps {
@@ -89,6 +89,8 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
   const handleLoginWithGoogle = async () => {
     try {
       await loginWithGoogle();
+      dispatch(isGoogleLogin(true));
+      localStorage.setItem("token", "google-login");
 
       onClose(false);
     } catch (error) {
