@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout, Header } from "@/layout";
 import { HomePage, CreateMapPage, AboutUsPage, MyAccountPage } from "@/pages";
+import { unLoginLoader } from "./loaders";
 
 const router = createBrowserRouter([
   {
@@ -9,11 +10,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: (
-          // <Header>
-          <HomePage />
-          // </Header>
-        ),
+        element: <HomePage />,
       },
       {
         path: "/create-map",
@@ -22,6 +19,7 @@ const router = createBrowserRouter([
             <CreateMapPage />
           </Header>
         ),
+        loader: unLoginLoader,
       },
       {
         path: "/about-us",
@@ -30,6 +28,7 @@ const router = createBrowserRouter([
             <AboutUsPage />
           </Header>
         ),
+        loader: unLoginLoader,
       },
       {
         path: "/my-account",
@@ -38,6 +37,7 @@ const router = createBrowserRouter([
             <MyAccountPage />
           </Header>
         ),
+        loader: unLoginLoader,
       },
     ],
   },
