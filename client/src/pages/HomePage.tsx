@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { likeToThousandsUnit } from "@/utils";
 import { LoginModal, SignupModal } from "@/components";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, setUser } from "../redux/userSlice";
+import { setUser, logout } from "../redux/userSlice";
 import { RootState } from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { getUserWithGoogle } from "@/appwrite/auth";
@@ -25,8 +25,7 @@ const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const { data } = useGetListItems();
-  const { data: userDetails, refetch: userDetailsRefetch } =
-    useGetUserDetails();
+  const { data: userDetails } = useGetUserDetails();
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
@@ -35,13 +34,12 @@ const HomePage = () => {
   const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
 
   console.log("redux", user);
+  console.log("userDetails", userDetails);
 
   useEffect(() => {
     const checkGoogleLogin = async () => {
       const userData = await getUserWithGoogle();
-
       if (!userData) return;
-
       dispatch(
         setUser({
           _id: userData?.$id,
@@ -53,15 +51,13 @@ const HomePage = () => {
 
     checkGoogleLogin();
 
-    // If the user is logged out, remove the user from the redux store
     if (userDetails && userDetails.logout) {
       dispatch(logout());
     }
-    // If the user is logged in, set the user to the redux store
-    if (userDetails && user.token) {
+    if (userDetails && userDetails._id) {
       dispatch(setUser(userDetails));
     }
-  }, [userDetails, dispatch, user.token]);
+  }, [userDetails, dispatch]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
@@ -295,7 +291,6 @@ const HomePage = () => {
         <LoginModal
           onClose={setOpenLoginModal}
           setOpenSignupModal={setOpenSignupModal}
-          userDetailsRefetch={userDetailsRefetch}
         />
       )}
       {openSignupModal && (
