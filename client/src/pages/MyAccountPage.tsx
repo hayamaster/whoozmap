@@ -1,18 +1,22 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { logout } from "@/redux/userSlice";
 import { logoutWithGoogle } from "@/appwrite/auth";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePostLogout } from "@/apis/hooks";
 
 const MyAccountPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch();
   const navigator = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate: logoutMutate } = usePostLogout();
 
   const handleClickLogout = async () => {
     await logoutWithGoogle();
     localStorage.clear();
-    dispatch(logout());
+    logoutMutate();
+    queryClient.invalidateQueries({ queryKey: ["userDetails"] });
     navigator("/");
   };
 
