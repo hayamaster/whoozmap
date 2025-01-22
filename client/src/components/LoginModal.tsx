@@ -1,7 +1,6 @@
 import { CloseIcon, GoogleLoginIcon } from "@/assets/icons";
 import { MouseEvent, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -128,16 +127,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
               </p>
             )}
           </div>
-          <div className="flex justify-between items-center py-1">
-            <div className="flex items-center gap-1 xl:gap-2">
-              <Checkbox id="terms" />
-              <label
-                htmlFor="terms"
-                className="text-xs text-[#161616] cursor-pointer select-none xl:text-sm"
-              >
-                Remember Me
-              </label>
-            </div>
+          <div className="flex justify-start items-center py-1">
             <button
               type="button"
               className="text-xs font-semibold text-[#777777] xl:text-sm"
