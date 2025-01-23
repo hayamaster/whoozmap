@@ -179,12 +179,12 @@ const HomePage = () => {
       </header>
 
       <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
-        <div className="w-full flex flex-col justify-center items-center text-3xl md:text-[3.25rem] md:leading-[62.93px] xl:text-[4rem] xl:leading-[77.45px] font-bold py-10">
+        <div className="w-full flex flex-col justify-center items-center text-2xl mobile:text-3xl md:text-[3.25rem] md:leading-[62.93px] xl:text-[4rem] xl:leading-[77.45px] font-bold pt-10 pb-4">
           <h1>Find out people's favorite</h1>
           <h1>places on maps!</h1>
         </div>
 
-        <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10">
+        <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10 pt-6">
           <div
             className={`flex w-full gap-2.5 items-center overflow-x-scroll ${isCategoryCentered && "justify-center"}`}
             ref={categoryContainerRef}
@@ -291,29 +291,33 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full h-full gap-3 items-center justify-items-center pt-10 pb-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full h-full gap-4 sm:gap-5 items-center justify-items-center pt-5">
           {data &&
             data.map((item: ListItem) => (
               <div
                 key={item._id}
-                className="rounded-xl w-72 h-[412px] overflow-hidden flex flex-col gap-px"
+                className="rounded-t-2xl w-40 h-[260px] sm:w-72 sm:h-[400px] overflow-hidden flex flex-col gap-2"
               >
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-72 h-72 object-cover rounded-xl"
+                  className="w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-2xl"
                 />
-                <div className="flex justify-between items-center w-full pt-2.5 pb-1">
-                  <h2 className="font-bold text-xl">{item.title}</h2>
+                <div className="flex justify-between items-center w-full pt-1">
+                  <h2 className="font-bold text-xl leading-5">{item.title}</h2>
                   <SaveIcon className="w-6 h-6" />
                 </div>
-                <p className="text-[#444444] text-sm">{item.userName}</p>
-                <p className="text-[#444444] text-sm">
-                  {String(item.updatedAt).split("T")[0]}
-                </p>
-                <p className="text-[#444444] text-sm">
-                  {likeToThousandsUnit(item.likeCount)}
-                </p>
+                <div className="flex flex-col gap-1">
+                  <p className="text-[#444444] text-sm leading-4">
+                    {item.userName}
+                  </p>
+                  <p className="text-[#444444] text-sm leading-4">
+                    {String(item.updatedAt).split("T")[0]}
+                  </p>
+                  <p className="text-[#444444] text-sm leading-4">
+                    {likeToThousandsUnit(item.likeCount)}
+                  </p>
+                </div>
               </div>
             ))}
         </div>

@@ -6,6 +6,7 @@ export default {
     extend: {
       screens: {
         "3xl": "1920px",
+        mobile: "390px",
       },
       borderRadius: {
         lg: "var(--radius)",
