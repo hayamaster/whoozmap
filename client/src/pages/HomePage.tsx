@@ -1,6 +1,6 @@
 import { useEffect, useState, MouseEvent, useCallback, useRef } from "react";
 import { useGetListItems, useGetUserDetails } from "@/apis/hooks";
-import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
+import { Logo, SearchIcon, SaveIcon, HamburgerIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { likeToThousandsUnit } from "@/utils";
 import { LoginModal, SignupModal } from "@/components";
@@ -127,11 +127,11 @@ const HomePage = () => {
 
   return (
     <main className="w-full h-full flex flex-col items-center">
-      <header className="w-full grid grid-cols-[2fr_5fr_5fr] lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
+      <header className="w-full grid grid-cols-2 lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
         <i className="w-full flex justify-start items-center">
           <Logo className="w-[7.25rem] h-6" />
         </i>
-        <div className="bg-white flex justify-center h-[50px] w-[360px] xl:w-[500px] px-6 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
+        <div className="hidden lg:flex bg-white justify-center h-[50px] w-[360px] xl:w-[500px] px-6 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
           <input
             type="text"
             placeholder="Search"
@@ -143,7 +143,7 @@ const HomePage = () => {
             <SearchIcon className="w-6 h-6" />
           </i>
         </div>
-        <div className="flex w-full items-center justify-end gap-2.5 shrink-0 text-xs lg:text-base lg:leading-5">
+        <div className="hidden lg:flex w-full items-center justify-end gap-2.5 shrink-0 text-xs lg:text-base lg:leading-5">
           <button
             className="px-1 py-0.5 shrink-0"
             id="maps"
@@ -173,6 +173,9 @@ const HomePage = () => {
             Create a Map
           </button>
         </div>
+        <i className="h-6 w-full flex lg:hidden justify-end items-center cursor-pointer">
+          <HamburgerIcon className="w-6 h-6" />
+        </i>
       </header>
 
       <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
