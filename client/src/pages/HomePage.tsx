@@ -102,7 +102,7 @@ const HomePage = () => {
   }, [data]);
 
   return (
-    <div className="w-full h-full flex flex-col items-center">
+    <main className="w-full h-full flex flex-col items-center">
       <header className="w-full h-28 grid grid-cols-[2fr_5fr_5fr] lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center py-6">
         <i className="w-full flex justify-start items-center">
           <Logo className="w-24 h-8" />
@@ -261,7 +261,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 w-full h-full gap-3 items-center justify-items-center pt-10 pb-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full h-full gap-3 items-center justify-items-center pt-10 pb-4">
           {data &&
             data.map((item: ListItem) => (
               <div
@@ -301,7 +301,7 @@ const HomePage = () => {
           setOpenLoginModal={setOpenLoginModal}
         />
       )}
-    </div>
+    </main>
   );
 };
 
