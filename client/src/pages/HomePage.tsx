@@ -136,10 +136,10 @@ const HomePage = () => {
           </button>
           <button
             className="px-1 py-0.5 shrink-0"
-            id="my-account"
+            id={user._id ? "my-account" : "login"}
             onClick={handleClickNav}
           >
-            My Account
+            {user._id ? "My Account" : "Log In"}
           </button>
           <button
             className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0"
