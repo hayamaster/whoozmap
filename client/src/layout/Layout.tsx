@@ -5,7 +5,7 @@ const Layout = () => {
   return (
     <>
       <Toaster />
-      <main className="border-x-1 relative mx-auto flex h-dvh px-12 flex-col overflow-hidden border-black bg-white">
+      <main className="border-x-1 relative mx-auto flex h-dvh px-10 py-10 flex-col overflow-hidden border-black bg-white">
         <Outlet />
       </main>
     </>

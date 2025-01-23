@@ -103,15 +103,15 @@ const HomePage = () => {
 
   return (
     <main className="w-full h-full flex flex-col items-center">
-      <header className="w-full h-28 grid grid-cols-[2fr_5fr_5fr] lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center py-6">
+      <header className="w-full grid grid-cols-[2fr_5fr_5fr] lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
         <i className="w-full flex justify-start items-center">
-          <Logo className="w-24 h-8" />
+          <Logo className="w-[7.25rem] h-6" />
         </i>
-        <div className="bg-white flex justify-center h-12 w-full px-3 py-1.5 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
+        <div className="bg-white flex justify-center h-[50px] w-[360px] xl:w-[500px] px-6 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
           <input
             type="text"
             placeholder="Search"
-            className="w-full outline-none h-full px-1"
+            className="w-full outline-none h-full px-1 placeholder:text-[#161616]"
             onChange={(e) => setSearch(e.target.value)}
             value={search}
           />
@@ -119,7 +119,7 @@ const HomePage = () => {
             <SearchIcon className="w-6 h-6" />
           </i>
         </div>
-        <div className="flex w-full items-center justify-end gap-1 shrink-0 text-xs lg:text-sm">
+        <div className="flex w-full items-center justify-end gap-2.5 shrink-0 text-xs lg:text-base lg:leading-5">
           <button
             className="px-1 py-0.5 shrink-0"
             id="maps"
@@ -152,18 +152,18 @@ const HomePage = () => {
       </header>
 
       <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
-        <div className="w-full flex flex-col justify-center items-center text-3xl lg:text-4xl xl:text-5xl font-bold py-10">
-          <h1>Find out people's</h1>
-          <h1>favorite places on maps!</h1>
+        <div className="w-full flex flex-col justify-center items-center text-3xl md:text-[3.25rem] md:leading-[62.93px] xl:text-[4rem] xl:leading-[77.45px] font-bold py-10">
+          <h1>Find out people's favorite</h1>
+          <h1>places on maps!</h1>
         </div>
 
-        <div className="flex w-full py-4 items-center sticky top-0 bg-white z-10">
-          <div className="flex w-full gap-1 items-center justify-start">
+        <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10">
+          <div className="flex w-full gap-2.5 items-center overflow-x-scroll">
             <Button
               onClick={handleCategoryClick}
               id="all"
               variant={`${clickedCategory === "all" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               All
             </Button>
@@ -171,7 +171,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="eats-drinks"
               variant={`${clickedCategory === "eats-drinks" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Eats & Drinks
             </Button>
@@ -179,7 +179,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="dates"
               variant={`${clickedCategory === "dates" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Dates
             </Button>
@@ -187,7 +187,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="hangouts"
               variant={`${clickedCategory === "hangouts" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Hangouts
             </Button>
@@ -195,7 +195,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="shops"
               variant={`${clickedCategory === "shops" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Shops
             </Button>
@@ -203,7 +203,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="adventures"
               variant={`${clickedCategory === "adventures" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Adventures
             </Button>
@@ -211,7 +211,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="relaxations"
               variant={`${clickedCategory === "relaxations" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Relaxations
             </Button>
@@ -219,7 +219,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="attractions"
               variant={`${clickedCategory === "attractions" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Attractions
             </Button>
@@ -227,7 +227,7 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="celebrations"
               variant={`${clickedCategory === "celebrations" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Celebrations
             </Button>
@@ -235,26 +235,26 @@ const HomePage = () => {
               onClick={handleCategoryClick}
               id="others"
               variant={`${clickedCategory === "others" ? "default" : "outline"}`}
-              className="rounded-full text-xs xl:text-sm font-normal px-3 py-0.5 h-6"
+              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
             >
               Others
             </Button>
           </div>
-          <div className="flex gap-0.5 items-center w-full justify-end">
+          <div className="flex gap-1 items-center w-full justify-end">
             <Button
               onClick={handleSortClick}
               id="newest"
               variant="ghost"
-              className={`text-xs xl:text-sm font-normal px-1 py-0.5 h-6 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
+              className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
             >
               Newest
             </Button>
-            <div className="border-r border-[#EDEDED] h-2.5" />
+            <div className="border-r border-[#EDEDED] h-[12px]" />
             <Button
               onClick={handleSortClick}
               id="popular"
               variant="ghost"
-              className={`text-xs xl:text-sm font-normal px-1 py-0.5 h-6 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
+              className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
             >
               Most Popular
             </Button>
