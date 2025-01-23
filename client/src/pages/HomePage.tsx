@@ -33,6 +33,8 @@ const HomePage = () => {
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
   const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
   const [isCategoryCentered, setIsCategoryCentered] = useState<boolean>(true);
+  const [isLoadingGoogleDataFetch, setIsLoadingGoogleDataFetch] =
+    useState<boolean>(false);
 
   const categoryContainerRef = useRef<HTMLDivElement>(null);
 
@@ -62,6 +64,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const checkGoogleLogin = async () => {
+      setIsLoadingGoogleDataFetch(true);
       if (user.isGoogleLogin) {
         const userData = await getUserWithGoogle();
 
@@ -73,6 +76,7 @@ const HomePage = () => {
           })
         );
       }
+      setIsLoadingGoogleDataFetch(false);
     };
 
     checkGoogleLogin();
@@ -127,7 +131,7 @@ const HomePage = () => {
 
   return (
     <main className="w-full h-full flex flex-col items-center">
-      <header className="w-full grid grid-cols-2 lg:grid-cols-[2fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
+      <header className="w-full grid grid-cols-2 lg:grid-cols-[1fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
         <i className="w-full flex justify-start items-center">
           <Logo className="w-[7.25rem] h-6" />
         </i>
@@ -158,13 +162,17 @@ const HomePage = () => {
           >
             About us
           </button>
-          <button
-            className="px-1 py-0.5 shrink-0"
-            id={user._id ? "my-account" : "login"}
-            onClick={handleClickNav}
-          >
-            {user._id ? "My Account" : "Log In"}
-          </button>
+          {isLoadingGoogleDataFetch ? (
+            <button className="px-1 py-0.5 shrink-0">Loading...</button>
+          ) : (
+            <button
+              className="px-1 py-0.5 shrink-0"
+              id={user._id ? "my-account" : "login"}
+              onClick={handleClickNav}
+            >
+              {user._id ? "My Account" : "Log In"}
+            </button>
+          )}
           <button
             className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0"
             id="create-map"
