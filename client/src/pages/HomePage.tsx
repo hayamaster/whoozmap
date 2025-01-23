@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent, useCallback } from "react";
+import { useEffect, useState, MouseEvent, useCallback, useRef } from "react";
 import { useGetListItems, useGetUserDetails } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,30 @@ const HomePage = () => {
   const [clickedSort, setClickedSort] = useState<string>("newest");
   const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
   const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
+  const [isCategoryCentered, setIsCategoryCentered] = useState<boolean>(true);
+
+  const categoryContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkWidth = () => {
+      if (categoryContainerRef.current) {
+        const containerWidth = categoryContainerRef.current.offsetWidth;
+        const buttons = Array.from(categoryContainerRef.current.children);
+        const buttonsWidth = buttons.reduce(
+          (acc, btn) => acc + (btn as HTMLButtonElement).offsetWidth,
+          0
+        );
+        const totalGap = 10 * (buttons.length - 1);
+
+        setIsCategoryCentered(containerWidth > buttonsWidth + totalGap);
+      }
+    };
+
+    checkWidth();
+    window.addEventListener("resize", checkWidth);
+
+    return () => window.removeEventListener("resize", checkWidth);
+  }, []);
 
   console.log("redux", user);
   console.log("userDetails", userDetails);
@@ -158,7 +182,10 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10">
-          <div className="flex w-full gap-2.5 items-center overflow-x-scroll">
+          <div
+            className={`flex w-full gap-2.5 items-center overflow-x-scroll ${isCategoryCentered && "justify-center"}`}
+            ref={categoryContainerRef}
+          >
             <Button
               onClick={handleCategoryClick}
               id="all"
