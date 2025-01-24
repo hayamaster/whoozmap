@@ -4,3 +4,4 @@ export { default as SaveIcon } from "./saveIcon.svg?react";
 export { default as CloseIcon } from "./closeIcon.svg?react";
 export { default as GoogleLoginIcon } from "./googleLoginIcon.svg?react";
 export { default as HamburgerIcon } from "./hamburgerIcon.svg?react";
+export { default as AddIcon } from "./addIcon.svg?react";
