@@ -130,7 +130,7 @@ const HomePage = () => {
   }, [data]);
 
   return (
-    <main className="w-full h-full flex flex-col items-center">
+    <main className="w-full h-full flex flex-col items-center px-4 py-5 sm:px-10 sm:py-10">
       <header className="w-full grid grid-cols-2 lg:grid-cols-[1fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
         <i className="w-full flex justify-start items-center">
           <Logo className="w-[7.25rem] h-6" />

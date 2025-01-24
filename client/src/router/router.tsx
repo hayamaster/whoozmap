@@ -14,11 +14,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-map",
-        element: (
-          <Header>
-            <CreateMapPage />
-          </Header>
-        ),
+        element: <CreateMapPage />,
         loader: unLoginLoader,
       },
       {
