@@ -41,14 +41,14 @@ const LoginModal = ({
         {
           onSuccess: async (res) => {
             toast.success("Login successfully");
-            await dispatch(setToken(res.data.token));
-            await dispatch(setUser(res.data.data));
+            dispatch(setToken(res.data.token));
+            dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
             await queryClient.invalidateQueries({
               queryKey: ["userDetails"],
               refetchType: "all",
             });
-            await userDetailsRefetch();
+            userDetailsRefetch();
             setValidEmailAndPassword(true);
             onClose(false);
           },
