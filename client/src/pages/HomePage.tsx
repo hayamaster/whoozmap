@@ -32,8 +32,7 @@ const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const { data } = useGetListItems();
-  const { data: userDetails, refetch: userDetailsRefetch } =
-    useGetUserDetails();
+  const { data: userDetails } = useGetUserDetails();
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
@@ -347,7 +346,6 @@ const HomePage = () => {
         <LoginModal
           onClose={setOpenLoginModal}
           setOpenSignupModal={setOpenSignupModal}
-          userDetailsRefetch={userDetailsRefetch}
         />
       )}
       {openSignupModal && (

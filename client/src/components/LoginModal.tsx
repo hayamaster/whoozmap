@@ -7,19 +7,13 @@ import { useDispatch } from "react-redux";
 import { setToken, isGoogleLogin, setUser } from "../redux/userSlice";
 import { loginWithGoogle } from "@/appwrite/auth";
 import { useQueryClient } from "@tanstack/react-query";
-import { setCookie } from "@/apis/cookie";
 
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
   setOpenSignupModal: Dispatch<SetStateAction<boolean>>;
-  userDetailsRefetch: () => void;
 }
 
-const LoginModal = ({
-  onClose,
-  setOpenSignupModal,
-  userDetailsRefetch,
-}: LoginModalProps) => {
+const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
   const { mutate: loginMutate } = usePostLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,7 +31,7 @@ const LoginModal = ({
     setEmptyPassword(password == "" ? true : false);
 
     if (email !== "" && password !== "") {
-      await loginMutate(
+      loginMutate(
         { email, password },
         {
           onSuccess: async (res) => {
@@ -45,18 +39,9 @@ const LoginModal = ({
             dispatch(setToken(res.data.token));
             dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
-            setCookie("accessToken", res.data.token);
-            await queryClient
-              .invalidateQueries({
-                queryKey: ["userDetails"],
-                refetchType: "all",
-              })
-              .then(() => {
-                console.log("refetched");
-                userDetailsRefetch();
-                setValidEmailAndPassword(true);
-                onClose(false);
-              });
+            await queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+            setValidEmailAndPassword(true);
+            onClose(false);
           },
           onError: (error) => {
             toast.error("Login failed");
