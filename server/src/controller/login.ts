@@ -42,6 +42,8 @@ async function login(req: Request, res: Response) {
     const cookieOption = {
       http: true,
       secure: true,
+      httpOnly: true,
+      sameSite: "none" as "none",
     };
 
     return res
