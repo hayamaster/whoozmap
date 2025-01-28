@@ -44,12 +44,17 @@ const LoginModal = ({
             dispatch(setToken(res.data.token));
             dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
-            await queryClient.invalidateQueries({
-              queryKey: ["userDetails"],
-              refetchType: "all",
-            });
-            userDetailsRefetch();
-            setValidEmailAndPassword(true);
+            await queryClient
+              .invalidateQueries({
+                queryKey: ["userDetails"],
+                refetchType: "all",
+              })
+              .then(() => {
+                console.log("refetched");
+                userDetailsRefetch();
+                setValidEmailAndPassword(true);
+                onClose(false);
+              });
           },
           onError: (error) => {
             toast.error("Login failed");
@@ -58,7 +63,6 @@ const LoginModal = ({
           },
         }
       );
-      onClose(false);
     }
   };
 
