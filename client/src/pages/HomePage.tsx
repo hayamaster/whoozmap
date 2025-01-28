@@ -32,11 +32,8 @@ const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const { data } = useGetListItems();
-  const {
-    data: userDetails,
-    refetch: userDetailsRefetch,
-    isFetching,
-  } = useGetUserDetails();
+  const { data: userDetails, refetch: userDetailsRefetch } =
+    useGetUserDetails();
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
@@ -70,7 +67,6 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", checkWidth);
   }, []);
 
-  console.log("isFetching", isFetching);
   console.log("redux", user);
   console.log("userDetails", userDetails);
 
@@ -99,7 +95,7 @@ const HomePage = () => {
     if (userDetails && userDetails._id) {
       dispatch(setUser(userDetails));
     }
-  }, [userDetails, dispatch, user.isGoogleLogin, isFetching]);
+  }, [userDetails, dispatch, user.isGoogleLogin]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
