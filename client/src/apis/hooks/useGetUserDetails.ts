@@ -10,7 +10,7 @@ const useGetUserDetails = () => {
 
   const { data, refetch } = useSuspenseQuery({
     queryKey: ["userDetails"],
-    queryFn: () => getUserDetails(),
+    queryFn: getUserDetails,
   });
 
   return { data, refetch };
