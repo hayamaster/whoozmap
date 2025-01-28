@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { setToken, isGoogleLogin } from "../redux/userSlice";
+import { setToken, isGoogleLogin, setUser } from "../redux/userSlice";
 import { loginWithGoogle } from "@/appwrite/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -37,6 +37,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
           onSuccess: async (res) => {
             toast.success("Login successfully");
             dispatch(setToken(res.data.token));
+            dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
             queryClient.invalidateQueries({ queryKey: ["userDetails"] });
             setValidEmailAndPassword(true);
