@@ -29,14 +29,14 @@ const LoginModal = ({
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
-  const handleLoginClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleLoginClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     setEmptyEmail(email == "" ? true : false);
     setEmptyPassword(password == "" ? true : false);
 
     if (email !== "" && password !== "") {
-      loginMutate(
+      await loginMutate(
         { email, password },
         {
           onSuccess: async (res) => {
@@ -50,7 +50,6 @@ const LoginModal = ({
             });
             userDetailsRefetch();
             setValidEmailAndPassword(true);
-            onClose(false);
           },
           onError: (error) => {
             toast.error("Login failed");
@@ -59,6 +58,7 @@ const LoginModal = ({
           },
         }
       );
+      onClose(false);
     }
   };
 
