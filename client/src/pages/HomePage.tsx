@@ -1,4 +1,11 @@
-import { useEffect, useState, MouseEvent, useCallback, useRef } from "react";
+import {
+  useEffect,
+  useState,
+  MouseEvent,
+  useCallback,
+  useRef,
+  Suspense,
+} from "react";
 import { useGetListItems, useGetUserDetails } from "@/apis/hooks";
 import { Logo, SearchIcon, SaveIcon, HamburgerIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
@@ -25,8 +32,11 @@ const HomePage = () => {
   const user = useSelector((state: RootState) => state.user);
 
   const { data } = useGetListItems();
-  const { data: userDetails, refetch: userDetailsRefetch } =
-    useGetUserDetails();
+  const {
+    data: userDetails,
+    refetch: userDetailsRefetch,
+    isFetching,
+  } = useGetUserDetails();
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
@@ -60,6 +70,7 @@ const HomePage = () => {
     return () => window.removeEventListener("resize", checkWidth);
   }, []);
 
+  console.log("isFetching", isFetching);
   console.log("redux", user);
   console.log("userDetails", userDetails);
 
@@ -88,7 +99,7 @@ const HomePage = () => {
     if (userDetails && userDetails._id) {
       dispatch(setUser(userDetails));
     }
-  }, [userDetails, dispatch, user.isGoogleLogin]);
+  }, [userDetails, dispatch, user.isGoogleLogin, isFetching]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
@@ -187,150 +198,154 @@ const HomePage = () => {
         </i>
       </header>
 
-      <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
-        <div className="w-full flex flex-col justify-center items-center text-2xl mobile:text-3xl md:text-[3.25rem] md:leading-[62.93px] xl:text-[4rem] xl:leading-[77.45px] font-bold pt-10 pb-4">
-          <h1>Find out people's favorite</h1>
-          <h1>places on maps!</h1>
-        </div>
-
-        <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10 pt-6">
-          <div
-            className={`flex w-full gap-2.5 items-center overflow-x-scroll ${isCategoryCentered && "justify-center"}`}
-            ref={categoryContainerRef}
-          >
-            <Button
-              onClick={handleCategoryClick}
-              id="all"
-              variant={`${clickedCategory === "all" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              All
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="eats-drinks"
-              variant={`${clickedCategory === "eats-drinks" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Eats & Drinks
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="dates"
-              variant={`${clickedCategory === "dates" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Dates
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="hangouts"
-              variant={`${clickedCategory === "hangouts" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Hangouts
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="shops"
-              variant={`${clickedCategory === "shops" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Shops
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="adventures"
-              variant={`${clickedCategory === "adventures" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Adventures
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="relaxations"
-              variant={`${clickedCategory === "relaxations" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Relaxations
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="attractions"
-              variant={`${clickedCategory === "attractions" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Attractions
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="celebrations"
-              variant={`${clickedCategory === "celebrations" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Celebrations
-            </Button>
-            <Button
-              onClick={handleCategoryClick}
-              id="others"
-              variant={`${clickedCategory === "others" ? "default" : "outline"}`}
-              className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
-            >
-              Others
-            </Button>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="flex w-full h-full overflow-y-scroll flex-col items-center">
+          <div className="w-full flex flex-col justify-center items-center text-2xl mobile:text-3xl md:text-[3.25rem] md:leading-[62.93px] xl:text-[4rem] xl:leading-[77.45px] font-bold pt-10 pb-4">
+            <h1>Find out people's favorite</h1>
+            <h1>places on maps!</h1>
           </div>
-          <div className="flex gap-1 items-center w-full justify-end">
-            <Button
-              onClick={handleSortClick}
-              id="newest"
-              variant="ghost"
-              className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
-            >
-              Newest
-            </Button>
-            <div className="border-r border-[#EDEDED] h-[12px]" />
-            <Button
-              onClick={handleSortClick}
-              id="popular"
-              variant="ghost"
-              className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
-            >
-              Most Popular
-            </Button>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full h-full gap-4 sm:gap-5 items-center justify-items-center pt-5">
-          {data &&
-            data.map((item: ListItem) => (
-              <div
-                key={item._id}
-                className="rounded-t-2xl w-40 h-[260px] sm:w-72 sm:h-[400px] overflow-hidden flex flex-col gap-2"
+          <div className="flex flex-col w-full gap-10 items-center sticky top-0 bg-white z-10 pt-6">
+            <div
+              className={`flex w-full gap-2.5 items-center overflow-x-scroll ${isCategoryCentered && "justify-center"}`}
+              ref={categoryContainerRef}
+            >
+              <Button
+                onClick={handleCategoryClick}
+                id="all"
+                variant={`${clickedCategory === "all" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
               >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-2xl"
-                />
-                <div className="flex justify-between items-center w-full pt-1">
-                  <h2 className="font-bold text-xl leading-5">{item.title}</h2>
-                  <SaveIcon className="w-6 h-6" />
+                All
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="eats-drinks"
+                variant={`${clickedCategory === "eats-drinks" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Eats & Drinks
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="dates"
+                variant={`${clickedCategory === "dates" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Dates
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="hangouts"
+                variant={`${clickedCategory === "hangouts" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Hangouts
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="shops"
+                variant={`${clickedCategory === "shops" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Shops
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="adventures"
+                variant={`${clickedCategory === "adventures" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Adventures
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="relaxations"
+                variant={`${clickedCategory === "relaxations" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Relaxations
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="attractions"
+                variant={`${clickedCategory === "attractions" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Attractions
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="celebrations"
+                variant={`${clickedCategory === "celebrations" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Celebrations
+              </Button>
+              <Button
+                onClick={handleCategoryClick}
+                id="others"
+                variant={`${clickedCategory === "others" ? "default" : "outline"}`}
+                className="h-[34px] font-normal px-4 rounded-[10px] text-sm leading-4 md:text-base md:leading-5"
+              >
+                Others
+              </Button>
+            </div>
+            <div className="flex gap-1 items-center w-full justify-end">
+              <Button
+                onClick={handleSortClick}
+                id="newest"
+                variant="ghost"
+                className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
+              >
+                Newest
+              </Button>
+              <div className="border-r border-[#EDEDED] h-[12px]" />
+              <Button
+                onClick={handleSortClick}
+                id="popular"
+                variant="ghost"
+                className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
+              >
+                Most Popular
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full h-full gap-4 sm:gap-5 items-center justify-items-center pt-5">
+            {data &&
+              data.map((item: ListItem) => (
+                <div
+                  key={item._id}
+                  className="rounded-t-2xl w-40 h-[260px] sm:w-72 sm:h-[400px] overflow-hidden flex flex-col gap-2"
+                >
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-2xl"
+                  />
+                  <div className="flex justify-between items-center w-full pt-1">
+                    <h2 className="font-bold text-xl leading-5">
+                      {item.title}
+                    </h2>
+                    <SaveIcon className="w-6 h-6" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-[#444444] text-sm leading-4">
+                      {item.userName}
+                    </p>
+                    <p className="text-[#444444] text-sm leading-4">
+                      {String(item.updatedAt).split("T")[0]}
+                    </p>
+                    <p className="text-[#444444] text-sm leading-4">
+                      {likeToThousandsUnit(item.likeCount)}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p className="text-[#444444] text-sm leading-4">
-                    {item.userName}
-                  </p>
-                  <p className="text-[#444444] text-sm leading-4">
-                    {String(item.updatedAt).split("T")[0]}
-                  </p>
-                  <p className="text-[#444444] text-sm leading-4">
-                    {likeToThousandsUnit(item.likeCount)}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
-      </div>
+      </Suspense>
 
       {openLoginModal && (
         <LoginModal

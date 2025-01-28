@@ -8,12 +8,13 @@ const useGetUserDetails = () => {
     return response.data.data;
   };
 
-  const { data, refetch } = useSuspenseQuery({
+  const { data, refetch, isFetching } = useSuspenseQuery({
     queryKey: ["userDetails"],
     queryFn: getUserDetails,
+    staleTime: 0,
   });
 
-  return { data, refetch };
+  return { data, refetch, isFetching };
 };
 
 export default useGetUserDetails;

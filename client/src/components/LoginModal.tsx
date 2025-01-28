@@ -53,6 +53,7 @@ const LoginModal = ({
                 console.log("refetched");
                 userDetailsRefetch();
                 setValidEmailAndPassword(true);
+                onClose(false);
               });
           },
           onError: (error) => {
