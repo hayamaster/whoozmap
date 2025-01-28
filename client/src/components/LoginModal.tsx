@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setToken, isGoogleLogin, setUser } from "../redux/userSlice";
 import { loginWithGoogle } from "@/appwrite/auth";
-// import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -26,7 +26,7 @@ const LoginModal = ({
   const [emptyPassword, setEmptyPassword] = useState(false);
   const [validEmailAndPassword, setValidEmailAndPassword] = useState(true);
 
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   const handleLoginClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +44,7 @@ const LoginModal = ({
             dispatch(setToken(res.data.token));
             dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
-            // queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+            await queryClient.invalidateQueries({ queryKey: ["userDetails"] });
             userDetailsRefetch();
             setValidEmailAndPassword(true);
             onClose(false);
