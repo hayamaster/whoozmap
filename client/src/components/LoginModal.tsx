@@ -11,9 +11,14 @@ import { useQueryClient } from "@tanstack/react-query";
 interface LoginModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
   setOpenSignupModal: Dispatch<SetStateAction<boolean>>;
+  userDetailsRefetch: () => void;
 }
 
-const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
+const LoginModal = ({
+  onClose,
+  setOpenSignupModal,
+  userDetailsRefetch,
+}: LoginModalProps) => {
   const { mutate: loginMutate } = usePostLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +45,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             dispatch(setUser(res.data.data));
             localStorage.setItem("token", res.data.token);
             queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+            userDetailsRefetch();
             setValidEmailAndPassword(true);
             onClose(false);
           },
