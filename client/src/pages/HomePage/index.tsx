@@ -122,15 +122,17 @@ const HomePage = () => {
             data.map((item: ListItem) => (
               <div
                 key={item._id}
-                className="rounded-t-2xl w-40 h-[260px] sm:w-72 sm:h-[400px] overflow-hidden flex flex-col gap-2"
+                className="rounded-t-2xl w-full h-auto aspect-[10/13.5] flex flex-col gap-2"
               >
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-2xl"
+                  className="w-full aspect-square object-cover rounded-2xl"
                 />
                 <div className="flex justify-between items-center w-full pt-1">
-                  <h2 className="font-bold text-xl leading-5">{item.title}</h2>
+                  <h2 className="font-bold text-xl leading-5 truncate">
+                    {item.title}
+                  </h2>
                   <SaveIcon className="w-6 h-6" />
                 </div>
                 <div className="flex flex-col gap-1">
