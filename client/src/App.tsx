@@ -6,6 +6,7 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { Loading } from "./components";
 import { Suspense } from "react";
+import { Spinner } from "./components/ui/spinner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,10 +18,10 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading size="2xl" />}>
       <QueryClientProvider client={queryClient}>
         <Provider store={store}>
-          <PersistGate loading={<Loading />} persistor={persistor}>
+          <PersistGate loading={<Spinner />} persistor={persistor}>
             <RouterProvider router={router} />
           </PersistGate>
         </Provider>

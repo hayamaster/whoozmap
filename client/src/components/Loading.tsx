@@ -1,9 +1,13 @@
-const Loading = () => {
+import { Spinner } from "./ui/spinner";
+
+interface LoadingProps {
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+}
+
+const Loading = ({ size = "sm" }: LoadingProps) => {
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 bg-black bg-opacity-20 sm:p-2 z-20 flex justify-center items-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#FFA500]">
-        Loading
-      </div>
+    <div className="w-screen h-dvh flex items-center justify-center bg-gray-700 bg-opacity-10">
+      <Spinner size={size} className="bg-black dark:bg-white" />
     </div>
   );
 };
