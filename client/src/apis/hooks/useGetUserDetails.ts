@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient";
 
 const useGetUserDetails = () => {
@@ -8,9 +8,9 @@ const useGetUserDetails = () => {
     return response.data.data;
   };
 
-  const { data, refetch } = useSuspenseQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["userDetails"],
-    queryFn: () => getUserDetails,
+    queryFn: getUserDetails,
   });
 
   return { data, refetch };
