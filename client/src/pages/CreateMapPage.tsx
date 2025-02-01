@@ -21,7 +21,7 @@ const CreateMapPage = () => {
   const [showDetailDescription, setShowDetailDescription] = useState(false);
 
   useEffect(() => {
-    setShowCreateMapDetailsModal(true);
+    setShowCreateMapDetailsModal(false);
   }, []);
 
   const handleClickEdit = () => {
@@ -62,9 +62,10 @@ const CreateMapPage = () => {
               </div>
               <div className="flex w-full gap-1 items-center">
                 <p
-                  className={`w-full text-base leading-5 text-[#777777] ${showDetailDescription && "truncate"}`}
+                  className={`w-full text-base leading-5 text-[#777777] text-ellipsis ${!showDetailDescription && "line-clamp-1"}`}
                 >
-                  Lorem ipsum dolor sit amet consectetur. Imperdiet
+                  Lorem ipsum dolor sit amet consectetur. Imperdiet imsy imsy
+                  imsy imsy imsy
                 </p>
                 <i
                   className="h-6 w-6 flex justify-center items-center cursor-pointer"

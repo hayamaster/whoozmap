@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient";
 
 const useGetListItems = () => {
@@ -8,9 +8,9 @@ const useGetListItems = () => {
     return response.data.data;
   };
 
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["listItems"],
-    queryFn: () => getListItems(),
+    queryFn: async () => await getListItems(),
   });
 
   return { data };
