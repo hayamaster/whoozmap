@@ -37,7 +37,7 @@ const CreateMapPage = () => {
       {showCreateMapDetailsModal && (
         <CreateMapDetailsModal onClose={setShowCreateMapDetailsModal} />
       )}
-      <div className="relative grid grid-rows-2 sm:grid-rows-none sm:grid-cols-2 lg:grid-cols-[500px,1fr] w-full h-full">
+      <div className="relative grid grid-rows-[40%,1fr] sm:grid-rows-none sm:grid-cols-2 lg:grid-cols-[500px,1fr] w-full h-dvh">
         <div className="order-last sm:order-first h-full w-full flex flex-col z-10 bg-white">
           <div className="relative flex flex-col h-full w-full pt-7 sm:pt-10 px-4 sm:px-10 gap-7 sm:gap-10">
             <div className="flex fixed top-0 left-0 sm:static mx-4 mt-4 sm:mx-0 sm:mt-0 bg-white justify-center h-[50px] shrink-0 w-[calc(100%-32px)] sm:w-full px-5 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
@@ -85,11 +85,11 @@ const CreateMapPage = () => {
               </button>
             </div>
             <p className="leading-5 font-bold">0 Places Added</p>
-            <div className="w-full h-full overflow-y-scroll text-base leading-5 md:text-lg lg:text-xl xl:text-2xl text-[#777777] font-bold sm:leading-7 flex flex-col justify-center items-center">
+            <div className="w-full flex-grow flex-shrink overflow-y-scroll text-base leading-5 md:text-lg lg:text-xl xl:text-2xl text-[#777777] font-bold sm:leading-7 flex flex-col justify-center items-center">
               <p>Add your favorite places and</p>
               <p>create own your map!</p>
             </div>
-            <div className="flex h-fit w-full py-7 sm:py-10">
+            <div className="flex shrink-0 h-fit w-full py-7 sm:py-10">
               <button className="w-full h-12 bg-[#EDEDED] rounded-2xl font-semibold leading-5">
                 Create
               </button>
