@@ -1,12 +1,61 @@
 import { AddIcon, CloseIcon } from "@/assets/icons";
-import { Dispatch, SetStateAction } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  ChangeEvent,
+  MouseEvent,
+  useState,
+} from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+
+interface MapDataType {
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  categories: string[];
+}
 
 interface CreateMapDetailsModalProps {
   onClose: Dispatch<SetStateAction<boolean>>;
+  mapData: MapDataType;
+  setMapData: Dispatch<SetStateAction<MapDataType>>;
 }
 
-const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
+const CreateMapDetailsModal = ({
+  onClose,
+  mapData,
+  setMapData,
+}: CreateMapDetailsModalProps) => {
+  const [tempMapData, setTempMapData] = useState<MapDataType>(mapData);
+
+  const handleChangeMapData = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target;
+
+    setTempMapData((prev) => {
+      return { ...prev, [target.id]: target.value };
+    });
+  };
+
+  const handleClickCategory = (e: MouseEvent<HTMLButtonElement>) => {
+    const target = e.target as HTMLButtonElement;
+
+    setTempMapData((prev) => {
+      return {
+        ...prev,
+        categories: prev.categories.includes(target.id)
+          ? prev.categories.filter((category) => category !== target.id)
+          : [...prev.categories, target.id],
+      };
+    });
+  };
+
+  const handleClickDone = () => {
+    setMapData(tempMapData);
+    onClose(false);
+  };
+
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-20 sm:p-2 z-20">
       <div className="relative flex flex-col gap-7 sm:gap-10 w-full h-full overflow-y-scroll sm:h-auto sm:w-auto sm:rounded-xl bg-white px-4 mobile:px-10 md:px-16 py-5 mobile:py-10 md:py-14 z-30">
@@ -35,12 +84,20 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
               <h2 className="text-base font-bold leading-5">Map Title</h2>
               <input
                 type="text"
+                id="title"
+                value={tempMapData["title"]}
+                onChange={handleChangeMapData}
                 className="w-full border border-[#CCCCCC] rounded-lg h-[50px] px-4 focus:outline-none"
               />
             </div>
             <div className="flex flex-col gap-2.5">
               <h2 className="text-base font-bold leading-5">Description</h2>
-              <textarea className="w-full border border-[#CCCCCC] rounded-lg h-[50px] sm:h-36 px-4 py-1 sm:py-4 resize-none focus:outline-none" />
+              <textarea
+                id="description"
+                value={tempMapData["description"]}
+                onChange={handleChangeMapData}
+                className="w-full border border-[#CCCCCC] rounded-lg h-[50px] sm:h-36 px-4 py-1 sm:py-4 resize-none focus:outline-none"
+              />
             </div>
           </div>
         </div>
@@ -51,8 +108,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
           <div className="w-fit grid grid-cols-2 mobile:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-x-10 gap-y-4">
             <div className="w-fit flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="eats-drinks"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("eats-drinks")}
               />
               <label
                 htmlFor="eats-drinks"
@@ -63,8 +122,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="dates"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("dates")}
               />
               <label
                 htmlFor="dates"
@@ -75,8 +136,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="adventures"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("adventures")}
               />
               <label
                 htmlFor="adventures"
@@ -87,8 +150,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="shops"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("shops")}
               />
               <label
                 htmlFor="shops"
@@ -99,8 +164,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="hangouts"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("hangouts")}
               />
               <label
                 htmlFor="hangouts"
@@ -111,8 +178,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="relaxations"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("relaxations")}
               />
               <label
                 htmlFor="relaxations"
@@ -123,8 +192,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="attractions"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("attractions")}
               />
               <label
                 htmlFor="attractions"
@@ -135,8 +206,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="celebrations"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("celebrations")}
               />
               <label
                 htmlFor="celebrations"
@@ -147,8 +220,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
             </div>
             <div className="flex items-center gap-2.5">
               <Checkbox
+                onClick={handleClickCategory}
                 id="others"
                 className="rounded-full border border-[#161616]"
+                checked={tempMapData.categories.includes("others")}
               />
               <label
                 htmlFor="others"
@@ -160,7 +235,10 @@ const CreateMapDetailsModal = ({ onClose }: CreateMapDetailsModalProps) => {
           </div>
         </div>
         <div className="w-full flex justify-center">
-          <button className="h-[50px] w-full sm:w-fit px-5 bg-[#FFE852] font-semibold text-base leading-5 rounded-full">
+          <button
+            onClick={handleClickDone}
+            className="h-[50px] w-full sm:w-fit px-5 bg-[#FFE852] font-semibold text-base leading-5 rounded-full"
+          >
             Done
           </button>
         </div>

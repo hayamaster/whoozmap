@@ -1,7 +1,15 @@
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
-import { GoogleMap, CreateMapDetailsModal } from "@/components";
+import { GoogleMap } from "@/components";
 import { SearchIcon, DetailArrowIcon } from "@/assets/icons";
 import { useEffect, useState } from "react";
+import { CreateMapDetailsModal } from "./components";
+
+interface MapDataType {
+  title: string;
+  description: string;
+  thumbnailUrl: string;
+  categories: string[];
+}
 
 const render = (status: Status) => {
   switch (status) {
@@ -19,6 +27,12 @@ const CreateMapPage = () => {
   const [showCreateMapDetailsModal, setShowCreateMapDetailsModal] =
     useState(false);
   const [showDetailDescription, setShowDetailDescription] = useState(false);
+  const [mapData, setMapData] = useState<MapDataType>({
+    title: "",
+    description: "",
+    thumbnailUrl: "",
+    categories: [],
+  });
 
   useEffect(() => {
     setShowCreateMapDetailsModal(false);
@@ -35,7 +49,11 @@ const CreateMapPage = () => {
   return (
     <div className="w-screen h-screen flex flex-col">
       {showCreateMapDetailsModal && (
-        <CreateMapDetailsModal onClose={setShowCreateMapDetailsModal} />
+        <CreateMapDetailsModal
+          onClose={setShowCreateMapDetailsModal}
+          mapData={mapData}
+          setMapData={setMapData}
+        />
       )}
       <div className="relative grid grid-rows-[40%,1fr] sm:grid-rows-none sm:grid-cols-2 lg:grid-cols-[500px,1fr] w-full h-dvh">
         <div className="order-last sm:order-first h-full w-full flex flex-col z-10 bg-white">
@@ -56,16 +74,19 @@ const CreateMapPage = () => {
               <div className="flex gap-3">
                 <div className="w-12 h-12 bg-[#D9D9D9] rounded-md"></div>
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-base font-bold leading-5">Map Title</h1>
-                  <p className="text-base leading-5 text-[#777777]">Category</p>
+                  <h1 className="text-base font-bold leading-5">
+                    {mapData.title || "Map Title"}
+                  </h1>
+                  <p className="text-base leading-5 text-[#777777]">
+                    {mapData.categories.join(", ") || "Category"}
+                  </p>
                 </div>
               </div>
               <div className="flex w-full gap-1 items-center">
                 <p
                   className={`w-full text-base leading-5 text-[#777777] text-ellipsis ${!showDetailDescription && "line-clamp-1"}`}
                 >
-                  Lorem ipsum dolor sit amet consectetur. Imperdiet imsy imsy
-                  imsy imsy imsy
+                  {mapData.description || "Description"}
                 </p>
                 <i
                   className="h-6 w-6 flex justify-center items-center cursor-pointer"
