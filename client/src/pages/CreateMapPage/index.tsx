@@ -1,7 +1,7 @@
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import { GoogleMap } from "@/components";
 import { SearchIcon, DetailArrowIcon } from "@/assets/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { CreateMapDetailsModal } from "./components";
 
 interface MapDataType {
@@ -33,6 +33,21 @@ const CreateMapPage = () => {
     thumbnailUrl: "",
     categories: [],
   });
+
+  const preventReload = useCallback((e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    // e.returnValue = "";
+  }, []);
+
+  useEffect(() => {
+    (() => {
+      window.addEventListener("beforeunload", preventReload);
+    })();
+
+    return () => {
+      window.removeEventListener("beforeunload", preventReload);
+    };
+  }, [preventReload]);
 
   useEffect(() => {
     setShowCreateMapDetailsModal(false);
