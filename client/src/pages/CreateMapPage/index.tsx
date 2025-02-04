@@ -72,7 +72,14 @@ const CreateMapPage = () => {
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex gap-3">
-                <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md"></div>
+                <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md">
+                  {mapData.thumbnailUrl && (
+                    <img
+                      src={mapData.thumbnailUrl}
+                      className="w-full h-full object-cover overflow-hidden rounded-md"
+                    />
+                  )}
+                </div>
                 <div className="flex flex-col gap-1">
                   <h1 className="text-base font-bold leading-5">
                     {mapData.title || "Map Title"}
