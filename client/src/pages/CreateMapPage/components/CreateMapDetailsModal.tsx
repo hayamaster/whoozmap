@@ -6,7 +6,8 @@ import {
   MouseEvent,
   useState,
 } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
+import CategoryCheckBox from "./CategoryCheckBox";
+import { CATEGORY_LIST } from "@/constants";
 
 interface MapDataType {
   title: string;
@@ -106,132 +107,13 @@ const CreateMapDetailsModal = ({
             Select One or More Categories
           </h2>
           <div className="w-fit grid grid-cols-2 mobile:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-x-10 gap-y-4">
-            <div className="w-fit flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="eats-drinks"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("eats-drinks")}
+            {CATEGORY_LIST.map((category) => (
+              <CategoryCheckBox
+                category={category}
+                handleClickCategory={handleClickCategory}
+                checked={tempMapData.categories.includes(category)}
               />
-              <label
-                htmlFor="eats-drinks"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Eats & Drinks
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="dates"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("dates")}
-              />
-              <label
-                htmlFor="dates"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Dates
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="adventures"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("adventures")}
-              />
-              <label
-                htmlFor="adventures"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Adventures
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="shops"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("shops")}
-              />
-              <label
-                htmlFor="shops"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Shops
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="hangouts"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("hangouts")}
-              />
-              <label
-                htmlFor="hangouts"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Hangouts
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="relaxations"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("relaxations")}
-              />
-              <label
-                htmlFor="relaxations"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Relaxations
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="attractions"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("attractions")}
-              />
-              <label
-                htmlFor="attractions"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Attractions
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="celebrations"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("celebrations")}
-              />
-              <label
-                htmlFor="celebrations"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Celebrations
-              </label>
-            </div>
-            <div className="flex items-center gap-2.5">
-              <Checkbox
-                onClick={handleClickCategory}
-                id="others"
-                className="rounded-full border border-[#161616]"
-                checked={tempMapData.categories.includes("others")}
-              />
-              <label
-                htmlFor="others"
-                className="text-sm font-base leading-5 select-none"
-              >
-                Others
-              </label>
-            </div>
+            ))}
           </div>
         </div>
         <div className="w-full flex justify-center">
