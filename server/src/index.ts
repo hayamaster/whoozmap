@@ -10,6 +10,11 @@ const router = require("./routes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", process.env.HOSTING_URL);
+  next();
+});
+
 app.use(
   cors({
     origin: [process.env.HOSTING_URL, process.env.FRONTEND_URL],
