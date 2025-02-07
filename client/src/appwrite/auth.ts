@@ -4,7 +4,7 @@ export const loginWithGoogle = async () => {
   try {
     await account.createOAuth2Session(
       OAuthProvider.Google,
-      "https://whoozmap.vercel.app/",
+      "https://www.whoozmap.app/",
       "http://localhost:3000"
     );
   } catch (error) {
