@@ -4,7 +4,7 @@ export const loginWithGoogle = async () => {
   try {
     await account.createOAuth2Session(
       OAuthProvider.Google,
-      "https://www.whoozmap.app/",
+      "https://www.whoozmap.com/",
       "http://localhost:3000"
     );
   } catch (error) {
