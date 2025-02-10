@@ -160,7 +160,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             <button
               type="button"
               className="font-bold"
-              onClick={() => handleSignupClick}
+              onClick={handleSignupClick}
             >
               Sign up
             </button>
