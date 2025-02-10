@@ -2,28 +2,25 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { logoutWithGoogle } from "@/appwrite/auth";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
 import { usePostLogout } from "@/apis/hooks";
-import { isGoogleLogin } from "@/redux/userSlice";
+import { isGoogleLogin, logout } from "@/redux/userSlice";
 
 const MyAccountPage = () => {
   const user = useSelector((state: RootState) => state.user);
   const navigator = useNavigate();
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
 
   const { mutate: logoutMutate } = usePostLogout();
 
   const handleClickLogout = async () => {
     if (user.isGoogleLogin) {
       await logoutWithGoogle();
-      dispatch(isGoogleLogin(false));
     } else {
       logoutMutate();
-      queryClient.invalidateQueries({ queryKey: ["userDetails"] });
     }
-
-    localStorage.clear();
+    localStorage.removeItem("token");
+    dispatch(logout());
+    dispatch(isGoogleLogin(false));
     navigator("/");
   };
 
