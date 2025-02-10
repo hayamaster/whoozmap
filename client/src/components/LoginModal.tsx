@@ -65,7 +65,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
       dispatch(isGoogleLogin(true));
       localStorage.setItem("token", "google-login");
 
-      onClose(false);
+      // onClose(false);
     } catch (error) {
       console.error(error);
     }
@@ -160,7 +160,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             <button
               type="button"
               className="font-bold"
-              onClick={handleSignupClick}
+              onClick={() => handleSignupClick}
             >
               Sign up
             </button>

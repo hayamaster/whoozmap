@@ -4,7 +4,7 @@ import { SaveIcon } from "@/assets/icons";
 import { likeToThousandsUnit } from "@/utils";
 import { LoginModal, SignupModal } from "@/components";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, logout, isGoogleLogin } from "@/redux/userSlice";
+import { setUser, logout } from "@/redux/userSlice";
 import { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
 import { getUserWithGoogle } from "@/appwrite/auth";
@@ -44,9 +44,7 @@ const HomePage = () => {
       if (user.isGoogleLogin) {
         const userData = await getUserWithGoogle();
 
-        if (!userData) {
-          dispatch(isGoogleLogin(false));
-        } else {
+        if (userData) {
           dispatch(
             setUser({
               _id: userData?.$id,
