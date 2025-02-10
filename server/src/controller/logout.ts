@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 async function logout(req: Request, res: Response) {
   try {
     const cookieOptions = {
-      http: true,
       secure: true,
+      httpOnly: true,
+      sameSite: "none" as "none",
     };
 
     return res.status(200).cookie("token", "", cookieOptions).json({

@@ -40,7 +40,6 @@ async function login(req: Request, res: Response) {
       expiresIn: "1h",
     });
     const cookieOption = {
-      http: true,
       secure: true,
       httpOnly: true,
       sameSite: "none" as "none",
