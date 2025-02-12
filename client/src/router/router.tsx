@@ -19,12 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/about-us",
-        element: (
-          <Header>
-            <AboutUsPage />
-          </Header>
-        ),
-        loader: unLoginLoader,
+        element: <AboutUsPage />,
       },
       {
         path: "/my-account",
@@ -33,7 +28,7 @@ const router = createBrowserRouter([
             <MyAccountPage />
           </Header>
         ),
-        loader: unLoginLoader,
+        // loader: unLoginLoader,
       },
     ],
   },
