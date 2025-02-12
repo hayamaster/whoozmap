@@ -17,8 +17,7 @@ const Header = ({ handleClickLogin, handleClickNav, userId }: HeaderProps) => {
   const getHamburgerMenuHeight = useCallback(() => {
     if (headerRef.current) {
       const parentNode = headerRef.current.parentNode as HTMLElement;
-      const parentPaddingY = parentNode.offsetWidth < 640 ? 40 : 80;
-      const height = parentNode.offsetHeight - parentPaddingY;
+      const height = parentNode.offsetHeight;
 
       setHamburgerMenuHeight(height);
     }
@@ -31,9 +30,12 @@ const Header = ({ handleClickLogin, handleClickNav, userId }: HeaderProps) => {
   }, [getHamburgerMenuHeight]);
 
   return (
-    <div className="relative w-full" ref={headerRef}>
+    <div
+      className="relative w-full px-4 py-5 sm:px-10 sm:py-10"
+      ref={headerRef}
+    >
       <div
-        className={`w-full bg-white ${openHamburgerMenu && "absolute top-0 left-0 flex flex-col z-20"}`}
+        className={`w-full bg-white ${openHamburgerMenu && "absolute top-0 left-0 flex flex-col z-20 px-4 py-5 sm:px-10 sm:py-10"}`}
         style={openHamburgerMenu ? { height: `${hamburgerMenuHeight}px` } : {}}
       >
         <header className="w-full bg-white grid grid-cols-2 lg:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr] gap-2 justify-items-center items-center">
