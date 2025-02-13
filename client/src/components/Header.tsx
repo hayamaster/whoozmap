@@ -8,27 +8,37 @@ import {
   useRef,
   useCallback,
 } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useGetUserDetails } from "@/apis/hooks";
+import { getUserWithGoogle } from "@/appwrite/auth";
+import { setUser, logout } from "@/redux/userSlice";
+import { useNavigate, useLocation } from "react-router-dom";
+import { LoginModal, SignupModal } from "@/components";
 
 interface HeaderProps {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
-  handleClickLogin: () => void;
-  handleClickNav: (e: MouseEvent<HTMLButtonElement>) => void;
-  isLoadingGoogleDataFetch: boolean;
-  userId: string;
+  search?: string;
+  setSearch?: Dispatch<SetStateAction<string>>;
 }
 
-const Header = ({
-  search,
-  setSearch,
-  handleClickLogin,
-  handleClickNav,
-  isLoadingGoogleDataFetch,
-  userId,
-}: HeaderProps) => {
+const Header = ({ search, setSearch }: HeaderProps) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+
+  const { data: userDetails } = useGetUserDetails();
+
   const headerRef = useRef<HTMLDivElement>(null);
   const [openHamburgerMenu, setOpenHamburgerMenu] = useState<boolean>(false);
   const [hamburgerMenuHeight, setHamburgerMenuHeight] = useState(0);
+  const [openLoginModal, setOpenLoginModal] = useState<boolean>(false);
+  const [openSignupModal, setOpenSignupModal] = useState<boolean>(false);
+  const [isLoadingGoogleDataFetch, setIsLoadingGoogleDataFetch] =
+    useState<boolean>(false);
+
+  console.log("redux", user);
+  console.log("userDetails", userDetails);
 
   const getHamburgerMenuHeight = useCallback(() => {
     if (headerRef.current) {
@@ -46,14 +56,76 @@ const Header = ({
     return () => window.removeEventListener("resize", getHamburgerMenuHeight);
   }, [getHamburgerMenuHeight]);
 
+  useEffect(() => {
+    const checkGoogleLogin = async () => {
+      setIsLoadingGoogleDataFetch(true);
+      if (user.isGoogleLogin) {
+        const userData = await getUserWithGoogle();
+
+        if (userData) {
+          dispatch(
+            setUser({
+              _id: userData?.$id,
+              email: userData?.email,
+              userName: userData?.name,
+            })
+          );
+        }
+      }
+      setIsLoadingGoogleDataFetch(false);
+    };
+
+    checkGoogleLogin();
+
+    if (userDetails && userDetails.logout) {
+      dispatch(logout());
+    }
+    if (userDetails && userDetails._id) {
+      dispatch(setUser(userDetails));
+    }
+  }, [userDetails, dispatch, user.isGoogleLogin]);
+
+  const isLogin = useCallback(() => {
+    if (!user._id) {
+      setOpenLoginModal(true);
+
+      return false;
+    }
+
+    return true;
+  }, [user]);
+
+  const handleClickLogin = () => {
+    if (!user._id) {
+      setOpenLoginModal(true);
+    }
+  };
+
+  const handleClickNav = (e: MouseEvent<HTMLButtonElement>) => {
+    const buttonId = (e.target as HTMLButtonElement).id;
+
+    if (buttonId !== "about-us" && !isLogin()) return;
+
+    navigate(`/${buttonId}`, { replace: location.pathname === `/${buttonId}` });
+  };
+
   return (
-    <div className="relative w-full" ref={headerRef}>
+    <div
+      className="relative w-full px-4 py-5 sm:px-10 sm:py-10"
+      ref={headerRef}
+    >
       <div
-        className={`w-full bg-white ${openHamburgerMenu && "absolute top-0 left-0 flex flex-col z-20"}`}
+        className={`w-full bg-white ${openHamburgerMenu && "absolute top-0 left-0 flex flex-col z-20 px-4 py-5 sm:px-10 sm:py-10"}`}
         style={openHamburgerMenu ? { height: `${hamburgerMenuHeight}px` } : {}}
       >
         <header className="w-full bg-white grid grid-cols-2 lg:grid-cols-[1fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
-          <i className="w-full flex justify-start items-center">
+          <i
+            className="w-full flex justify-start items-center"
+            onClick={() => {
+              navigate("/");
+              setOpenHamburgerMenu(false);
+            }}
+          >
             <Logo className="w-[8.5rem] h-4 lg:w-[10.5rem] lg:h-5" />
           </i>
           <div className="hidden lg:flex bg-white justify-center h-[50px] w-[360px] xl:w-[500px] px-6 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
@@ -61,7 +133,7 @@ const Header = ({
               type="text"
               placeholder="Search"
               className="w-full outline-none h-full px-1 placeholder:text-[#161616]"
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => setSearch && setSearch(e.target.value)}
               value={search}
             />
             <i className="h-6 w-6 flex justify-center items-center cursor-pointer">
@@ -88,10 +160,10 @@ const Header = ({
             ) : (
               <button
                 className="px-1 py-0.5 shrink-0"
-                id={userId ? "my-account" : "login"}
+                id={user._id ? "my-account" : "login"}
                 onClick={handleClickNav}
               >
-                {userId ? "My Account" : "Log In"}
+                {user._id ? "My Account" : "Log In"}
               </button>
             )}
             <button
@@ -137,10 +209,10 @@ const Header = ({
             ) : (
               <button
                 className="px-1 py-0.5 shrink-0"
-                id={userId ? "my-account" : "login"}
+                id={user._id ? "my-account" : "login"}
                 onClick={handleClickNav}
               >
-                {userId ? "My Account" : "Log In"}
+                {user._id ? "My Account" : "Log In"}
               </button>
             )}
             <button
@@ -153,6 +225,19 @@ const Header = ({
           </div>
         )}
       </div>
+
+      {openLoginModal && (
+        <LoginModal
+          onClose={setOpenLoginModal}
+          setOpenSignupModal={setOpenSignupModal}
+        />
+      )}
+      {openSignupModal && (
+        <SignupModal
+          onClose={setOpenSignupModal}
+          setOpenLoginModal={setOpenLoginModal}
+        />
+      )}
     </div>
   );
 };
