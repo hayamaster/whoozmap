@@ -86,7 +86,7 @@ const HomePage = () => {
   const handleClickNav = (e: MouseEvent<HTMLButtonElement>) => {
     const buttonId = (e.target as HTMLButtonElement).id;
 
-    if (!isLogin()) return;
+    if (buttonId !== "about-us" && !isLogin()) return;
 
     navigate(buttonId);
   };
