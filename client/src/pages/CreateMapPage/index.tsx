@@ -4,6 +4,7 @@ import { SearchIcon, DetailArrowIcon } from "@/assets/icons";
 import { useEffect, useState, useCallback } from "react";
 import { CreateMapDetailsModal } from "./components";
 import { useGetPlaceLocation } from "@/apis/hooks";
+import { useDebounce } from "@/hooks";
 
 interface MapDataType {
   title: string;
@@ -24,7 +25,7 @@ const render = (status: Status) => {
 };
 
 const CreateMapPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const [showCreateMapDetailsModal, setShowCreateMapDetailsModal] =
     useState(false);
   const [showDetailDescription, setShowDetailDescription] = useState(false);
@@ -34,7 +35,12 @@ const CreateMapPage = () => {
     thumbnailUrl: "",
     categories: [],
   });
-  const { data, refetch } = useGetPlaceLocation({ searchPlace: search });
+
+  const debouncedSearch = useDebounce(search || "");
+
+  const { data, refetch } = useGetPlaceLocation({
+    searchPlace: debouncedSearch,
+  });
 
   const preventReload = useCallback((e: BeforeUnloadEvent) => {
     e.preventDefault();
@@ -43,7 +49,7 @@ const CreateMapPage = () => {
   useEffect(() => {
     console.log("refetching");
     refetch();
-  }, [search, refetch]);
+  }, [debouncedSearch, refetch]);
 
   useEffect(() => {
     console.log("data", data);
