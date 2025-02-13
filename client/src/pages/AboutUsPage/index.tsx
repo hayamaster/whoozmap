@@ -8,7 +8,7 @@ const AboutUsPage = () => {
       <Header />
       <div className="flex w-full h-full overflow-hidden">
         <div className="flex flex-col w-full h-full overflow-y-scroll">
-          <div className="w-full h-full flex bg-[#FFE852] justify-center items-center aspect-[1/1.8] sm:aspect-[7/9] lg:aspect-video px-4">
+          <div className="w-full flex items-center justify-center bg-[#FFE852] mobile:aspect-[1/1.8] sm:aspect-[7/9] lg:aspect-video px-4 py-10">
             <div className="flex flex-col bg-white w-fit h-fit gap-5 sm:gap-10 px-10 py-[30px] lg:px-20 lg:py-[60px] justify-center items-center border-4 border-black rounded-2xl">
               <i className="w-32 h-32">
                 <img className="w-32 h-32" src={avatar1} />
