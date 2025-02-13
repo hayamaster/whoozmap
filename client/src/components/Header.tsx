@@ -43,8 +43,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   const getHamburgerMenuHeight = useCallback(() => {
     if (headerRef.current) {
       const parentNode = headerRef.current.parentNode as HTMLElement;
-      const parentPaddingY = parentNode.offsetWidth < 640 ? 40 : 80;
-      const height = parentNode.offsetHeight - parentPaddingY;
+      const height = parentNode.offsetHeight;
 
       setHamburgerMenuHeight(height);
     }
