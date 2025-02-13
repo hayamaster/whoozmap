@@ -3,6 +3,7 @@ import { GoogleMap } from "@/components";
 import { SearchIcon, DetailArrowIcon } from "@/assets/icons";
 import { useEffect, useState, useCallback } from "react";
 import { CreateMapDetailsModal } from "./components";
+import { useGetPlaceLocation } from "@/apis/hooks";
 
 interface MapDataType {
   title: string;
@@ -33,11 +34,20 @@ const CreateMapPage = () => {
     thumbnailUrl: "",
     categories: [],
   });
+  const { data, refetch } = useGetPlaceLocation({ searchPlace: search });
 
   const preventReload = useCallback((e: BeforeUnloadEvent) => {
     e.preventDefault();
-    // e.returnValue = "";
   }, []);
+
+  useEffect(() => {
+    console.log("refetching");
+    refetch();
+  }, [search, refetch]);
+
+  useEffect(() => {
+    console.log("data", data);
+  }, [data]);
 
   useEffect(() => {
     (() => {

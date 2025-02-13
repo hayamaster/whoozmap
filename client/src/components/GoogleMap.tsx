@@ -4,7 +4,9 @@ const GoogleMap = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [googleMap, setGoogleMap] = useState<google.maps.Map>();
 
-  console.log(googleMap);
+  useEffect(() => {
+    console.log(googleMap);
+  }, [googleMap]);
 
   useEffect(() => {
     if (ref.current) {

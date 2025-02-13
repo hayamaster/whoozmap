@@ -1,0 +1,24 @@
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../apiClient";
+
+interface Request {
+  searchPlace: string;
+}
+
+const useGetPlaceLocation = ({ searchPlace }: Request) => {
+  const getPlaceLocation = async () => {
+    const response = await apiClient.get(`/api/place-location/${searchPlace}`);
+
+    return response.data.data;
+  };
+
+  const { data, refetch } = useQuery({
+    queryKey: ["placeLocation", searchPlace],
+    queryFn: getPlaceLocation,
+    enabled: !!searchPlace,
+  });
+
+  return { data, refetch };
+};
+
+export default useGetPlaceLocation;
