@@ -3,7 +3,6 @@ import { GoogleMap } from "@/components";
 import { SearchIcon, DetailArrowIcon } from "@/assets/icons";
 import { useEffect, useState, useCallback } from "react";
 import { CreateMapDetailsModal } from "./components";
-import { useGetPlaceLocation } from "@/apis/hooks";
 import { useDebounce } from "@/hooks";
 
 interface MapDataType {
@@ -13,14 +12,14 @@ interface MapDataType {
   categories: string[];
 }
 
-const render = (status: Status) => {
+const render = (status: Status, debouncedSearch: string) => {
   switch (status) {
     case Status.LOADING:
       return <div>Loading...</div>;
     case Status.FAILURE:
       return <div>Failed to load Google Maps</div>;
     case Status.SUCCESS:
-      return <GoogleMap />;
+      return <GoogleMap debouncedSearch={debouncedSearch} />;
   }
 };
 
@@ -38,22 +37,9 @@ const CreateMapPage = () => {
 
   const debouncedSearch = useDebounce(search || "");
 
-  const { data, refetch } = useGetPlaceLocation({
-    searchPlace: debouncedSearch,
-  });
-
   const preventReload = useCallback((e: BeforeUnloadEvent) => {
     e.preventDefault();
   }, []);
-
-  useEffect(() => {
-    console.log("refetching");
-    refetch();
-  }, [debouncedSearch, refetch]);
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
 
   useEffect(() => {
     (() => {
@@ -157,7 +143,8 @@ const CreateMapPage = () => {
         </div>
         <Wrapper
           apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-          render={render}
+          render={(status) => render(status, debouncedSearch)}
+          libraries={["marker"]}
         />
       </div>
     </div>

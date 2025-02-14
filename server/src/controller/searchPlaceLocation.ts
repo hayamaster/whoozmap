@@ -4,8 +4,8 @@ const getPlaceLocation = require("../utils/getPlaceLocation");
 
 async function searchPlaceLocation(req: Request, res: Response) {
   try {
-    const { searchPlace } = req.params;
-    const locationData = await getPlaceLocation(searchPlace);
+    const { searchPlace, lat, lng } = req.params;
+    const locationData = await getPlaceLocation({ searchPlace, lat, lng });
 
     return res.status(200).json({
       message: "Location fetched successfully",

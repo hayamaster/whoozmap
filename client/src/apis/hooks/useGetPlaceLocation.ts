@@ -3,11 +3,15 @@ import apiClient from "../apiClient";
 
 interface Request {
   searchPlace: string;
+  lat: number;
+  lng: number;
 }
 
-const useGetPlaceLocation = ({ searchPlace }: Request) => {
+const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
   const getPlaceLocation = async () => {
-    const response = await apiClient.get(`/api/place-location/${searchPlace}`);
+    const response = await apiClient.get(
+      `/api/place-location/${searchPlace}/${lat}/${lng}`
+    );
 
     return response.data.data;
   };
