@@ -6,7 +6,7 @@ interface LoadingProps {
 
 const Loading = ({ size = "sm" }: LoadingProps) => {
   return (
-    <div className="fixed top-0 left-0 w-screen h-dvh flex items-center justify-center bg-gray-700 bg-opacity-30 z-50">
+    <div className="absolute top-0 left-0 w-full h-dvh flex items-center justify-center bg-gray-700 bg-opacity-30 z-50">
       <Spinner size={size} className="bg-black dark:bg-white" />
     </div>
   );
