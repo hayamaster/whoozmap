@@ -17,6 +17,6 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/user-details", userDetails);
 router.post("/logout", logout);
-router.get("/place-location/:searchPlace/:lat/:lng", searchPlaceLocation);
+router.get("/place-location", searchPlaceLocation);
 
 module.exports = router;

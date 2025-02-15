@@ -10,7 +10,7 @@ interface Request {
 const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
   const getPlaceLocation = async () => {
     const response = await apiClient.get(
-      `/api/place-location/${searchPlace}/${lat}/${lng}`
+      `/api/place-location?searchPlace=${searchPlace}&lat=${lat}&lng=${lng}`
     );
 
     return response.data.data;
