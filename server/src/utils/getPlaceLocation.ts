@@ -21,6 +21,8 @@ async function getPlaceLocation({
       `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${searchPlace}&location=${lat}%2C${lng}&radius=1500&key=${process.env.GOOGLE_MAPS_API_KEY}`
     );
     const data = response.data;
+
+    console.log("why", data);
     const locationData = data.results;
 
     return locationData;
