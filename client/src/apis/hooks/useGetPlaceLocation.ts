@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient";
+import { useState } from "react";
 
 interface Request {
   searchPlace: string;
@@ -8,6 +9,8 @@ interface Request {
 }
 
 const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
+  const [isRefetching, setIsRefetching] = useState(false);
+
   const getPlaceLocation = async () => {
     const response = await apiClient.get(
       `/api/place-location?searchPlace=${searchPlace}&lat=${lat}&lng=${lng}`
@@ -16,14 +19,23 @@ const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
     return response.data.data;
   };
 
-  const { data, refetch, isRefetching } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["placeLocation"],
     queryFn: getPlaceLocation,
     enabled: !!searchPlace,
     staleTime: 30 * 60 * 1000,
   });
 
-  return { data, refetch, isRefetching };
+  const handleRefetch = async () => {
+    setIsRefetching(true);
+    try {
+      await refetch();
+    } finally {
+      setIsRefetching(false);
+    }
+  };
+
+  return { data, refetch: handleRefetch, isRefetching };
 };
 
 export default useGetPlaceLocation;

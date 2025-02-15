@@ -44,7 +44,6 @@ const CreateMapPage = () => {
     lat: INITIAL_MAP_CENTER.lat,
     lng: INITIAL_MAP_CENTER.lng,
   });
-  const [searchedData, setSearchedData] = useState([]);
   const [openSearchResultMenu, setOpenSearchResultMenu] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<GoogleMapsPlaceType>();
 
@@ -97,13 +96,7 @@ const CreateMapPage = () => {
       e.type === "click"
     ) {
       setOpenSearchResultMenu(true);
-      if (search !== "") {
-        placesRefetch().then((res) => {
-          setSearchedData(res.data);
-        });
-      } else {
-        setSearchedData([]);
-      }
+      placesRefetch();
     }
   };
 
@@ -158,8 +151,8 @@ const CreateMapPage = () => {
               <>
                 <p className="font-bold leading-5">Results</p>
                 <div className="max-h-full w-full flex flex-col gap-2.5 overflow-y-scroll">
-                  {searchedData.length > 0 &&
-                    searchedData.map((place: GoogleMapsPlaceType) => {
+                  {fetchedPlaces &&
+                    fetchedPlaces.map((place: GoogleMapsPlaceType) => {
                       return (
                         <div
                           onClick={() => setSelectedPlace(place)}
