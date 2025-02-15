@@ -105,7 +105,7 @@ const CreateMapPage = () => {
   }, [fetchedPlaces]);
 
   return (
-    <div className="w-screen h-screen flex flex-col">
+    <div className="w-screen h-dvh flex flex-col">
       {showCreateMapDetailsModal && (
         <CreateMapDetailsModal
           onClose={setShowCreateMapDetailsModal}
@@ -220,7 +220,7 @@ const CreateMapPage = () => {
                   </div>
                   <div className="flex w-full gap-1 items-center">
                     <p
-                      className={`w-full text-base leading-5 text-[#777777] text-ellipsis ${!showDetailDescription && "line-clamp-1"}`}
+                      className={`w-full text-base leading-5 text-[#777777] ${showDetailDescription ? "whitespace-pre-line" : "line-clamp-1 text-ellipsis"}`}
                     >
                       {mapData.description || "Description"}
                     </p>
@@ -246,7 +246,7 @@ const CreateMapPage = () => {
                   <p>Add your favorite places and</p>
                   <p>create own your map!</p>
                 </div>
-                <div className="flex shrink-0 h-fit w-full py-7 sm:py-10">
+                <div className="flex shrink-0 h-fit w-full pb-7 sm:pb-10">
                   <button className="w-full h-12 bg-[#EDEDED] rounded-2xl font-semibold leading-5">
                     Create
                   </button>

@@ -82,7 +82,7 @@ const CreateMapDetailsModal = ({
   return (
     <>
       {loadingUploadPhoto && <Loading size="xl" />}
-      <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-20 sm:p-2 z-20">
+      <div className="h-dvh w-full fixed left-0 top-0 flex justify-center items-center bg-black bg-opacity-20 sm:p-2 z-20">
         <div className="relative flex flex-col gap-7 sm:gap-10 w-full h-full overflow-y-scroll sm:h-auto sm:w-auto sm:rounded-xl bg-white px-4 mobile:px-10 md:px-16 py-5 mobile:py-10 md:py-14 z-30">
           <button
             className="absolute top-5 right-4 sm:right-5"
