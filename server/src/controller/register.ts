@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import { Model } from "mongoose";
-
-interface User {
-  userName: string;
-  email: string;
-  password: string;
-}
+import { User } from "../types";
 
 const UserModel: Model<User> = require("../models/UserModel");
 const bcryptjs = require("bcryptjs");

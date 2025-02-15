@@ -1,10 +1,5 @@
 import { Model } from "mongoose";
-
-interface User {
-  userName: string;
-  email: string;
-  password: string;
-}
+import { User } from "../types";
 
 const jwt = require("jsonwebtoken");
 const UserModel: Model<User> = require("../models/UserModel");

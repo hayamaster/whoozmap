@@ -1,3 +1,9 @@
+export interface User {
+  userName: string;
+  email: string;
+  password: string;
+}
+
 export interface GoogleMapsPlaceType {
   business_status: string;
   geometry: {

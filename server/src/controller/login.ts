@@ -1,14 +1,9 @@
 import { Request, Response } from "express";
 import { Model } from "mongoose";
+import { User } from "../types";
 
 const jwt = require("jsonwebtoken");
 const bcryptjs = require("bcryptjs");
-
-interface User {
-  userName: string;
-  email: string;
-  password: string;
-}
 
 const UserModel: Model<User> = require("../models/UserModel");
 
