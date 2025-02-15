@@ -13,27 +13,7 @@ import {
 import { CreateMapDetailsModal } from "./components";
 import { useGetPlaceLocation } from "@/apis/hooks";
 import { INITIAL_MAP_CENTER } from "@/constants";
-
-type LatLng = {
-  lat: number;
-  lng: number;
-};
-
-interface MapCreateMetaDataType {
-  title: string;
-  description: string;
-  thumbnailUrl: string;
-  categories: string[];
-}
-
-interface GoogleMapsPlaceType {
-  name: string;
-  placeId: string;
-  lat: number;
-  lng: number;
-  icon: string;
-  location: string;
-}
+import { LatLng, MapCreateMetaDataType, GoogleMapsPlaceType } from "@/types";
 
 const render = (
   status: Status,
@@ -66,6 +46,7 @@ const CreateMapPage = () => {
   });
   const [searchedData, setSearchedData] = useState([]);
   const [openSearchResultMenu, setOpenSearchResultMenu] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState<GoogleMapsPlaceType>();
 
   const {
     data: fetchedPlaces,
@@ -140,10 +121,10 @@ const CreateMapPage = () => {
         />
       )}
       <div className="relative grid grid-rows-[40%,1fr] sm:grid-rows-none sm:grid-cols-2 lg:grid-cols-[500px,1fr] w-full h-dvh">
-        <div className="relative order-last sm:order-first h-full w-full flex flex-col z-10 bg-white">
+        <div className="relative overflow-hidden order-last sm:order-first h-full w-full flex flex-col z-10 bg-white">
           {isRefetching && <Loading size="2xl" />}
           <div
-            className={`relative flex flex-col h-full w-full pt-7 sm:pt-10 px-4 sm:px-10 gap-7 sm:${openSearchResultMenu ? "gap-5" : "gap-10"}`}
+            className={`relative flex flex-col h-full max-h-full w-full px-4 sm:px-10 gap-7 sm:${openSearchResultMenu ? "gap-5 py-7 sm:py-10" : "gap-10 pt-7 sm:pt-10"}`}
           >
             <div className="flex fixed top-0 left-0 sm:static mx-4 mt-4 sm:mx-0 sm:mt-0 bg-white justify-center h-[50px] shrink-0 w-[calc(100%-32px)] sm:w-full px-5 border border-[#CCCCCC] rounded-full overflow-hidden items-center">
               <input
@@ -176,15 +157,48 @@ const CreateMapPage = () => {
             {openSearchResultMenu ? (
               <>
                 <p className="font-bold leading-5">Results</p>
-                <div className="flex flex-col gap-2.5">
+                <div className="max-h-full w-full flex flex-col gap-2.5 overflow-y-scroll">
                   {searchedData.length > 0 &&
                     searchedData.map((place: GoogleMapsPlaceType) => {
                       return (
                         <div
+                          onClick={() => setSelectedPlace(place)}
                           key={place.placeId}
-                          className="flex gap-3 items-center"
+                          className={`flex flex-col gap-4 p-5 border rounded-lg ${selectedPlace?.placeId === place.placeId ? "border-[#161616]" : "border-[#CCCCCC]"}`}
                         >
-                          <div>{place.name}</div>
+                          <div className="flex flex-col gap-4">
+                            <div className="flex gap-3">
+                              {place.icon ? (
+                                <img
+                                  src={place.icon}
+                                  className="w-12 h-12 shrink-0 border border-[#D9D9D9] rounded-md"
+                                />
+                              ) : (
+                                <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md" />
+                              )}
+                              <div className="w-full flex flex-col gap-1">
+                                <h2 className="text-[#161616] font-bold leading-5 text-ellipsis line-clamp-1">
+                                  {place.name}
+                                </h2>
+                                <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">
+                                  {place.location}
+                                </h3>
+                              </div>
+                            </div>
+                            {selectedPlace?.placeId === place.placeId && (
+                              <textarea
+                                placeholder="Tell us what you like about this place!"
+                                className="w-full resize-none focus:outline-none"
+                                name="description"
+                                id={place.placeId}
+                              />
+                            )}
+                          </div>
+                          {selectedPlace?.placeId === place.placeId && (
+                            <button className="self-end h-[34px] w-fit rounded-full bg-[#EDEDED] text-[#161616] font-semibold text-sm leading-4 px-4">
+                              Add
+                            </button>
+                          )}
                         </div>
                       );
                     })}
