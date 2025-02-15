@@ -9,3 +9,8 @@ export const CATEGORY_LIST = [
   "celebrations",
   "others",
 ];
+
+export const INITIAL_MAP_CENTER = {
+  lat: 43.6640848,
+  lng: -79.3887719,
+};

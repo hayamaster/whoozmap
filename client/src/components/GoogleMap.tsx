@@ -1,22 +1,19 @@
-import { useState, useEffect, useRef } from "react";
-import { useGetPlaceLocation } from "@/apis/hooks";
+import { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { INITIAL_MAP_CENTER } from "@/constants";
 
+type LatLng = {
+  lat: number;
+  lng: number;
+};
 interface GoogleMapProps {
-  debouncedSearch: string;
+  setCenter: Dispatch<SetStateAction<LatLng>>;
 }
 
-const GoogleMap = ({ debouncedSearch }: GoogleMapProps) => {
+const GoogleMap = ({ setCenter }: GoogleMapProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [googleMap, setGoogleMap] = useState<google.maps.Map>();
-  const [lat, setLat] = useState(43.6640848);
-  const [lng, setLng] = useState(-79.3887719);
-  const [center, setCenter] = useState<google.maps.LatLng | null>(null);
-
-  const { data } = useGetPlaceLocation({
-    searchPlace: debouncedSearch,
-    lat: center?.lat() || lat,
-    lng: center?.lng() || lng,
-  });
+  const [lat, setLat] = useState(INITIAL_MAP_CENTER.lat);
+  const [lng, setLng] = useState(INITIAL_MAP_CENTER.lng);
 
   // get user's location
   useEffect(() => {
@@ -69,11 +66,11 @@ const GoogleMap = ({ debouncedSearch }: GoogleMapProps) => {
       initialMap.addListener("bounds_changed", () => {
         const newCenter = initialMap.getCenter();
         if (newCenter) {
-          setCenter(newCenter);
+          setCenter({ lat: newCenter.lat(), lng: newCenter.lng() });
         }
       });
     }
-  }, [lat, lng, googleMap]);
+  }, [lat, lng, googleMap, setCenter]);
 
   // setCenter on the map
   useEffect(() => {
@@ -81,10 +78,6 @@ const GoogleMap = ({ debouncedSearch }: GoogleMapProps) => {
       googleMap.setCenter({ lat, lng });
     }
   }, [lat, lng, googleMap]);
-
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
 
   return (
     <div ref={ref} id="map" style={{ width: "100%", height: "100vh" }}></div>

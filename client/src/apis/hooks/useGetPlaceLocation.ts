@@ -16,13 +16,14 @@ const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
     return response.data.data;
   };
 
-  const { data, refetch } = useQuery({
-    queryKey: ["placeLocation", searchPlace],
+  const { data, refetch, isRefetching } = useQuery({
+    queryKey: ["placeLocation"],
     queryFn: getPlaceLocation,
     enabled: !!searchPlace,
+    staleTime: 30 * 60 * 1000,
   });
 
-  return { data, refetch };
+  return { data, refetch, isRefetching };
 };
 
 export default useGetPlaceLocation;
