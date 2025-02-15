@@ -2,8 +2,8 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/" },
     {
-      "source": "/api/(.*)",
-      "destination": "/"
+      "source": "/api/place-location/:searchPlace/:lat/:lng",
+      "destination": "/api/place-location"
     }
   ]
 }
