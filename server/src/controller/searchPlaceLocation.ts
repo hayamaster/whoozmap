@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { GoogleMapsPlaceType } from "../types";
 
 const getPlaceLocation = require("../utils/getPlaceLocation");
 
@@ -9,7 +10,16 @@ async function searchPlaceLocation(req: Request, res: Response) {
 
     return res.status(200).json({
       message: "Location fetched successfully",
-      data: locationData,
+      data: locationData.map((data: GoogleMapsPlaceType) => {
+        return {
+          placeId: data.place_id,
+          name: data.name,
+          icon: data.icon,
+          lat: data.geometry.location.lat,
+          lng: data.geometry.location.lng,
+          location: data.vicinity,
+        };
+      }),
       success: true,
     });
   } catch (error) {
