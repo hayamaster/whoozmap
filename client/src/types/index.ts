@@ -17,4 +17,5 @@ export interface GoogleMapsPlaceType {
   lng: number;
   icon: string;
   location: string;
+  description?: string;
 }

@@ -46,6 +46,8 @@ const CreateMapPage = () => {
   });
   const [openSearchResultMenu, setOpenSearchResultMenu] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<GoogleMapsPlaceType>();
+  const [placeDescription, setPlaceDescription] = useState<string>("");
+  const [addedPlaces, setAddedPlaces] = useState<GoogleMapsPlaceType[]>([]);
 
   const {
     data: fetchedPlaces,
@@ -100,6 +102,18 @@ const CreateMapPage = () => {
     }
   };
 
+  const handleSelectPlace = (place: GoogleMapsPlaceType) => {
+    setSelectedPlace(place);
+    setPlaceDescription("");
+  };
+
+  const handleAddPlace = (selectedPlace: GoogleMapsPlaceType) => {
+    setAddedPlaces((prev) => [
+      ...prev,
+      { ...selectedPlace, description: placeDescription },
+    ]);
+  };
+
   useEffect(() => {
     console.log("data", fetchedPlaces);
   }, [fetchedPlaces]);
@@ -152,49 +166,62 @@ const CreateMapPage = () => {
                 <p className="font-bold leading-5">Results</p>
                 <div className="max-h-full w-full flex flex-col gap-2.5 overflow-y-scroll">
                   {fetchedPlaces &&
-                    fetchedPlaces.map((place: GoogleMapsPlaceType) => {
-                      return (
-                        <div
-                          onClick={() => setSelectedPlace(place)}
-                          key={place.placeId}
-                          className={`flex flex-col gap-4 p-5 border rounded-lg ${selectedPlace?.placeId === place.placeId ? "border-[#161616]" : "border-[#CCCCCC]"}`}
-                        >
-                          <div className="flex flex-col gap-4">
-                            <div className="flex gap-3">
-                              {place.icon ? (
-                                <img
-                                  src={place.icon}
-                                  className="w-12 h-12 shrink-0 border border-[#D9D9D9] rounded-md"
-                                />
-                              ) : (
-                                <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md" />
-                              )}
-                              <div className="w-full flex flex-col gap-1">
-                                <h2 className="text-[#161616] font-bold leading-5 text-ellipsis line-clamp-1">
-                                  {place.name}
-                                </h2>
-                                <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">
-                                  {place.location}
-                                </h3>
+                    fetchedPlaces
+                      .filter(
+                        (place: GoogleMapsPlaceType) =>
+                          !addedPlaces
+                            .map((place) => place.placeId)
+                            .includes(place.placeId)
+                      )
+                      .map((place: GoogleMapsPlaceType) => {
+                        return (
+                          <div
+                            onClick={() => handleSelectPlace(place)}
+                            key={place.placeId}
+                            className={`flex flex-col gap-4 p-5 border rounded-lg ${selectedPlace?.placeId === place.placeId ? "border-[#161616]" : "border-[#CCCCCC]"}`}
+                          >
+                            <div className="flex flex-col gap-4">
+                              <div className="flex gap-3">
+                                {place.icon ? (
+                                  <img
+                                    src={place.icon}
+                                    className="w-12 h-12 shrink-0 border border-[#D9D9D9] rounded-md"
+                                  />
+                                ) : (
+                                  <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md" />
+                                )}
+                                <div className="w-full flex flex-col gap-1">
+                                  <h2 className="text-[#161616] font-bold leading-5 text-ellipsis line-clamp-1">
+                                    {place.name}
+                                  </h2>
+                                  <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">
+                                    {place.location}
+                                  </h3>
+                                </div>
                               </div>
+                              {selectedPlace?.placeId === place.placeId && (
+                                <textarea
+                                  onChange={(e) =>
+                                    setPlaceDescription(e.target.value)
+                                  }
+                                  placeholder="Tell us what you like about this place!"
+                                  className="w-full resize-none focus:outline-none"
+                                  name="description"
+                                  id={place.placeId}
+                                />
+                              )}
                             </div>
                             {selectedPlace?.placeId === place.placeId && (
-                              <textarea
-                                placeholder="Tell us what you like about this place!"
-                                className="w-full resize-none focus:outline-none"
-                                name="description"
-                                id={place.placeId}
-                              />
+                              <button
+                                className="self-end h-[34px] w-fit rounded-full bg-[#EDEDED] text-[#161616] font-semibold text-sm leading-4 px-4"
+                                onClick={() => handleAddPlace(selectedPlace)}
+                              >
+                                Add
+                              </button>
                             )}
                           </div>
-                          {selectedPlace?.placeId === place.placeId && (
-                            <button className="self-end h-[34px] w-fit rounded-full bg-[#EDEDED] text-[#161616] font-semibold text-sm leading-4 px-4">
-                              Add
-                            </button>
-                          )}
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                 </div>
               </>
             ) : (
@@ -241,13 +268,70 @@ const CreateMapPage = () => {
                     Edit
                   </button>
                 </div>
-                <p className="leading-5 font-bold">0 Places Added</p>
-                <div className="w-full flex-grow flex-shrink overflow-y-scroll text-base leading-5 md:text-lg lg:text-xl xl:text-2xl text-[#777777] font-bold sm:leading-7 flex flex-col justify-center items-center">
-                  <p>Add your favorite places and</p>
-                  <p>create own your map!</p>
-                </div>
+                <p className="leading-5 font-bold">{`${addedPlaces.length} Places Added`}</p>
+                {addedPlaces.length > 0 ? (
+                  <div className="w-full flex flex-col flex-grow flex-shrink gap-4 overflow-y-scroll">
+                    {addedPlaces.map((place) => (
+                      <div
+                        className="flex flex-col gap-2.5 p-5 border rounded-lg border-[#CCCCCC]"
+                        key={place.placeId}
+                      >
+                        <div className="flex gap-3">
+                          {place.icon ? (
+                            <img
+                              src={place.icon}
+                              className="w-12 h-12 shrink-0 border border-[#D9D9D9] rounded-md"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md" />
+                          )}
+                          <div className="w-full flex flex-col gap-1">
+                            <div className="w-full flex items-center justify-between">
+                              <h2 className="text-[#161616] font-bold leading-5 text-ellipsis line-clamp-1">
+                                {place.name}
+                              </h2>
+                              <i
+                                className="w-6 h-6"
+                                onClick={() =>
+                                  setAddedPlaces((prev) =>
+                                    prev.filter(
+                                      (p) => p.placeId !== place.placeId
+                                    )
+                                  )
+                                }
+                              >
+                                <CloseIcon className="w-6 h-6" />
+                              </i>
+                            </div>
+                            <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">
+                              {place.location}
+                            </h3>
+                          </div>
+                        </div>
+                        {place.description && (
+                          <p className="text-[#777777] leading-5">
+                            {place.description}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="w-full flex-grow flex-shrink overflow-y-scroll text-base leading-5 md:text-lg lg:text-xl xl:text-2xl text-[#777777] font-bold sm:leading-7 flex flex-col justify-center items-center">
+                    <p>Add your favorite places and</p>
+                    <p>create own your map!</p>
+                  </div>
+                )}
+
                 <div className="flex shrink-0 h-fit w-full pb-7 sm:pb-10">
-                  <button className="w-full h-12 bg-[#EDEDED] rounded-2xl font-semibold leading-5">
+                  <button
+                    className="w-full h-12 rounded-2xl font-semibold leading-5 bg-[#FFE852] disabled:bg-[#EDEDED]"
+                    disabled={
+                      addedPlaces.length === 0 ||
+                      mapData.title === "" ||
+                      mapData.categories.length === 0
+                    }
+                  >
                     Create
                   </button>
                 </div>
