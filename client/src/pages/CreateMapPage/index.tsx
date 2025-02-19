@@ -258,8 +258,9 @@ const CreateMapPage = () => {
                   <div className="w-full flex flex-col flex-grow flex-shrink gap-4 overflow-y-scroll">
                     {addedPlaces.map((place) => (
                       <div
-                        className="flex flex-col gap-2.5 p-5 border rounded-lg border-[#CCCCCC]"
+                        className={`flex flex-col gap-2.5 p-5 border rounded-lg ${selectedPlace?.placeId === place.placeId ? "border-[#161616]" : "border-[#CCCCCC]"}`}
                         key={place.placeId}
+                        onClick={() => handleSelectPlace(place)}
                       >
                         <div className="flex gap-3">
                           {place.icon ? (

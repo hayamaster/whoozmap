@@ -122,6 +122,17 @@ const Map = ({
               }
             />
           ))}
+      {!openSearchResultMenu &&
+        addedPlaces.map((place) => (
+          <MarkerF
+            key={place.placeId}
+            position={{ lat: place.lat, lng: place.lng }}
+            title={place.name}
+            icon={
+              place.placeId == selectedPlace?.placeId ? yellowPin : blackPin
+            }
+          />
+        ))}
     </GoogleMap>
   ) : (
     <div>Loading...</div>
