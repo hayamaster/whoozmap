@@ -18,7 +18,7 @@ async function getPlaceLocation({
       //   )}&inputtype=textquery&fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&key=${
       //     process.env.GOOGLE_MAPS_API_KEY
       //   }`
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${searchPlace}&location=${lat}%2C${lng}&radius=1500&key=${process.env.GOOGLE_MAPS_API_KEY}`
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${searchPlace}&location=${lat}%2C${lng}&radius=2500&key=${process.env.GOOGLE_MAPS_API_KEY}`
     );
     const data = response.data;
     const locationData = data.results;

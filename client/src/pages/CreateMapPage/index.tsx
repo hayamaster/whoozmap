@@ -17,7 +17,9 @@ import { LatLng, MapCreateMetaDataType, GoogleMapsPlaceType } from "@/types";
 
 const render = (
   status: Status,
-  setCenter: Dispatch<SetStateAction<LatLng>>
+  setCenter: Dispatch<SetStateAction<LatLng>>,
+  fetchedPlaces: GoogleMapsPlaceType[],
+  openSearchResultMenu: boolean
 ) => {
   switch (status) {
     case Status.LOADING:
@@ -25,7 +27,13 @@ const render = (
     case Status.FAILURE:
       return <div>Failed to load Google Maps</div>;
     case Status.SUCCESS:
-      return <GoogleMap setCenter={setCenter} />;
+      return (
+        <GoogleMap
+          setCenter={setCenter}
+          fetchedPlaces={fetchedPlaces}
+          openSearchResultMenu={openSearchResultMenu}
+        />
+      );
   }
 };
 
@@ -85,7 +93,7 @@ const CreateMapPage = () => {
     setShowDetailDescription((prev) => !prev);
   };
 
-  const handleCloseSearchMenu = () => {
+  const handleCloseSearchMenu = async () => {
     setOpenSearchResultMenu(false);
     setSearch(() => "");
   };
@@ -341,7 +349,9 @@ const CreateMapPage = () => {
         </div>
         <Wrapper
           apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-          render={(status) => render(status, setCenter)}
+          render={(status) =>
+            render(status, setCenter, fetchedPlaces, openSearchResultMenu)
+          }
           libraries={["marker"]}
         />
       </div>

@@ -12,17 +12,21 @@ const useGetPlaceLocation = ({ searchPlace, lat, lng }: Request) => {
   const [isRefetching, setIsRefetching] = useState(false);
 
   const getPlaceLocation = async () => {
-    const response = await apiClient.get(
-      `/api/place-location?searchPlace=${searchPlace}&lat=${lat}&lng=${lng}`
-    );
+    if (searchPlace) {
+      const response = await apiClient.get(
+        `/api/place-location?searchPlace=${searchPlace}&lat=${lat}&lng=${lng}`
+      );
 
-    return response.data.data;
+      return response.data.data;
+    }
+
+    return [];
   };
 
   const { data, refetch } = useQuery({
     queryKey: ["placeLocation"],
     queryFn: getPlaceLocation,
-    enabled: !!searchPlace,
+    enabled: false,
     staleTime: 30 * 60 * 1000,
   });
 
