@@ -1,12 +1,10 @@
-import { Status, Wrapper } from "@googlemaps/react-wrapper";
-import { GoogleMap, Loading } from "@/components";
+import { Map, Loading } from "@/components";
 import { SearchIcon, DetailArrowIcon, CloseIcon } from "@/assets/icons";
 import {
   useEffect,
   useState,
   useCallback,
-  Dispatch,
-  SetStateAction,
+  useRef,
   KeyboardEvent,
   MouseEvent,
 } from "react";
@@ -14,28 +12,6 @@ import { CreateMapDetailsModal } from "./components";
 import { useGetPlaceLocation } from "@/apis/hooks";
 import { INITIAL_MAP_CENTER } from "@/constants";
 import { LatLng, MapCreateMetaDataType, GoogleMapsPlaceType } from "@/types";
-
-const render = (
-  status: Status,
-  setCenter: Dispatch<SetStateAction<LatLng>>,
-  fetchedPlaces: GoogleMapsPlaceType[],
-  openSearchResultMenu: boolean
-) => {
-  switch (status) {
-    case Status.LOADING:
-      return <div>Loading...</div>;
-    case Status.FAILURE:
-      return <div>Failed to load Google Maps</div>;
-    case Status.SUCCESS:
-      return (
-        <GoogleMap
-          setCenter={setCenter}
-          fetchedPlaces={fetchedPlaces}
-          openSearchResultMenu={openSearchResultMenu}
-        />
-      );
-  }
-};
 
 const CreateMapPage = () => {
   const [search, setSearch] = useState<string>("");
@@ -48,14 +24,15 @@ const CreateMapPage = () => {
     thumbnailUrl: "",
     categories: [],
   });
-  const [center, setCenter] = useState<LatLng>({
-    lat: INITIAL_MAP_CENTER.lat,
-    lng: INITIAL_MAP_CENTER.lng,
-  });
   const [openSearchResultMenu, setOpenSearchResultMenu] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState<GoogleMapsPlaceType>();
   const [placeDescription, setPlaceDescription] = useState<string>("");
   const [addedPlaces, setAddedPlaces] = useState<GoogleMapsPlaceType[]>([]);
+
+  const centerRef = useRef<LatLng>({
+    lat: INITIAL_MAP_CENTER.lat,
+    lng: INITIAL_MAP_CENTER.lng,
+  });
 
   const {
     data: fetchedPlaces,
@@ -63,8 +40,8 @@ const CreateMapPage = () => {
     refetch: placesRefetch,
   } = useGetPlaceLocation({
     searchPlace: search,
-    lat: center.lat,
-    lng: center.lng,
+    lat: centerRef.current.lat,
+    lng: centerRef.current.lng,
   });
 
   const preventReload = useCallback((e: BeforeUnloadEvent) => {
@@ -347,12 +324,12 @@ const CreateMapPage = () => {
             )}
           </div>
         </div>
-        <Wrapper
-          apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
-          render={(status) =>
-            render(status, setCenter, fetchedPlaces, openSearchResultMenu)
-          }
-          libraries={["marker"]}
+        <Map
+          fetchedPlaces={fetchedPlaces}
+          openSearchResultMenu={openSearchResultMenu}
+          selectedPlace={selectedPlace}
+          addedPlaces={addedPlaces}
+          centerRef={centerRef}
         />
       </div>
     </div>
