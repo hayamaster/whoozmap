@@ -8,12 +8,18 @@ import {
   KeyboardEvent,
   MouseEvent,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { CreateMapDetailsModal } from "./components";
 import { useGetPlaceLocation } from "@/apis/hooks";
 import { INITIAL_MAP_CENTER } from "@/constants";
 import { LatLng, MapCreateMetaDataType, GoogleMapsPlaceType } from "@/types";
+import { useDispatch } from "react-redux";
+import { setMapCreateSuccess } from "@/redux/mapSlice";
 
 const CreateMapPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [search, setSearch] = useState<string>("");
   const [showCreateMapDetailsModal, setShowCreateMapDetailsModal] =
     useState(false);
@@ -97,6 +103,12 @@ const CreateMapPage = () => {
       ...prev,
       { ...selectedPlace, description: placeDescription },
     ]);
+  };
+
+  const handleClickCreateMap = () => {
+    console.log("success");
+    dispatch(setMapCreateSuccess(true));
+    navigate("/");
   };
 
   useEffect(() => {
@@ -317,6 +329,7 @@ const CreateMapPage = () => {
                       mapData.title === "" ||
                       mapData.categories.length === 0
                     }
+                    onClick={handleClickCreateMap}
                   >
                     Create
                   </button>

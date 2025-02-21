@@ -4,6 +4,10 @@ import { SaveIcon } from "@/assets/icons";
 import { likeToThousandsUnit } from "@/utils";
 import { FilterOptions } from "./components";
 import { Header } from "@/components";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/redux/store";
+import { setMapCreateSuccess } from "@/redux/mapSlice";
+import clappingImage from "@/assets/images/clapping.png";
 
 interface ListItem {
   _id: string;
@@ -16,14 +20,27 @@ interface ListItem {
 
 const HomePage = () => {
   const { data } = useGetListItems();
+  const dispatch = useDispatch();
+  const mapCreateSuccess = useSelector(
+    (state: RootState) => state.map.mapCreateSuccess
+  );
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
   const [clickedSort, setClickedSort] = useState<string>("newest");
+  const [showMapCreateSuccessModal, setShowMapCreateSuccessModal] =
+    useState(false);
 
   useEffect(() => {
     console.log(data);
   }, [data]);
+
+  useEffect(() => {
+    if (mapCreateSuccess) {
+      setShowMapCreateSuccessModal(true);
+      dispatch(setMapCreateSuccess(false));
+    }
+  }, [mapCreateSuccess, dispatch]);
 
   return (
     <main className="w-full h-full flex flex-col items-center">
@@ -74,6 +91,30 @@ const HomePage = () => {
             ))}
         </div>
       </div>
+      {showMapCreateSuccessModal && (
+        <div className="fixed top-0 left-0 w-full h-dvh bg-black bg-opacity-20 z-40 flex justify-center items-center">
+          <div className="fixed w-full h-full sm:w-fit sm:h-fit sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col bg-white sm:rounded-xl px-4 py-10 sm:py-12 sm:px-16 md:py-[60px] md:px-[80px] z-50 items-center justify-center">
+            <div className="relative w-full h-full flex flex-col items-center justify-center gap-10">
+              <img
+                src={clappingImage}
+                alt="success"
+                className="w-[150px] h-[100px] mx-auto"
+              />
+              <div className="flex flex-col items-center justify-center font-bold text-2xl leading-[29px] md:text-4xl md:leading-[43.5px]">
+                <p>Thank you for</p>
+                <p>sharing your map!</p>
+              </div>
+
+              <button
+                className="absolute bottom-10 w-full sm:w-fit sm:static bg-[#FFE852] rounded-full py-4 px-8 font-semibold leading-5"
+                onClick={() => setShowMapCreateSuccessModal(false)}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 };
