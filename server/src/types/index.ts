@@ -4,6 +4,23 @@ export interface User {
   password: string;
 }
 
+export interface Map {
+  title: string;
+  description: string;
+  category: string[];
+  thumbnailUrl: string;
+  places: {
+    placeId: string;
+    name: string;
+    lat: number;
+    lng: number;
+    location: string;
+    icon: string;
+    description?: string;
+  }[];
+  postByUserId: string;
+}
+
 export interface GoogleMapsPlaceType {
   business_status: string;
   geometry: {
