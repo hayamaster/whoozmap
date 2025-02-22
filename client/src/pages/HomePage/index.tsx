@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGetListItems } from "@/apis/hooks";
+import { useGetMapList } from "@/apis/hooks";
 import { SaveIcon } from "@/assets/icons";
 import { likeToThousandsUnit } from "@/utils";
 import { FilterOptions } from "./components";
@@ -7,19 +7,21 @@ import { Header } from "@/components";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setMapCreateSuccess } from "@/redux/mapSlice";
+import { MapList } from "@/types";
 import clappingImage from "@/assets/images/clapping.png";
+import noImage from "@/assets/images/no-image.png";
 
-interface ListItem {
-  _id: string;
-  title: string;
-  userName: string;
-  imageUrl: string;
-  updatedAt: string;
-  likeCount: number;
-}
+// interface ListItem {
+//   _id: string;
+//   title: string;
+//   userName: string;
+//   imageUrl: string;
+//   updatedAt: string;
+//   likeCount: number;
+// }
 
 const HomePage = () => {
-  const { data } = useGetListItems();
+  const { data } = useGetMapList();
   const dispatch = useDispatch();
   const mapCreateSuccess = useSelector(
     (state: RootState) => state.map.mapCreateSuccess
@@ -60,13 +62,13 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full gap-4 sm:gap-5 items-center justify-items-center pt-5">
           {data &&
-            data.map((item: ListItem) => (
+            data.map((item: MapList) => (
               <div
-                key={item._id}
+                key={item.mapId}
                 className="rounded-t-2xl w-full h-auto aspect-[10/13.5] flex flex-col gap-2"
               >
                 <img
-                  src={item.imageUrl}
+                  src={item.thumbnailUrl || noImage}
                   alt={item.title}
                   className="w-full aspect-square object-cover rounded-2xl"
                 />
@@ -84,7 +86,7 @@ const HomePage = () => {
                     {String(item.updatedAt).split("T")[0]}
                   </p>
                   <p className="text-[#444444] text-sm leading-4">
-                    {likeToThousandsUnit(item.likeCount)}
+                    {item.likeCount ? likeToThousandsUnit(item.likeCount) : 0}
                   </p>
                 </div>
               </div>

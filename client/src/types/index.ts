@@ -3,6 +3,17 @@ export type LatLng = {
   lng: number;
 };
 
+export interface MapList {
+  mapId: string;
+  title: string;
+  description: string;
+  category: string[];
+  thumbnailUrl: string;
+  userName: string;
+  updatedAt: Date;
+  likeCount?: number;
+}
+
 export interface MapCreateMetaDataType {
   title: string;
   description: string;
