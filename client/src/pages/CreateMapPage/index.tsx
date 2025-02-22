@@ -10,15 +10,17 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { CreateMapDetailsModal } from "./components";
-import { useGetPlaceLocation } from "@/apis/hooks";
+import { useGetPlaceLocation, usePostNewMap } from "@/apis/hooks";
 import { INITIAL_MAP_CENTER } from "@/constants";
 import { LatLng, MapCreateMetaDataType, GoogleMapsPlaceType } from "@/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setMapCreateSuccess } from "@/redux/mapSlice";
+import { RootState } from "@/redux/store";
 
 const CreateMapPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userId = useSelector((state: RootState) => state.user._id);
 
   const [search, setSearch] = useState<string>("");
   const [showCreateMapDetailsModal, setShowCreateMapDetailsModal] =
@@ -40,6 +42,7 @@ const CreateMapPage = () => {
     lng: INITIAL_MAP_CENTER.lng,
   });
 
+  const { mutate: newMapMutate } = usePostNewMap();
   const {
     data: fetchedPlaces,
     isRefetching,
@@ -106,9 +109,23 @@ const CreateMapPage = () => {
   };
 
   const handleClickCreateMap = () => {
-    console.log("success");
-    dispatch(setMapCreateSuccess(true));
-    navigate("/");
+    newMapMutate(
+      {
+        title: mapData.title,
+        description: mapData.description,
+        category: mapData.categories,
+        thumbnailUrl: mapData.thumbnailUrl,
+        places: addedPlaces,
+        userId,
+      },
+      {
+        onSuccess: (res) => {
+          console.log(res.data);
+          dispatch(setMapCreateSuccess(true));
+          navigate("/");
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -327,6 +344,7 @@ const CreateMapPage = () => {
                     disabled={
                       addedPlaces.length === 0 ||
                       mapData.title === "" ||
+                      mapData.description === "" ||
                       mapData.categories.length === 0
                     }
                     onClick={handleClickCreateMap}
