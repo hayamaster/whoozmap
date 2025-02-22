@@ -1,7 +1,6 @@
 import { Router } from "express";
 
 const express = require("express");
-const test = require("../controller/test");
 const register = require("../controller/register");
 const login = require("../controller/login");
 const logout = require("../controller/logout");
@@ -12,7 +11,6 @@ const mapList = require("../controller/mapList");
 
 const router: Router = express.Router();
 
-router.get("/", test);
 router.post("/register", register);
 router.post("/login", login);
 router.get("/user-details", userDetails);

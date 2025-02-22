@@ -11,15 +11,6 @@ import { MapList } from "@/types";
 import clappingImage from "@/assets/images/clapping.png";
 import noImage from "@/assets/images/no-image.png";
 
-// interface ListItem {
-//   _id: string;
-//   title: string;
-//   userName: string;
-//   imageUrl: string;
-//   updatedAt: string;
-//   likeCount: number;
-// }
-
 const HomePage = () => {
   const { data } = useGetMapList();
   const dispatch = useDispatch();
