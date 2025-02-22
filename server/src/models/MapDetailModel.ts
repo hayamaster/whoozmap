@@ -1,21 +1,10 @@
 import { Schema, model } from "mongoose";
 
-const MapSchema = new Schema(
+const MapDetailSchema = new Schema(
   {
-    title: {
-      type: String,
+    mapId: {
+      type: Schema.ObjectId,
       required: true,
-    },
-    description: {
-      type: String,
-    },
-    category: {
-      type: [String],
-      required: true,
-    },
-    thumbnailUrl: {
-      type: String,
-      default: "",
     },
     places: [
       {
@@ -49,11 +38,6 @@ const MapSchema = new Schema(
         },
       },
     ],
-
-    postByUserId: {
-      type: Schema.ObjectId,
-      ref: "User",
-    },
   },
   {
     timestamps: true,
@@ -61,6 +45,6 @@ const MapSchema = new Schema(
   }
 );
 
-const MapModel = model("Map", MapSchema);
+const MapDetailModel = model("MapDetail", MapDetailSchema);
 
-module.exports = MapModel;
+module.exports = MapDetailModel;

@@ -4,11 +4,19 @@ export interface User {
   password: string;
 }
 
-export interface Map {
+export interface MapList {
   title: string;
   description: string;
   category: string[];
   thumbnailUrl: string;
+  postByUserName: string;
+  postByUserId: string;
+  updatedAt: Date;
+  createdAt: Date;
+}
+
+export interface MapDetail {
+  mapId: string;
   places: {
     placeId: string;
     name: string;
@@ -18,7 +26,6 @@ export interface Map {
     icon: string;
     description?: string;
   }[];
-  postByUserId: string;
 }
 
 export interface GoogleMapsPlaceType {

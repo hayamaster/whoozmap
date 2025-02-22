@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { Model, isValidObjectId } from "mongoose";
-import { Map } from "../types";
+import { MapDetail, MapList, User } from "../types";
 
 const mongoose = require("mongoose");
 
-const MapModel: Model<Map> = require("../models/MapModel");
+const MapListModel: Model<MapList> = require("../models/MapListModel");
+const MapDetailModel: Model<MapDetail> = require("../models/MapDetailModel");
+const UserModel: Model<User> = require("../models/UserModel");
 
 async function createMap(req: Request, res: Response) {
   try {
@@ -15,13 +17,22 @@ async function createMap(req: Request, res: Response) {
       return res.status(400).json({ message: "It is not validate userId." });
     }
 
-    const newMap = new MapModel({
+    const user = await UserModel.findById(userId, "userName").exec();
+
+    const newMapList = new MapListModel({
       title,
       description,
       category,
       thumbnailUrl,
-      places,
+      postByUserName: user?.userName,
       postByUserId: userId,
+    });
+
+    await newMapList.save();
+
+    const newMap = new MapDetailModel({
+      mapId: newMapList._id,
+      places,
     });
 
     await newMap.save();
