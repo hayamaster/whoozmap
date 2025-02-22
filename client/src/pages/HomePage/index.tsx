@@ -53,35 +53,41 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 w-full gap-4 sm:gap-5 items-center justify-items-center pt-5">
           {data &&
-            data.map((item: MapList) => (
-              <div
-                key={item.mapId}
-                className="rounded-t-2xl w-full h-auto aspect-[10/13.5] flex flex-col gap-2"
-              >
-                <img
-                  src={item.thumbnailUrl || noImage}
-                  alt={item.title}
-                  className="w-full aspect-square object-cover rounded-2xl"
-                />
-                <div className="flex justify-between items-center w-full pt-1">
-                  <h2 className="font-bold text-xl leading-5 truncate">
-                    {item.title}
-                  </h2>
-                  <SaveIcon className="w-6 h-6" />
+            data
+              .filter((map: MapList) =>
+                clickedCategory === "all"
+                  ? map
+                  : map.category.includes(clickedCategory)
+              )
+              .map((item: MapList) => (
+                <div
+                  key={item.mapId}
+                  className="rounded-t-2xl w-full h-auto aspect-[10/13.5] flex flex-col gap-2"
+                >
+                  <img
+                    src={item.thumbnailUrl || noImage}
+                    alt={item.title}
+                    className="w-full aspect-square object-cover rounded-2xl"
+                  />
+                  <div className="flex justify-between items-center w-full pt-1">
+                    <h2 className="font-bold text-xl leading-5 truncate">
+                      {item.title}
+                    </h2>
+                    <SaveIcon className="w-6 h-6" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-[#444444] text-sm leading-4">
+                      {item.userName}
+                    </p>
+                    <p className="text-[#444444] text-sm leading-4">
+                      {String(item.updatedAt).split("T")[0]}
+                    </p>
+                    <p className="text-[#444444] text-sm leading-4">
+                      {item.likeCount ? likeToThousandsUnit(item.likeCount) : 0}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p className="text-[#444444] text-sm leading-4">
-                    {item.userName}
-                  </p>
-                  <p className="text-[#444444] text-sm leading-4">
-                    {String(item.updatedAt).split("T")[0]}
-                  </p>
-                  <p className="text-[#444444] text-sm leading-4">
-                    {item.likeCount ? likeToThousandsUnit(item.likeCount) : 0}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
         </div>
       </div>
       {showMapCreateSuccessModal && (
