@@ -59,6 +59,12 @@ const HomePage = () => {
                   ? map
                   : map.category.includes(clickedCategory)
               )
+              .sort((a: MapList, b: MapList) =>
+                clickedSort === "newest"
+                  ? Number(new Date(b.updatedAt)) -
+                    Number(new Date(a.updatedAt))
+                  : a.likeCount && b.likeCount
+              )
               .map((item: MapList) => (
                 <div
                   key={item.mapId}
