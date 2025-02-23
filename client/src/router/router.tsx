@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout, Header } from "@/layout";
+import { Layout } from "@/layout";
 import { HomePage, CreateMapPage, AboutUsPage, MyAccountPage } from "@/pages";
 import { unLoginLoader } from "./loaders";
 
@@ -23,12 +23,8 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-account",
-        element: (
-          <Header>
-            <MyAccountPage />
-          </Header>
-        ),
-        // loader: unLoginLoader,
+        element: <MyAccountPage />,
+        loader: unLoginLoader,
       },
     ],
   },
