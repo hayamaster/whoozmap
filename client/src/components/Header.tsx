@@ -94,12 +94,6 @@ const Header = ({ search, setSearch }: HeaderProps) => {
     return true;
   }, [user]);
 
-  const handleClickLogin = () => {
-    if (!user._id) {
-      setOpenLoginModal(true);
-    }
-  };
-
   const handleClickNav = (e: MouseEvent<HTMLButtonElement>) => {
     const buttonId = (e.target as HTMLButtonElement).id;
 
@@ -142,8 +136,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
           <div className="hidden lg:flex w-full items-center justify-end gap-2.5 shrink-0 text-base leading-5">
             <button
               className="px-1 py-0.5 shrink-0"
-              id="maps"
-              onClick={handleClickLogin}
+              onClick={() => navigate("/")}
             >
               Maps
             </button>
@@ -191,8 +184,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
           <div className="flex flex-col pt-7 sm:pt-10 lg:hidden w-full h-full bg-white items-start gap-5 text-base leading-5">
             <button
               className="px-1 py-0.5 shrink-0"
-              id="maps"
-              onClick={handleClickLogin}
+              onClick={() => navigate("/")}
             >
               Maps
             </button>
