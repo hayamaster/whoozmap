@@ -50,6 +50,16 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   }, []);
 
   useEffect(() => {
+    if (
+      userDetails?.logout &&
+      !user.isGoogleLogin &&
+      location.pathname === "/my-account"
+    ) {
+      navigate("/");
+    }
+  }, [navigate, userDetails, user.isGoogleLogin, location.pathname]);
+
+  useEffect(() => {
     getHamburgerMenuHeight();
     window.addEventListener("resize", getHamburgerMenuHeight);
     return () => window.removeEventListener("resize", getHamburgerMenuHeight);
