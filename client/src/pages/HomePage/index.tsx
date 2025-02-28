@@ -12,7 +12,7 @@ import clappingImage from "@/assets/images/clapping.png";
 import noImage from "@/assets/images/no-image.png";
 
 const HomePage = () => {
-  const { data } = useGetMapList();
+  const { data } = useGetMapList({});
   const dispatch = useDispatch();
   const mapCreateSuccess = useSelector(
     (state: RootState) => state.map.mapCreateSuccess

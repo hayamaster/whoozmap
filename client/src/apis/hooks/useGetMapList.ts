@@ -1,9 +1,13 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import apiClient from "../apiClient";
 
-const useGetMapList = () => {
+interface UseGetMapListProps {
+  userId?: string;
+}
+
+const useGetMapList = ({ userId = "" }: UseGetMapListProps) => {
   const getMapList = async () => {
-    const response = await apiClient.get("/api/map-list");
+    const response = await apiClient.get(`/api/map-list?userId=${userId}`);
 
     return response.data.data;
   };
