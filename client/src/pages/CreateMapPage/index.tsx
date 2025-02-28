@@ -236,6 +236,57 @@ const CreateMapPage = () => {
                           </div>
                         );
                       })}
+                  {addedPlaces &&
+                    addedPlaces.map((place: GoogleMapsPlaceType) => {
+                      return (
+                        <div
+                          onClick={() => handleSelectPlace(place)}
+                          key={place.placeId}
+                          className={`flex flex-col gap-4 p-5 border rounded-lg ${selectedPlace?.placeId === place.placeId ? "border-[#161616]" : "border-[#CCCCCC]"}`}
+                        >
+                          <div className="flex flex-col gap-4">
+                            <div className="flex gap-3">
+                              {place.icon ? (
+                                <img
+                                  src={place.icon}
+                                  className="w-12 h-12 shrink-0 border border-[#D9D9D9] rounded-md"
+                                />
+                              ) : (
+                                <div className="w-12 h-12 shrink-0 bg-[#D9D9D9] rounded-md" />
+                              )}
+                              <div className="w-full flex flex-col gap-1">
+                                <div className="w-full flex items-center justify-between">
+                                  <h2 className="text-[#161616] font-bold leading-5 text-ellipsis line-clamp-1">
+                                    {place.name}
+                                  </h2>
+                                  <i
+                                    onClick={() =>
+                                      setAddedPlaces((prev) =>
+                                        prev.filter(
+                                          (p) => p.placeId !== place.placeId
+                                        )
+                                      )
+                                    }
+                                  >
+                                    <CloseIcon className="w-5 h-5" />
+                                  </i>
+                                </div>
+                                <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">
+                                  {place.location}
+                                </h3>
+                              </div>
+                            </div>
+                            <p className="text-[#777777] leading-5">
+                              {place.description || ""}
+                            </p>
+                          </div>
+
+                          <button className="self-end h-[34px] w-fit rounded-full bg-[#FFE852] text-[#161616] font-semibold text-sm leading-4 px-4">
+                            Added
+                          </button>
+                        </div>
+                      );
+                    })}
                 </div>
               </>
             ) : (

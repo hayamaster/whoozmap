@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, MutableRefObject } from "react";
 import { INITIAL_MAP_CENTER } from "@/constants";
 import { GoogleMapsPlaceType, LatLng } from "@/types";
 import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
-import { blackPin, yellowPin } from "@/assets/icons";
+import { blackPin, yellowPin, grayPin } from "@/assets/icons";
 
 interface MapProps {
   fetchedPlaces: GoogleMapsPlaceType[];
@@ -118,10 +118,22 @@ const Map = ({
               position={{ lat: place.lat, lng: place.lng }}
               title={place.name}
               icon={
-                place.placeId == selectedPlace?.placeId ? yellowPin : blackPin
+                place.placeId == selectedPlace?.placeId ? blackPin : grayPin
               }
             />
           ))}
+      {openSearchResultMenu &&
+        addedPlaces &&
+        addedPlaces.map((place) => (
+          <MarkerF
+            key={place.placeId}
+            position={{ lat: place.lat, lng: place.lng }}
+            title={place.name}
+            icon={
+              place.placeId == selectedPlace?.placeId ? blackPin : yellowPin
+            }
+          />
+        ))}
       {!openSearchResultMenu &&
         addedPlaces.map((place) => (
           <MarkerF
@@ -129,7 +141,7 @@ const Map = ({
             position={{ lat: place.lat, lng: place.lng }}
             title={place.name}
             icon={
-              place.placeId == selectedPlace?.placeId ? yellowPin : blackPin
+              place.placeId == selectedPlace?.placeId ? blackPin : yellowPin
             }
           />
         ))}
