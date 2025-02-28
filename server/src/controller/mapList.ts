@@ -6,8 +6,13 @@ const MapListModel: Model<MapList> = require("../models/MapListModel");
 
 async function mapList(req: Request, res: Response) {
   try {
+    const { userId } = req.query;
     const mapList = (
-      await MapListModel.find().select("-createdAt -postByUserId").exec()
+      userId
+        ? await MapListModel.find({ postByUserId: userId })
+            .select("-createdAt -postByUserId")
+            .exec()
+        : await MapListModel.find().select("-createdAt -postByUserId").exec()
     ).map((map) => ({
       mapId: map._id,
       title: map.title,
