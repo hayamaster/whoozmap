@@ -13,6 +13,7 @@ export interface MapList {
   postByUserId: string;
   updatedAt: Date;
   createdAt: Date;
+  savedCount?: number;
 }
 
 export interface MapDetail {

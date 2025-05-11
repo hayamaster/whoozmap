@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useGetMapList } from "@/apis/hooks";
 import { SaveIcon } from "@/assets/icons";
 import { MapList } from "@/types";
-import { likeToThousandsUnit } from "@/utils";
+import { savedCountToThousandsUnit } from "@/utils";
 
 const MyAccountPage = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -117,7 +117,7 @@ const MyAccountPage = () => {
                       clickedSort === "newest"
                         ? Number(new Date(b.updatedAt)) -
                           Number(new Date(a.updatedAt))
-                        : a.likeCount && b.likeCount
+                        : a.savedCount && b.savedCount
                     )
                     .map((item: MapList) => (
                       <div
@@ -143,8 +143,8 @@ const MyAccountPage = () => {
                             {String(item.updatedAt).split("T")[0]}
                           </p>
                           <p className="text-[#444444] text-sm leading-4">
-                            {item.likeCount
-                              ? likeToThousandsUnit(item.likeCount)
+                            {item.savedCount
+                              ? savedCountToThousandsUnit(item.savedCount)
                               : 0}
                           </p>
                         </div>

@@ -268,7 +268,7 @@ const CreateMapPage = () => {
                                       )
                                     }
                                   >
-                                    <CloseIcon className="w-5 h-5" />
+                                    <CloseIcon className="w-6 h-6" />
                                   </i>
                                 </div>
                                 <h3 className="text-[#777777] leading-5 text-ellipsis line-clamp-1">

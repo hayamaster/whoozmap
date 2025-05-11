@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGetMapList } from "@/apis/hooks";
 import { SaveIcon } from "@/assets/icons";
-import { likeToThousandsUnit } from "@/utils";
+import { savedCountToThousandsUnit } from "@/utils";
 import { FilterOptions } from "./components";
 import { Header } from "@/components";
 import { useSelector, useDispatch } from "react-redux";
@@ -63,7 +63,7 @@ const HomePage = () => {
                 clickedSort === "newest"
                   ? Number(new Date(b.updatedAt)) -
                     Number(new Date(a.updatedAt))
-                  : a.likeCount && b.likeCount
+                  : a.savedCount && b.savedCount
               )
               .map((item: MapList) => (
                 <div
@@ -89,7 +89,9 @@ const HomePage = () => {
                       {String(item.updatedAt).split("T")[0]}
                     </p>
                     <p className="text-[#444444] text-sm leading-4">
-                      {item.likeCount ? likeToThousandsUnit(item.likeCount) : 0}
+                      {item.savedCount
+                        ? savedCountToThousandsUnit(item.savedCount)
+                        : 0}
                     </p>
                   </div>
                 </div>

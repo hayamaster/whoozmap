@@ -11,7 +11,7 @@ export interface MapList {
   thumbnailUrl: string;
   userName: string;
   updatedAt: Date;
-  likeCount?: number;
+  savedCount?: number;
 }
 
 export interface MapCreateMetaDataType {
