@@ -8,6 +8,7 @@ const userDetails = require("../controller/userDetails");
 const searchPlaceLocation = require("../controller/searchPlaceLocation");
 const createMap = require("../controller/createMap");
 const mapList = require("../controller/mapList");
+const mapDetail = require("../controller/mapDetail");
 
 const router: Router = express.Router();
 
@@ -18,5 +19,6 @@ router.post("/logout", logout);
 router.get("/place-location", searchPlaceLocation);
 router.post("/create-map", createMap);
 router.get("/map-list", mapList);
+router.get("/map-detail", mapDetail);
 
 module.exports = router;
