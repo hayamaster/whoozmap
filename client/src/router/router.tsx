@@ -1,6 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "@/layout";
-import { HomePage, CreateMapPage, AboutUsPage, MyAccountPage } from "@/pages";
+import {
+  HomePage,
+  CreateMapPage,
+  AboutUsPage,
+  MyAccountPage,
+  MapPage,
+} from "@/pages";
 import { unLoginLoader } from "./loaders";
 
 const router = createBrowserRouter([
@@ -25,6 +31,10 @@ const router = createBrowserRouter([
         path: "/my-account",
         element: <MyAccountPage />,
         loader: unLoginLoader,
+      },
+      {
+        path: "/map/:id",
+        element: <MapPage />,
       },
     ],
   },

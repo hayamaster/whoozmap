@@ -10,9 +10,11 @@ import { setMapCreateSuccess } from "@/redux/mapSlice";
 import { MapList } from "@/types";
 import clappingImage from "@/assets/images/clapping.png";
 import noImage from "@/assets/images/no-image.png";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const { data } = useGetMapList({});
+  const navigator = useNavigate();
   const dispatch = useDispatch();
   const mapCreateSuccess = useSelector(
     (state: RootState) => state.map.mapCreateSuccess
@@ -73,10 +75,14 @@ const HomePage = () => {
                   <img
                     src={item.thumbnailUrl || noImage}
                     alt={item.title}
-                    className="w-full aspect-square object-cover rounded-2xl"
+                    className="w-full aspect-square object-cover rounded-2xl cursor-pointer"
+                    onClick={() => navigator(`/map/${item.mapId}`)}
                   />
                   <div className="flex justify-between items-center w-full pt-1">
-                    <h2 className="font-bold text-xl leading-5 truncate">
+                    <h2
+                      className="font-bold text-xl leading-5 truncate cursor-pointer"
+                      onClick={() => navigator(`/map/${item.mapId}`)}
+                    >
                       {item.title}
                     </h2>
                     <SaveIcon className="w-6 h-6" />
