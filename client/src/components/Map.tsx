@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, MutableRefObject } from "react";
-import { INITIAL_MAP_CENTER } from "@/constants";
+import { INITIAL_MAP_CENTER, INITIAL_MAP_OPTION } from "@/constants";
 import { GoogleMapsPlaceType, LatLng } from "@/types";
 import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
 import { blackPin, yellowPin, grayPin } from "@/assets/icons";
@@ -11,26 +11,6 @@ interface MapProps {
   centerRef: MutableRefObject<LatLng>;
   addedPlaces: GoogleMapsPlaceType[];
 }
-
-const mapOptions = {
-  mapId: import.meta.env.VITE_GOOGLE_MAPS_ID,
-  disableDefaultUI: true,
-  clickableIcons: false,
-  streetViewControl: false,
-  fullscreenControl: false,
-  zoom: 16,
-  maxZoom: 18,
-  gestureHandling: "greedy",
-  restriction: {
-    latLngBounds: {
-      north: 64,
-      south: 25,
-      east: -53,
-      west: -144,
-    },
-    strictBounds: true,
-  },
-};
 
 const Map = ({
   fetchedPlaces,
@@ -100,7 +80,7 @@ const Map = ({
       onLoad={(map) => {
         setGoogleMap(map);
       }}
-      options={mapOptions}
+      options={INITIAL_MAP_OPTION}
       mapContainerStyle={{ width: "100%", height: "100vh" }}
     >
       {openSearchResultMenu &&
