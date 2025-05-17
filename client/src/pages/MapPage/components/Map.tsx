@@ -1,131 +1,51 @@
-import { useState, useEffect, useCallback, MutableRefObject } from "react";
-import { INITIAL_MAP_CENTER } from "@/constants";
-import { GoogleMapsPlaceType, LatLng } from "@/types";
+import { useState, useEffect } from "react";
+import { GoogleMapsPlaceType } from "@/types";
 import { GoogleMap, useJsApiLoader, MarkerF } from "@react-google-maps/api";
-import { blackPin, yellowPin, grayPin } from "@/assets/icons";
+import { blackPin, yellowPin } from "@/assets/icons";
+import { INITIAL_MAP_OPTION } from "@/constants";
 
 interface MapProps {
-  fetchedPlaces?: GoogleMapsPlaceType[];
-  openSearchResultMenu?: boolean;
-  selectedPlace?: GoogleMapsPlaceType | undefined;
-  centerRef: MutableRefObject<LatLng>;
-  addedPlaces?: GoogleMapsPlaceType[];
+  fetchedPlaces: GoogleMapsPlaceType[];
 }
 
-const mapOptions = {
-  mapId: import.meta.env.VITE_GOOGLE_MAPS_ID,
-  disableDefaultUI: true,
-  clickableIcons: false,
-  streetViewControl: false,
-  fullscreenControl: false,
-  zoom: 16,
-  maxZoom: 18,
-  gestureHandling: "greedy",
-  restriction: {
-    latLngBounds: {
-      north: 64,
-      south: 25,
-      east: -53,
-      west: -144,
-    },
-    strictBounds: true,
-  },
-};
-
-const Map = ({
-  fetchedPlaces,
-  openSearchResultMenu,
-  selectedPlace,
-  centerRef,
-  addedPlaces,
-}: MapProps) => {
+const Map = ({ fetchedPlaces }: MapProps) => {
   const [googleMap, setGoogleMap] = useState<google.maps.Map>();
-  const [lat, setLat] = useState(INITIAL_MAP_CENTER.lat);
-  const [lng, setLng] = useState(INITIAL_MAP_CENTER.lng);
-
+  const [selectedPlace, setSelectedPlace] = useState<GoogleMapsPlaceType>();
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
-  // get user's location
-  useEffect(() => {
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            setLat(position.coords.latitude);
-            setLng(position.coords.longitude);
-          },
-          (error) => {
-            console.error(error);
-          },
-          {
-            enableHighAccuracy: false,
-            maximumAge: 0,
-            timeout: Infinity,
-          }
-        );
-      }
-    };
+  console.log(fetchedPlaces);
 
-    getLocation();
-  }, []);
-
-  // setCenter on the map
+  // Set initial center on the map
   useEffect(() => {
     if (googleMap) {
-      googleMap.setCenter({ lat, lng });
+      googleMap.setCenter({
+        lat: fetchedPlaces[0].lat,
+        lng: fetchedPlaces[0].lng,
+      });
+      setSelectedPlace(fetchedPlaces[0]);
     }
-  }, [lat, lng, googleMap]);
+  }, [googleMap, fetchedPlaces]);
 
-  useEffect(() => {
-    if (googleMap && selectedPlace) {
-      googleMap.setCenter({ lat: selectedPlace.lat, lng: selectedPlace.lng });
+  const handleClickPlaced = (place: GoogleMapsPlaceType) => {
+    if (googleMap) {
+      googleMap.panTo({ lat: place.lat, lng: place.lng });
+      setSelectedPlace(place);
     }
-  }, [googleMap, selectedPlace]);
-
-  const onCenterChanged = useCallback(() => {
-    const newCenter = googleMap?.getCenter();
-
-    centerRef.current = {
-      lat: newCenter?.lat() || INITIAL_MAP_CENTER.lat,
-      lng: newCenter?.lng() || INITIAL_MAP_CENTER.lng,
-    };
-  }, [googleMap, centerRef]);
+  };
 
   return isLoaded ? (
     <GoogleMap
-      onCenterChanged={onCenterChanged}
       onLoad={(map) => {
         setGoogleMap(map);
       }}
-      options={mapOptions}
+      options={INITIAL_MAP_OPTION}
       mapContainerStyle={{ width: "100%", height: "100vh" }}
     >
-      {openSearchResultMenu &&
-        fetchedPlaces &&
-        fetchedPlaces
-          .filter(
-            (place) =>
-              addedPlaces &&
-              !addedPlaces.find(
-                (addedPlace) => addedPlace.placeId === place.placeId
-              )
-          )
-          .map((place) => (
-            <MarkerF
-              key={place.placeId}
-              position={{ lat: place.lat, lng: place.lng }}
-              title={place.name}
-              icon={
-                place.placeId == selectedPlace?.placeId ? blackPin : grayPin
-              }
-            />
-          ))}
-      {openSearchResultMenu &&
-        addedPlaces &&
-        addedPlaces.map((place) => (
+      {fetchedPlaces &&
+        fetchedPlaces.map((place) => (
           <MarkerF
             key={place.placeId}
             position={{ lat: place.lat, lng: place.lng }}
@@ -133,18 +53,7 @@ const Map = ({
             icon={
               place.placeId == selectedPlace?.placeId ? blackPin : yellowPin
             }
-          />
-        ))}
-      {!openSearchResultMenu &&
-        addedPlaces &&
-        addedPlaces.map((place) => (
-          <MarkerF
-            key={place.placeId}
-            position={{ lat: place.lat, lng: place.lng }}
-            title={place.name}
-            icon={
-              place.placeId == selectedPlace?.placeId ? blackPin : yellowPin
-            }
+            onClick={() => handleClickPlaced(place)}
           />
         ))}
     </GoogleMap>
