@@ -54,8 +54,8 @@ const MapPage = () => {
                   title={place.name}
                   icon={
                     place.placeId == selectedPlace?.placeId
-                      ? blackPin
-                      : yellowPin
+                      ? yellowPin
+                      : blackPin
                   }
                   onClick={() => handleClickPlaced(place)}
                 />
