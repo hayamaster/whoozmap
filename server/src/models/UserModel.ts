@@ -13,7 +13,12 @@ const userModelSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "provide a password"],
+    },
+    googleId: {
+      type: String,
+      required: false,
+      unique: true,
+      sparse: true, // Allows for unique constraint on googleId while allowing null values,
     },
   },
   {
