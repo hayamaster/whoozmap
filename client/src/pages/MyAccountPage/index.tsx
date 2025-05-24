@@ -127,10 +127,14 @@ const MyAccountPage = () => {
                         <img
                           src={item.thumbnailUrl}
                           alt={item.title}
-                          className="w-full aspect-square object-cover rounded-2xl"
+                          className="w-full aspect-square object-cover rounded-2xl cursor-pointer"
+                          onClick={() => navigator(`/map/${item.mapId}`)}
                         />
                         <div className="flex justify-between items-center w-full pt-1">
-                          <h2 className="font-bold text-xl leading-5 truncate">
+                          <h2
+                            className="font-bold text-xl leading-5 truncate cursor-pointer"
+                            onClick={() => navigator(`/map/${item.mapId}`)}
+                          >
                             {item.title}
                           </h2>
                           <SaveIcon className="w-6 h-6" />
