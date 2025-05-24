@@ -38,6 +38,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
             toast.success("Login successfully");
             dispatch(setToken(res.data.token));
             dispatch(setUser(res.data.data));
+            dispatch(isGoogleLogin(false));
             localStorage.setItem("token", res.data.token);
             await queryClient.invalidateQueries({ queryKey: ["userDetails"] });
             setValidEmailAndPassword(true);
@@ -64,8 +65,6 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
       await loginWithGoogle();
       dispatch(isGoogleLogin(true));
       localStorage.setItem("token", "google-login");
-
-      // onClose(false);
     } catch (error) {
       console.error(error);
     }

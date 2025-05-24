@@ -6,3 +6,4 @@ export { default as useGetPlaceLocation } from "./useGetPlaceLocation";
 export { default as usePostNewMap } from "./usePostNewMap";
 export { default as useGetMapList } from "./useGetMapList";
 export { default as useGetMapDetail } from "./useGetMapDetail";
+export { default as usePostGoogleLogin } from "./usePostGoogleLogin";

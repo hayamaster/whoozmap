@@ -10,9 +10,9 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useGetUserDetails } from "@/apis/hooks";
+import { usePostGoogleLogin } from "@/apis/hooks";
 import { getUserWithGoogle } from "@/appwrite/auth";
-import { setUser, logout } from "@/redux/userSlice";
+import { setUser } from "@/redux/userSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LoginModal, SignupModal } from "@/components";
 
@@ -27,7 +27,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
 
-  const { data: userDetails } = useGetUserDetails();
+  const { mutate: googleLoginMutate } = usePostGoogleLogin();
 
   const headerRef = useRef<HTMLDivElement>(null);
   const [openHamburgerMenu, setOpenHamburgerMenu] = useState<boolean>(false);
@@ -47,16 +47,6 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   }, []);
 
   useEffect(() => {
-    if (
-      userDetails?.logout &&
-      !user.isGoogleLogin &&
-      location.pathname === "/my-account"
-    ) {
-      navigate("/");
-    }
-  }, [navigate, userDetails, user.isGoogleLogin, location.pathname]);
-
-  useEffect(() => {
     getHamburgerMenuHeight();
     window.addEventListener("resize", getHamburgerMenuHeight);
     return () => window.removeEventListener("resize", getHamburgerMenuHeight);
@@ -69,12 +59,25 @@ const Header = ({ search, setSearch }: HeaderProps) => {
         const userData = await getUserWithGoogle();
 
         if (userData) {
-          dispatch(
-            setUser({
-              _id: userData?.$id,
-              email: userData?.email,
-              userName: userData?.name,
-            })
+          const { name: userName, email, $id: googleId } = userData;
+
+          googleLoginMutate(
+            {
+              googleId,
+              userName,
+              email,
+            },
+            {
+              onSuccess: (res) => {
+                dispatch(
+                  setUser({
+                    _id: res.data._id,
+                    email: res.data.email,
+                    userName: res.data.userName,
+                  })
+                );
+              },
+            }
           );
         }
       }
@@ -82,14 +85,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
     };
 
     checkGoogleLogin();
-
-    if (userDetails && userDetails.logout) {
-      dispatch(logout());
-    }
-    if (userDetails && userDetails._id) {
-      dispatch(setUser(userDetails));
-    }
-  }, [userDetails, dispatch, user.isGoogleLogin]);
+  }, [dispatch, user.isGoogleLogin, googleLoginMutate]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {

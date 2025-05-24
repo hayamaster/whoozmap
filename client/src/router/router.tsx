@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       {
         path: "/my-account",
         element: <MyAccountPage />,
-        loader: unLoginLoader,
+        // loader: unLoginLoader,
       },
       {
         path: "/map/:id",
