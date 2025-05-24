@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { MapList } from "../types";
 import { Model } from "mongoose";
+const mongoose = require("mongoose");
 
 const MapListModel: Model<MapList> = require("../models/MapListModel");
 
@@ -9,7 +10,9 @@ async function mapList(req: Request, res: Response) {
     const { userId } = req.query;
     const mapList = (
       userId
-        ? await MapListModel.find({ postByUserId: userId })
+        ? await MapListModel.find({
+            postByUserId: new mongoose.Types.ObjectId(userId as string),
+          })
             .select("-createdAt -postByUserId")
             .exec()
         : await MapListModel.find().select("-createdAt -postByUserId").exec()
