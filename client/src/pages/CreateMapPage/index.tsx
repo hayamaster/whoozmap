@@ -119,8 +119,7 @@ const CreateMapPage = () => {
         userId,
       },
       {
-        onSuccess: (res) => {
-          console.log(res.data);
+        onSuccess: () => {
           dispatch(setMapCreateSuccess(true));
           navigate("/");
         },

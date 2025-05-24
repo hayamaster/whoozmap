@@ -27,10 +27,6 @@ const HomePage = () => {
     useState(false);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
     if (mapCreateSuccess) {
       setShowMapCreateSuccessModal(true);
       dispatch(setMapCreateSuccess(false));

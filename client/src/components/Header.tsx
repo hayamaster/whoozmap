@@ -37,9 +37,6 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   const [isLoadingGoogleDataFetch, setIsLoadingGoogleDataFetch] =
     useState<boolean>(false);
 
-  console.log("redux", user);
-  console.log("userDetails", userDetails);
-
   const getHamburgerMenuHeight = useCallback(() => {
     if (headerRef.current) {
       const parentNode = headerRef.current.parentNode as HTMLElement;
