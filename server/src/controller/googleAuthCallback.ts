@@ -6,20 +6,20 @@ const jwt = require("jsonwebtoken");
 
 const UserModel: Model<User> = require("../models/UserModel");
 
-async function googleLogin(req: Request, res: Response) {
+async function googleAuthCallback(req: Request, res: Response) {
   try {
-    const { googleId, email, userName } = req.body;
-    let user = await UserModel.findOne({ googleId });
+    const googleProfile = req.user as any;
+
+    let user = await UserModel.findOne({ googleId: googleProfile.id });
 
     if (!user) {
       user = await UserModel.create({
-        userName,
-        email,
-        googleId,
+        userName: googleProfile.displayName,
+        email: `gg${googleProfile.emails?.[0]?.value}`,
+        googleId: googleProfile.id,
       });
     }
 
-    // create token using jwt
     const tokenData = {
       id: user._id,
       email: user.email,
@@ -33,15 +33,10 @@ async function googleLogin(req: Request, res: Response) {
       sameSite: "none" as "none",
     };
 
-    return res
+    res
       .cookie("token", token, cookieOption)
       .status(200)
-      .json({
-        message: "Login successfully",
-        success: true,
-        token,
-        data: { _id: user._id, email: user.email, userName: user.userName },
-      });
+      .redirect(`${process.env.FRONTEND_URL}`);
   } catch (error) {
     return res.status(500).json({
       message: (error as Error).message || error,
@@ -50,4 +45,4 @@ async function googleLogin(req: Request, res: Response) {
   }
 }
 
-module.exports = googleLogin;
+module.exports = googleAuthCallback;

@@ -5,7 +5,6 @@ import { usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setToken, isGoogleLogin, setUser } from "../redux/userSlice";
-import { loginWithGoogle } from "@/appwrite/auth";
 import { useQueryClient } from "@tanstack/react-query";
 
 interface LoginModalProps {
@@ -24,6 +23,7 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
+  // 일반 로그인 로직
   const handleLoginClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -54,20 +54,21 @@ const LoginModal = ({ onClose, setOpenSignupModal }: LoginModalProps) => {
     }
   };
 
+  // 구글 로그인 로직
+  const handleLoginWithGoogle = async () => {
+    try {
+      dispatch(isGoogleLogin(true));
+      console.log("Logged in with Google");
+      window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleSignupClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     onClose(false);
     setOpenSignupModal(true);
-  };
-
-  const handleLoginWithGoogle = async () => {
-    try {
-      await loginWithGoogle();
-      dispatch(isGoogleLogin(true));
-      localStorage.setItem("token", "google-login");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (

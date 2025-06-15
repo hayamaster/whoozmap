@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { logoutWithGoogle } from "@/appwrite/auth";
 import { useNavigate } from "react-router-dom";
 import { usePostLogout } from "@/apis/hooks";
 import { isGoogleLogin, logout } from "@/redux/userSlice";
@@ -24,15 +23,10 @@ const MyAccountPage = () => {
   const { data: myMaps } = useGetMapList({ userId: user._id });
 
   const handleClickLogout = async () => {
-    if (user.isGoogleLogin) {
-      console.log("Logging out with Google");
-      await logoutWithGoogle();
-    } else {
-      logoutMutate();
-    }
-    localStorage.removeItem("token");
+    logoutMutate();
     dispatch(logout());
     dispatch(isGoogleLogin(false));
+    localStorage.removeItem("token");
     navigator("/");
   };
 

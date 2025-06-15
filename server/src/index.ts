@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import passport from "passport";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.get("/", (req: Request, res: Response) => {
   res.json({

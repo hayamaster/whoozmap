@@ -10,9 +10,8 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { usePostGoogleLogin } from "@/apis/hooks";
-import { getUserWithGoogle } from "@/appwrite/auth";
-import { setUser } from "@/redux/userSlice";
+import { usePostGoogleLogin, useGetUserDetails } from "@/apis/hooks";
+import { setUser, setToken } from "@/redux/userSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LoginModal, SignupModal } from "@/components";
 
@@ -28,6 +27,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   const user = useSelector((state: RootState) => state.user);
 
   const { mutate: googleLoginMutate } = usePostGoogleLogin();
+  const { data: userDetails } = useGetUserDetails();
 
   const headerRef = useRef<HTMLDivElement>(null);
   const [openHamburgerMenu, setOpenHamburgerMenu] = useState<boolean>(false);
@@ -55,37 +55,17 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   useEffect(() => {
     const checkGoogleLogin = async () => {
       setIsLoadingGoogleDataFetch(true);
-      if (user.isGoogleLogin) {
-        const userData = await getUserWithGoogle();
+      if (user.isGoogleLogin && userDetails) {
+        const { userName, email, _id } = userDetails;
 
-        if (userData) {
-          const { name: userName, email, $id: googleId } = userData;
-
-          googleLoginMutate(
-            {
-              googleId,
-              userName,
-              email,
-            },
-            {
-              onSuccess: (res) => {
-                dispatch(
-                  setUser({
-                    _id: res.data._id,
-                    email: res.data.email,
-                    userName: res.data.userName,
-                  })
-                );
-              },
-            }
-          );
-        }
+        dispatch(setUser({ _id, email, userName }));
+        dispatch(setToken("google-login-token"));
       }
       setIsLoadingGoogleDataFetch(false);
     };
 
     checkGoogleLogin();
-  }, [dispatch, user.isGoogleLogin, googleLoginMutate]);
+  }, [dispatch, user.isGoogleLogin, googleLoginMutate, userDetails]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
