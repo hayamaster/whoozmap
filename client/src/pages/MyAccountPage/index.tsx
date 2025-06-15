@@ -27,7 +27,7 @@ const MyAccountPage = () => {
     dispatch(logout());
     dispatch(isGoogleLogin(false));
     localStorage.removeItem("token");
-    navigator("/");
+    await navigator("/");
   };
 
   const handleClickShowingMap = (e: MouseEvent<HTMLDivElement>) => {
