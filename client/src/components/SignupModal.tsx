@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useState, ChangeEvent } from "react";
 import { checkEmailPattern, checkUserNamePattern } from "@/utils";
 import { usePostRegister, usePostLogin } from "@/apis/hooks";
 import toast from "react-hot-toast";
-import { loginWithGoogle } from "@/appwrite/auth";
 import { useDispatch } from "react-redux";
 import { setToken, isGoogleLogin } from "@/redux/userSlice";
 import { useQueryClient } from "@tanstack/react-query";
@@ -86,13 +85,13 @@ const SignupModal = ({ onClose, setOpenLoginModal }: SignupModalProps) => {
     setOpenLoginModal(true);
   };
 
+  // 구글 로그인 로직
   const handleLoginWithGoogle = async () => {
     try {
-      await loginWithGoogle();
       dispatch(isGoogleLogin(true));
-      localStorage.setItem("token", "google-login");
-
       onClose(false);
+      console.log("Sign up in with Google");
+      window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/auth/google`;
     } catch (error) {
       console.error(error);
     }
