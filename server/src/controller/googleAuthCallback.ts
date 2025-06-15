@@ -36,7 +36,7 @@ async function googleAuthCallback(req: Request, res: Response) {
     res
       .cookie("token", token, cookieOption)
       .status(200)
-      .redirect(`${process.env.FRONTEND_URL}`);
+      .redirect(`${process.env.HOSTING_URL}`);
   } catch (error) {
     return res.status(500).json({
       message: (error as Error).message || error,

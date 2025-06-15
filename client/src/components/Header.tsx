@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { usePostGoogleLogin, useGetUserDetails } from "@/apis/hooks";
+import { useGetUserDetails } from "@/apis/hooks";
 import { setUser, setToken } from "@/redux/userSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { LoginModal, SignupModal } from "@/components";
@@ -26,7 +26,6 @@ const Header = ({ search, setSearch }: HeaderProps) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
 
-  const { mutate: googleLoginMutate } = usePostGoogleLogin();
   const { data: userDetails } = useGetUserDetails();
 
   const headerRef = useRef<HTMLDivElement>(null);
@@ -65,7 +64,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
     };
 
     checkGoogleLogin();
-  }, [dispatch, user.isGoogleLogin, googleLoginMutate, userDetails]);
+  }, [dispatch, user.isGoogleLogin, userDetails]);
 
   const isLogin = useCallback(() => {
     if (!user._id) {
