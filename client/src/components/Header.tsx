@@ -95,7 +95,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
       >
         <header className="w-full bg-white grid grid-cols-2 lg:grid-cols-[1fr_3fr_3fr] xl:grid-cols-[1fr_1fr_1fr] gap-2 justify-items-center items-center">
           <i
-            className="w-full flex justify-start items-center"
+            className="w-full flex justify-start items-center cursor-pointer"
             onClick={() => {
               navigate("/");
               setOpenHamburgerMenu(false);
@@ -107,7 +107,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
             <input
               type="text"
               placeholder="Search"
-              className="w-full outline-none h-full px-1 placeholder:text-[#161616]"
+              className="w-full outline-none h-full px-1 placeholder:text-[#161616] cursor-pointer"
               onChange={(e) => setSearch && setSearch(e.target.value)}
               value={search}
             />
@@ -117,13 +117,13 @@ const Header = ({ search, setSearch }: HeaderProps) => {
           </div>
           <div className="hidden lg:flex w-full items-center justify-end gap-2.5 shrink-0 text-base leading-5">
             <button
-              className="px-1 py-0.5 shrink-0"
+              className="px-1 py-0.5 shrink-0 cursor-pointer"
               onClick={() => navigate("/")}
             >
               Maps
             </button>
             <button
-              className="px-1 py-0.5 shrink-0"
+              className="px-1 py-0.5 shrink-0 cursor-pointer"
               id="about-us"
               onClick={handleClickNav}
             >
@@ -133,7 +133,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
               <button className="px-1 py-0.5 shrink-0">Loading...</button>
             ) : (
               <button
-                className="px-1 py-0.5 shrink-0"
+                className="px-1 py-0.5 shrink-0 cursor-pointer"
                 id={user._id ? "my-account" : "login"}
                 onClick={handleClickNav}
               >
@@ -141,7 +141,7 @@ const Header = ({ search, setSearch }: HeaderProps) => {
               </button>
             )}
             <button
-              className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0"
+              className="bg-[#FFE852] px-3 py-1.5 lg:px-4 lg:py-2 rounded-full font-semibold shrink-0 cursor-pointer"
               id="create-map"
               onClick={handleClickNav}
             >

@@ -60,7 +60,7 @@ const MyAccountPage = () => {
         <div className="flex flex-col items-center overflow-hidden h-full gap-[30px] w-full">
           <div className="flex gap-10">
             <div
-              className={`text-xl md:text-[28px] font-bold leading-[33px] pb-2.5 ${
+              className={`text-xl md:text-[28px] font-bold leading-[33px] pb-2.5 cursor-pointer ${
                 selectedShowingMap === "my-maps"
                   ? "text-black border-b-2 border-black"
                   : "text-[#777777]"
@@ -71,7 +71,7 @@ const MyAccountPage = () => {
               My Maps
             </div>
             <div
-              className={`text-xl md:text-[28px] font-bold leading-[33px] pb-2.5 ${
+              className={`text-xl md:text-[28px] font-bold leading-[33px] pb-2.5 cursor-pointer ${
                 selectedShowingMap === "saved-maps"
                   ? "text-black border-b-2 border-black"
                   : "text-[#777777]"
