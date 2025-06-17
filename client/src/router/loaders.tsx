@@ -1,13 +1,24 @@
-import { redirect } from "react-router-dom";
+import { QueryClient } from "@tanstack/react-query";
+import apiClient from "@/apis/apiClient";
 
-const unLoginLoader = (): Response | null => {
-  const token = localStorage.getItem("token");
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      experimental_prefetchInRender: true,
+    },
+  },
+});
 
-  if (!token) {
-    return redirect("/");
-  }
+export async function mapListLoader() {
+  // 캐시에 데이터가 없으면 fetch, 있으면 캐시 사용
+  await queryClient.ensureQueryData({
+    queryKey: ["mapList"],
+    queryFn: async () => {
+      const response = await apiClient.get(`/api/map-list?userId=${""}`);
 
-  return null;
-};
+      return response.data.data;
+    },
+  });
 
-export { unLoginLoader };
+  return null; // 데이터는 useQuery에서 바로 사용
+}

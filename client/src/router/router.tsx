@@ -7,7 +7,6 @@ import {
   MyAccountPage,
   MapPage,
 } from "@/pages";
-import { unLoginLoader } from "./loaders";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +20,6 @@ const router = createBrowserRouter([
       {
         path: "/create-map",
         element: <CreateMapPage />,
-        loader: unLoginLoader,
       },
       {
         path: "/about-us",
@@ -30,7 +28,6 @@ const router = createBrowserRouter([
       {
         path: "/my-account",
         element: <MyAccountPage />,
-        // loader: unLoginLoader,
       },
       {
         path: "/map/:id",
