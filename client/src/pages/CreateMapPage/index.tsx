@@ -390,7 +390,7 @@ const CreateMapPage = () => {
 
                 <div className="flex shrink-0 h-fit w-full pb-7 sm:pb-10">
                   <button
-                    className="w-full h-12 rounded-2xl font-semibold leading-5 bg-[#FFE852] disabled:bg-[#EDEDED]"
+                    className="w-full h-12 rounded-full font-semibold leading-5 bg-[#FFE852] disabled:bg-[#EDEDED]"
                     disabled={
                       addedPlaces.length === 0 ||
                       mapData.title === "" ||
