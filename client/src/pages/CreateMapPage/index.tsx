@@ -24,7 +24,7 @@ const CreateMapPage = () => {
 
   const [search, setSearch] = useState<string>("");
   const [showCreateMapDetailsModal, setShowCreateMapDetailsModal] =
-    useState(false);
+    useState(true);
   const [showDetailDescription, setShowDetailDescription] = useState(false);
   const [mapData, setMapData] = useState<MapCreateMetaDataType>({
     title: "",
@@ -66,10 +66,6 @@ const CreateMapPage = () => {
       window.removeEventListener("beforeunload", preventReload);
     };
   }, [preventReload]);
-
-  useEffect(() => {
-    setShowCreateMapDetailsModal(false);
-  }, []);
 
   const handleClickEdit = () => {
     setShowCreateMapDetailsModal((prev) => !prev);
@@ -126,10 +122,6 @@ const CreateMapPage = () => {
       }
     );
   };
-
-  useEffect(() => {
-    console.log("data", fetchedPlaces);
-  }, [fetchedPlaces]);
 
   return (
     <div className="w-screen h-dvh flex flex-col">
