@@ -102,6 +102,8 @@ const CreateMapPage = () => {
       ...prev,
       { ...selectedPlace, description: placeDescription },
     ]);
+    handleCloseSearchMenu();
+    setSelectedPlace(undefined);
   };
 
   const handleClickCreateMap = () => {
