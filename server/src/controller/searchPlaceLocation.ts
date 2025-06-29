@@ -14,7 +14,10 @@ async function searchPlaceLocation(req: Request, res: Response) {
         return {
           placeId: data.place_id,
           name: data.name,
-          icon: data.icon,
+          // 만약 사진이 없으면 아이콘을 사용
+          icon: data.photos
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photo_reference=${data.photos[0].photo_reference}&key=${process.env.GOOGLE_MAPS_API_KEY}`
+            : data.icon,
           lat: data.geometry.location.lat,
           lng: data.geometry.location.lng,
           location: data.vicinity,
