@@ -144,21 +144,20 @@ const FilterOptions = ({
           Others
         </Button>
       </div>
-      <div className="flex gap-1 items-center w-full justify-end">
+      <div className="flex gap-0.5 md:gap-1 items-center w-full justify-end">
         <Button
           onClick={handleSortClick}
           id="newest"
           variant="ghost"
-          className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
+          className={`text-sm md:text-base leading-5 font-normal py-0 px-1.5 md:px-3 ${clickedSort === "newest" ? "text-black" : "text-gray-400"}`}
         >
           Newest
         </Button>
-        <div className="border-r border-[#EDEDED] h-[12px]" />
         <Button
           onClick={handleSortClick}
           id="popular"
           variant="ghost"
-          className={`text-base leading-5 font-normal py-0 px-3 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
+          className={`text-sm md:text-base leading-5 font-normal py-0 px-1.5 md:px-3 ${clickedSort === "popular" ? "text-black" : "text-gray-400"}`}
         >
           Most Popular
         </Button>
