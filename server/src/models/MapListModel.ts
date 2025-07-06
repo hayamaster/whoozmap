@@ -16,6 +16,7 @@ const MapListSchema = new Schema(
     thumbnailUrl: {
       type: String,
       default: "",
+      required: true,
     },
     postByUserName: {
       type: String,

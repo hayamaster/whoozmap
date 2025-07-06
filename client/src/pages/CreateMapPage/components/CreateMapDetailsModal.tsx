@@ -74,6 +74,14 @@ const CreateMapDetailsModal = ({
     setLoadingUploadPhoto(false);
   };
 
+  const checkAllRequiredFields = () => {
+    return (
+      tempMapData.title.trim() !== "" &&
+      tempMapData.thumbnailUrl !== "" &&
+      tempMapData.categories.length > 0
+    );
+  };
+
   const handleClickDone = () => {
     setMapData(tempMapData);
     onClose(false);
@@ -164,7 +172,8 @@ const CreateMapDetailsModal = ({
           <div className="w-full flex justify-center">
             <button
               onClick={handleClickDone}
-              className="h-[50px] w-full sm:w-fit px-5 bg-[#FFE852] font-semibold text-base leading-5 rounded-full"
+              disabled={!checkAllRequiredFields()}
+              className="h-[50px] w-full sm:w-fit px-5 bg-[#FFE852] font-semibold text-base leading-5 rounded-full disabled:bg-[#EDEDED]"
             >
               Done
             </button>
