@@ -1,5 +1,7 @@
 import { Header } from "@/components";
 import avatar1 from "@/assets/images/avatar1.png";
+import huiguen from "@/assets/images/huigeun.jpg";
+import juha from "@/assets/images/juha.jpg";
 import { Logo } from "@/assets/icons";
 
 const AboutUsPage = () => {
@@ -13,17 +15,28 @@ const AboutUsPage = () => {
               <i className="w-32 h-32">
                 <img className="w-32 h-32" src={avatar1} />
               </i>
-              <div className="max-w-[600px] flex flex-col items-center gap-5 sm:gap-10">
+              <div className="max-w-[600px] flex flex-col items-center gap-6 sm:gap-10">
                 <Logo className="w-[200px] h-[25px] sm:w-[430px] sm:h-[54px]" />
-                <p className="text-xl leading-7">
-                  Lorem ipsum dolor sit amet consectetur. Tincidunt mattis
-                  facilisis tincidunt non iaculis ut vel erat pretium. Magna
-                  ipsum ipsum sed viverra. At sit faucibus ipsum in in lacus id.
-                  Felis cursus scelerisque nisl laoreet sit. Scelerisque dui
-                  auctor pellentesque massa lorem egestas sit elementum.
-                  Suscipit sed faucibus quam massa in. Convallis congue a sit
-                  semper eu ac viverra. Porta sed.
-                </p>
+                <div className="text-base sm:text-xl leading-7">
+                  <p>
+                    Whooz Map started with a simple idea. Sharing places we love
+                    shouldn't be complicated. We kept sending restaurant links
+                    and saved pins to friends one at a time, and it felt a bit
+                    all over the place. So we built something better.
+                  </p>
+                  <br />
+                  <p>
+                    With Whooz Map, you can create your own map filled with your
+                    favourite spots. Think go-to restaurants, date night picks,
+                    or weekend hangout places. You can keep everything in one
+                    place and share it easily with friends.
+                  </p>
+                  <br />
+                  <p>
+                    We're here to make sharing more personal, more visual, and a
+                    lot more fun.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -33,32 +46,31 @@ const AboutUsPage = () => {
             </p>
             <div className="flex flex-col gap-7 sm:flex-row sm:gap-10">
               <div className="flex flex-col gap-5 max-w-[324px] lg:w-[480px]">
-                <div className="max-w-[324px] h-[243px] lg:w-[480px] lg:h-[360px] bg-[#CCCCCC] rounded-2xl" />
+                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
+                  <img className="object-cover w-full h-full" src={huiguen} />
+                </div>
                 <div className="flex flex-col gap-2.5">
                   <h2 className="font-bold text-xl leading-6 sm:text-[28px] sm:leading-8">
                     Huigeun
                   </h2>
                   <p className="leading-5">
-                    Lorem ipsum dolor sit amet consectetur. Nisi neque faucibus
-                    a urna natoque enim sed dolor viverra. Ut purus vitae massa
-                    etiam neque quis. Sit eget in malesuada cursus enim eget ac.
-                    Sed sed quis ipsum turpis pharetra erat diam tincidunt.
-                    Aliquam lobortis eu aliquam semper sed.
+                    Hey, thanks for using Whooz Map. I’m so excited to see all
+                    the places you love and can’t wait to explore them too!
                   </p>
                 </div>
               </div>
               <div className="flex flex-col gap-5 max-w-[324px] lg:w-[480px]">
-                <div className="max-w-[324px] h-[243px] lg:w-[480px] lg:h-[360px] bg-[#CCCCCC] rounded-2xl" />
+                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
+                  <img className="object-cover w-full h-full" src={juha} />
+                </div>
                 <div className="flex flex-col gap-2.5">
                   <h2 className="font-bold text-xl leading-6 sm:text-[28px] sm:leading-8">
                     Juha
                   </h2>
                   <p className="leading-5">
-                    Lorem ipsum dolor sit amet consectetur. Nisi neque faucibus
-                    a urna natoque enim sed dolor viverra. Ut purus vitae massa
-                    etiam neque quis. Sit eget in malesuada cursus enim eget ac.
-                    Sed sed quis ipsum turpis pharetra erat diam tincidunt.
-                    Aliquam lobortis eu aliquam semper sed.
+                    I hope this service helps make your life more convenient.
+                    Please continue to show your love and support for our
+                    service!
                   </p>
                 </div>
               </div>
