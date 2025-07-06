@@ -46,7 +46,7 @@ const AboutUsPage = () => {
             </p>
             <div className="flex flex-col gap-7 sm:flex-row sm:gap-10">
               <div className="flex flex-col gap-5 max-w-[324px] lg:w-[480px]">
-                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
+                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:max-h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
                   <img className="object-cover w-full h-full" src={huiguen} />
                 </div>
                 <div className="flex flex-col gap-2.5">
@@ -60,7 +60,7 @@ const AboutUsPage = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-5 max-w-[324px] lg:w-[480px]">
-                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
+                <div className="flex justify-center items-center max-w-[324px] h-[324px] lg:w-[480px] lg:max-h-[480px] bg-[#CCCCCC] rounded-2xl overflow-hidden">
                   <img className="object-cover w-full h-full" src={juha} />
                 </div>
                 <div className="flex flex-col gap-2.5">
