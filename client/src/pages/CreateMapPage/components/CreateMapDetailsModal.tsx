@@ -33,6 +33,9 @@ const CreateMapDetailsModal = ({
   const uploadPhotoRef = useRef<HTMLInputElement | null>(null);
   const [tempMapData, setTempMapData] = useState<MapDataType>(mapData);
   const [loadingUploadPhoto, setLoadingUploadPhoto] = useState<boolean>(false);
+  const [filledTitle, setFilledTitle] = useState<boolean>(true);
+  const [filledThumbnail, setFilledThumbnail] = useState<boolean>(true);
+  const [filledCategories, setFilledCategories] = useState<boolean>(true);
 
   const handleChangeMapData = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -75,6 +78,10 @@ const CreateMapDetailsModal = ({
   };
 
   const checkAllRequiredFields = () => {
+    setFilledThumbnail(tempMapData.thumbnailUrl.trim() !== "");
+    setFilledTitle(tempMapData.title.trim() !== "");
+    setFilledCategories(tempMapData.categories.length > 0);
+
     return (
       tempMapData.title.trim() !== "" &&
       tempMapData.thumbnailUrl !== "" &&
@@ -83,6 +90,8 @@ const CreateMapDetailsModal = ({
   };
 
   const handleClickDone = () => {
+    if (!checkAllRequiredFields()) return;
+
     setMapData(tempMapData);
     onClose(false);
   };
@@ -107,7 +116,7 @@ const CreateMapDetailsModal = ({
               <label htmlFor="thumbnail_pic">
                 <button
                   onClick={() => uploadPhotoRef?.current?.click()}
-                  className="flex flex-col items-center justify-center w-full h-auto aspect-square sm:w-[265px] sm:h-[265px] gap-2.5 border border-[#CCCCCC] rounded-xl"
+                  className={`flex flex-col items-center justify-center w-full h-auto aspect-square sm:w-[265px] sm:h-[265px] gap-2.5 border border-[#CCCCCC] rounded-xl ${!filledThumbnail && "border-[#F14739]"}`}
                 >
                   {tempMapData.thumbnailUrl ? (
                     <img
@@ -131,6 +140,11 @@ const CreateMapDetailsModal = ({
                   onChange={handleUploadPhoto}
                 />
               </label>
+              {!filledThumbnail && (
+                <p className="text-xs mobile:text-sm text-[#F14739]">
+                  Please upload a image
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-7 w-full sm:max-w-[303px] md:max-w-[500px] justify-between">
               <div className="flex flex-col gap-2.5">
@@ -140,8 +154,13 @@ const CreateMapDetailsModal = ({
                   id="title"
                   value={tempMapData["title"]}
                   onChange={handleChangeMapData}
-                  className="w-full border border-[#CCCCCC] rounded-lg h-[50px] px-4 focus:outline-none"
+                  className={`w-full border border-[#CCCCCC] rounded-lg h-[50px] px-4 focus:outline-none ${!filledTitle && "border-[#F14739]"}`}
                 />
+                {!filledTitle && (
+                  <p className="text-xs mobile:text-sm text-[#F14739]">
+                    Please fill the title
+                  </p>
+                )}
               </div>
               <div className="flex flex-col gap-2.5">
                 <h2 className="text-base font-bold leading-5">Description</h2>
@@ -168,12 +187,22 @@ const CreateMapDetailsModal = ({
                 />
               ))}
             </div>
+            {!filledCategories && (
+              <p className="text-xs mobile:text-sm text-[#F14739]">
+                Please select at least one category or more
+              </p>
+            )}
           </div>
           <div className="w-full flex justify-center">
             <button
               onClick={handleClickDone}
-              disabled={!checkAllRequiredFields()}
-              className="h-[50px] w-full sm:w-fit px-5 bg-[#FFE852] font-semibold text-base leading-5 rounded-full disabled:bg-[#EDEDED]"
+              className={`h-[50px] w-full sm:w-fit px-5 font-semibold text-base leading-5 rounded-full ${
+                tempMapData.title.trim() !== "" &&
+                tempMapData.thumbnailUrl !== "" &&
+                tempMapData.categories.length > 0
+                  ? "bg-[#FFE852] hover:bg-[#F2D66B]"
+                  : "!bg-[#EDEDED]"
+              }`}
             >
               Done
             </button>
