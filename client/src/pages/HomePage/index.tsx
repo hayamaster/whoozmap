@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useGetMapList } from "@/apis/hooks";
 import { SaveIcon } from "@/assets/icons";
 import { savedCountToThousandsUnit } from "@/utils";
-import { FilterOptions, SettingMenu } from "./components";
+import { FilterOptions } from "./components";
 import { Header } from "@/components";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -81,10 +81,7 @@ const HomePage = () => {
                     >
                       {item.title}
                     </h2>
-                    <div className="flex gap-1 sm:gap-2 xl:gap-2.5">
-                      <SaveIcon className="w-6 h-6" />
-                      <SettingMenu />
-                    </div>
+                    <SaveIcon className="w-6 h-6" />
                   </div>
                   <div className="flex flex-col gap-1">
                     <p className="text-[#444444] text-sm leading-4">
