@@ -134,7 +134,7 @@ const MyAccountPage = () => {
                           </h2>
                           <div className="flex gap-1 sm:gap-2 xl:gap-2.5">
                             <SaveIcon className="w-6 h-6" />
-                            <SettingMenu />
+                            <SettingMenu mapId={item.mapId} />
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
