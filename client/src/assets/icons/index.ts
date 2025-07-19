@@ -9,3 +9,4 @@ export { default as DetailArrowIcon } from "./detailArrowIcon.svg?react";
 export { default as blackPin } from "./blackPinIcon.svg";
 export { default as yellowPin } from "./yellowPinIcon.svg";
 export { default as grayPin } from "./grayPinIcon.svg";
+export { default as SettingIcon } from "./settingIcon.svg?react";
