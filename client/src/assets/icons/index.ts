@@ -10,3 +10,6 @@ export { default as blackPin } from "./blackPinIcon.svg";
 export { default as yellowPin } from "./yellowPinIcon.svg";
 export { default as grayPin } from "./grayPinIcon.svg";
 export { default as SettingIcon } from "./settingIcon.svg?react";
+export { default as ShareIcon } from "./shareIcon.svg?react";
+export { default as EditIcon } from "./editIcon.svg?react";
+export { default as DeleteIcon } from "./deleteIcon.svg?react";
