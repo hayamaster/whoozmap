@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
+import { MapList, MapDetail } from "../types";
 import { Model, isValidObjectId } from "mongoose";
-import { MapDetail, MapList, User } from "../types";
-
 const mongoose = require("mongoose");
 
 const MapListModel: Model<MapList> = require("../models/MapListModel");
 const MapDetailModel: Model<MapDetail> = require("../models/MapDetailModel");
-const UserModel: Model<User> = require("../models/UserModel");
 
-async function deleteMap(req: Request, res: Response) {
+async function getMapInfo(req: Request, res: Response) {
   try {
-    const { userId, mapId } = req.body;
+    const { userId, mapId } = req.query;
 
     if (!isValidObjectId(userId) || !isValidObjectId(mapId)) {
       return res.status(400).json({ message: "Invalid userId or mapId." });
@@ -19,30 +17,35 @@ async function deleteMap(req: Request, res: Response) {
     const userObjectId = new mongoose.Types.ObjectId(userId);
     const mapObjectId = new mongoose.Types.ObjectId(mapId);
 
-    const user = await UserModel.findById(userObjectId, "userName").exec();
-    if (!user) {
-      return res.status(404).json({ message: "User does not exist." });
-    }
-
-    // delete map in the map list
-    const deleteMapList = await MapListModel.findOneAndDelete({
+    const mapFromList = await MapListModel.findOne({
       _id: mapObjectId,
       postByUserId: userObjectId,
     }).exec();
 
-    if (!deleteMapList) {
+    if (!mapFromList) {
       return res
         .status(404)
         .json({ message: "Map not found or not owned by user." });
     }
 
-    // delete map in the map detail
-    await MapDetailModel.findOneAndDelete({
+    const mapFromDetail = await MapDetailModel.findOne({
       mapId: mapObjectId,
     }).exec();
 
+    const mapInfo = {
+      mapId: mapFromList._id,
+      title: mapFromList.title,
+      description: mapFromList.description,
+      category: mapFromList.category,
+      thumbnailUrl: mapFromList.thumbnailUrl,
+      userName: mapFromList.postByUserName,
+      updatedAt: mapFromList.updatedAt,
+      places: mapFromDetail ? mapFromDetail.places : [],
+    };
+
     return res.status(200).json({
-      message: "Map deleted successfully",
+      message: "a map info",
+      data: mapInfo,
       success: true,
     });
   } catch (error) {
@@ -53,4 +56,4 @@ async function deleteMap(req: Request, res: Response) {
   }
 }
 
-module.exports = deleteMap;
+module.exports = getMapInfo;

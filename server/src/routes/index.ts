@@ -10,6 +10,7 @@ const createMap = require("../controller/createMap");
 const mapList = require("../controller/mapList");
 const mapDetail = require("../controller/mapDetail");
 const deleteMap = require("../controller/deleteMap");
+const getMapInfo = require("../controller/getMapInfo");
 
 // 구글 OAuth2 라우트 import
 const googleAuthRouter = require("./googleAuth");
@@ -25,6 +26,7 @@ router.post("/create-map", createMap);
 router.get("/map-list", mapList);
 router.get("/map-detail", mapDetail);
 router.delete("/delete-map", deleteMap);
+router.get("/map-info", getMapInfo);
 
 // 구글 OAuth2 라우트 연결
 router.use("/auth", googleAuthRouter);
