@@ -7,13 +7,19 @@ import {
 import { SettingIcon, ShareIcon, EditIcon, DeleteIcon } from "@/assets/icons";
 import { useIsMobile } from "@/hooks";
 import toast from "react-hot-toast";
+import { useDeleteMap } from "@/apis/hooks";
+import { useNavigate } from "react-router-dom";
 
 interface SettingMenuProps {
   mapId: string;
+  userId: string;
 }
 
-const SettingMenu = ({ mapId }: SettingMenuProps) => {
+const SettingMenu = ({ mapId, userId }: SettingMenuProps) => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+
+  const { mutate: deleteMapMutate } = useDeleteMap();
 
   const handleShareClick = () => {
     const shareUrl = `https://whoozmap.com/map/${mapId}`;
@@ -36,6 +42,21 @@ const SettingMenu = ({ mapId }: SettingMenuProps) => {
           toast.error("Failed to copy link.");
         });
     }
+  };
+
+  const handleDeleteMap = () => {
+    deleteMapMutate(
+      { mapId, userId },
+      {
+        onSuccess: () => {
+          toast.success("Map deleted successfully.");
+          navigate("/");
+        },
+        onError: (error) => {
+          toast.error(`Failed to delete map: ${error.message}`);
+        },
+      }
+    );
   };
 
   return (
@@ -65,7 +86,7 @@ const SettingMenu = ({ mapId }: SettingMenuProps) => {
         </DropdownMenuItem>
         <DropdownMenuItem
           className="gap-1 mobile:gap-2 xl:gap-2.5 px-1.5 mobile:px-2 md:px-3 xl:px-4"
-          //   onClick={() => navigator(`/map/${item.mapId}/edit`)}
+          onClick={handleDeleteMap}
         >
           <DeleteIcon className="!w-5 !h-5 mobile:!w-6 mobile:!h-6" />
           <span className="text-[#161616] text-sm mobile:text-base">

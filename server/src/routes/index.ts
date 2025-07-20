@@ -9,6 +9,7 @@ const searchPlaceLocation = require("../controller/searchPlaceLocation");
 const createMap = require("../controller/createMap");
 const mapList = require("../controller/mapList");
 const mapDetail = require("../controller/mapDetail");
+const deleteMap = require("../controller/deleteMap");
 
 // 구글 OAuth2 라우트 import
 const googleAuthRouter = require("./googleAuth");
@@ -23,6 +24,7 @@ router.get("/place-location", searchPlaceLocation);
 router.post("/create-map", createMap);
 router.get("/map-list", mapList);
 router.get("/map-detail", mapDetail);
+router.delete("/delete-map", deleteMap);
 
 // 구글 OAuth2 라우트 연결
 router.use("/auth", googleAuthRouter);

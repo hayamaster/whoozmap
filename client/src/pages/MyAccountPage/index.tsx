@@ -20,8 +20,8 @@ const MyAccountPage = () => {
   const [selectedShowingMap, setSelectedShowingMap] =
     useState<string>("my-maps");
   const [clickedSort, setClickedSort] = useState<string>("newest");
-  const { mutate: logoutMutate } = usePostLogout();
   const { data: myMaps } = useGetMapList({ userId: user._id });
+  const { mutate: logoutMutate } = usePostLogout();
 
   const handleClickLogout = async () => {
     logoutMutate();
@@ -134,7 +134,7 @@ const MyAccountPage = () => {
                           </h2>
                           <div className="flex gap-1 sm:gap-2 xl:gap-2.5">
                             <SaveIcon className="w-6 h-6" />
-                            <SettingMenu mapId={item.mapId} />
+                            <SettingMenu mapId={item.mapId} userId={user._id} />
                           </div>
                         </div>
                         <div className="flex flex-col gap-1">
