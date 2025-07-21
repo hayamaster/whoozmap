@@ -76,7 +76,7 @@ const HomePage = () => {
                   />
                   <div className="flex justify-between items-center w-full pt-1">
                     <h2
-                      className="font-bold text-xl leading-5 truncate cursor-pointer"
+                      className="font-bold text-xl truncate cursor-pointer"
                       onClick={() => navigator(`/map/${item.mapId}`)}
                     >
                       {item.title}

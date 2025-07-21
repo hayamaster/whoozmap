@@ -79,7 +79,7 @@ const SettingMenu = ({ mapId, userId }: SettingMenuProps) => {
         </DropdownMenuItem>
         <DropdownMenuItem
           className="gap-1 mobile:gap-2 xl:gap-2.5 px-1.5 mobile:px-2 md:px-3 xl:px-4"
-          //   onClick={() => navigator(`/map/${item.mapId}/edit`)}
+          onClick={() => navigate(`/edit-map/${mapId}`)}
         >
           <EditIcon className="!w-5 !h-5 mobile:!w-6 mobile:!h-6" />
           <span className="text-[#161616] text-sm mobile:text-base">Edit</span>

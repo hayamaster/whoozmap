@@ -7,3 +7,5 @@ export { default as usePostNewMap } from "./usePostNewMap";
 export { default as useGetMapList } from "./useGetMapList";
 export { default as useGetMapDetail } from "./useGetMapDetail";
 export { default as useDeleteMap } from "./useDeleteMap";
+export { default as useGetMapInfo } from "./useGetMapInfo";
+export { default as usePutEditMap } from "./usePutEditMap";

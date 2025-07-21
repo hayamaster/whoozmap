@@ -11,6 +11,7 @@ const mapList = require("../controller/mapList");
 const mapDetail = require("../controller/mapDetail");
 const deleteMap = require("../controller/deleteMap");
 const getMapInfo = require("../controller/getMapInfo");
+const editMap = require("../controller/editMap");
 
 // 구글 OAuth2 라우트 import
 const googleAuthRouter = require("./googleAuth");
@@ -27,6 +28,7 @@ router.get("/map-list", mapList);
 router.get("/map-detail", mapDetail);
 router.delete("/delete-map", deleteMap);
 router.get("/map-info", getMapInfo);
+router.put("/edit-map", editMap);
 
 // 구글 OAuth2 라우트 연결
 router.use("/auth", googleAuthRouter);

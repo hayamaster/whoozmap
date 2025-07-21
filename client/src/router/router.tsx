@@ -6,6 +6,7 @@ import {
   AboutUsPage,
   MyAccountPage,
   MapPage,
+  EditMapPage,
 } from "@/pages";
 
 const router = createBrowserRouter([
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/map/:id",
         element: <MapPage />,
+      },
+      {
+        path: "/edit-map/:id",
+        element: <EditMapPage />,
       },
     ],
   },

@@ -13,7 +13,7 @@ async function createMap(req: Request, res: Response) {
     const { title, description, category, thumbnailUrl, places, userId } =
       req.body;
 
-    if (!isValidObjectId(new mongoose.Types.ObjectId(userId))) {
+    if (!isValidObjectId(userId)) {
       return res.status(400).json({ message: "It is not validate userId." });
     }
 
