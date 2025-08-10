@@ -40,6 +40,9 @@ async function createMap(req: Request, res: Response) {
     return res.status(200).json({
       message: "Map created successfully",
       success: true,
+      data: {
+        mapId: newMapList._id,
+      },
     });
   } catch (error) {
     return res.status(500).json({

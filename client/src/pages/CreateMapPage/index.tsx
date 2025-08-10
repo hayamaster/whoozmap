@@ -117,8 +117,14 @@ const CreateMapPage = () => {
         userId,
       },
       {
-        onSuccess: () => {
-          dispatch(setMapCreateSuccess(true));
+        onSuccess: (data) => {
+          const mapId = data.data?.data?.mapId;
+
+          if (mapId) {
+            dispatch(setMapCreateSuccess({ success: true, mapId }));
+          } else {
+            console.error("mapId not found in response");
+          }
           navigate("/");
         },
       }
@@ -388,7 +394,6 @@ const CreateMapPage = () => {
                     disabled={
                       addedPlaces.length === 0 ||
                       mapData.title === "" ||
-                      mapData.description === "" ||
                       mapData.categories.length === 0
                     }
                     onClick={handleClickCreateMap}

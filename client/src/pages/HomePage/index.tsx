@@ -6,32 +6,66 @@ import { FilterOptions } from "./components";
 import { Header } from "@/components";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setMapCreateSuccess } from "@/redux/mapSlice";
+import { clearMapCreateSuccess } from "@/redux/mapSlice";
 import { MapList } from "@/types";
 import clappingImage from "@/assets/images/clapping.png";
 import noImage from "@/assets/images/no-image.png";
+import paperAirplane from "@/assets/images/paper-airplane.png";
 import { useNavigate } from "react-router-dom";
+import { useIsMobile } from "@/hooks";
+import toast from "react-hot-toast";
 
 const HomePage = () => {
   const { data } = useGetMapList({});
-  const navigator = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const mapCreateSuccess = useSelector(
-    (state: RootState) => state.map.mapCreateSuccess
+  const isMobile = useIsMobile();
+  const { mapCreateSuccess, createdMapId } = useSelector(
+    (state: RootState) => state.map
   );
 
   const [search, setSearch] = useState<string>("");
   const [clickedCategory, setClickedCategory] = useState<string>("all");
   const [clickedSort, setClickedSort] = useState<string>("newest");
   const [showMapCreateSuccessModal, setShowMapCreateSuccessModal] =
-    useState(false);
+    useState<boolean>(false);
+  const [clickShareLink, setClickShareLink] = useState<boolean>(false);
 
   useEffect(() => {
     if (mapCreateSuccess) {
       setShowMapCreateSuccessModal(true);
-      dispatch(setMapCreateSuccess(false));
     }
-  }, [mapCreateSuccess, dispatch]);
+  }, [mapCreateSuccess]);
+
+  const handleShareClick = () => {
+    const shareUrl = `https://whoozmap.com/map/${createdMapId}`;
+
+    if (isMobile) {
+      navigator
+        .share({
+          title: "Check out this map!",
+          url: shareUrl,
+        })
+        .catch((error) => console.error("Error sharing:", error));
+    } else {
+      navigator.clipboard
+        .writeText(shareUrl)
+        .then(() => {
+          toast.success("Link copied successfully!");
+        })
+        .catch(() => {
+          toast.error("Failed to copy link.");
+        });
+    }
+
+    setClickShareLink(true);
+  };
+
+  const handleCloseMapCreateSuccessModal = () => {
+    setShowMapCreateSuccessModal(false);
+    dispatch(clearMapCreateSuccess());
+    setClickShareLink(false);
+  };
 
   return (
     <main className="w-full h-full flex flex-col items-center">
@@ -72,12 +106,12 @@ const HomePage = () => {
                     src={item.thumbnailUrl || noImage}
                     alt={item.title}
                     className="w-full aspect-square object-cover rounded-2xl cursor-pointer"
-                    onClick={() => navigator(`/map/${item.mapId}`)}
+                    onClick={() => navigate(`/map/${item.mapId}`)}
                   />
                   <div className="flex justify-between items-center w-full pt-1">
                     <h2
                       className="font-bold text-xl truncate cursor-pointer"
-                      onClick={() => navigator(`/map/${item.mapId}`)}
+                      onClick={() => navigate(`/map/${item.mapId}`)}
                     >
                       {item.title}
                     </h2>
@@ -104,22 +138,38 @@ const HomePage = () => {
         <div className="fixed top-0 left-0 w-full h-dvh bg-black bg-opacity-20 z-40 flex justify-center items-center">
           <div className="fixed w-full h-full sm:w-fit sm:h-fit sm:top-1/2 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:-translate-y-1/2 flex flex-col bg-white sm:rounded-xl px-4 py-10 sm:py-12 sm:px-16 md:py-[60px] md:px-[80px] z-50 items-center justify-center">
             <div className="relative w-full h-full flex flex-col items-center justify-center gap-10">
-              <img
-                src={clappingImage}
-                alt="success"
-                className="w-[150px] h-[100px] mx-auto"
-              />
+              {clickShareLink ? (
+                <img
+                  src={paperAirplane}
+                  alt="share link"
+                  className="w-[151px] h-[80px] mx-auto"
+                />
+              ) : (
+                <img
+                  src={clappingImage}
+                  alt="success"
+                  className="w-[150px] h-[100px] mx-auto"
+                />
+              )}
               <div className="flex flex-col items-center justify-center font-bold text-2xl leading-[29px] md:text-4xl md:leading-[43.5px]">
                 <p>Thank you for</p>
                 <p>sharing your map!</p>
               </div>
 
-              <button
-                className="absolute bottom-10 w-full sm:w-fit sm:static bg-[#FFE852] rounded-full py-4 px-8 font-semibold leading-5"
-                onClick={() => setShowMapCreateSuccessModal(false)}
-              >
-                Done
-              </button>
+              <div className="w-full flex flex-col gap-2 sm:gap-2.5">
+                <button
+                  className="w-full sm:static bg-[#FFE852] rounded-full py-4 px-8 font-semibold leading-5"
+                  onClick={handleShareClick}
+                >
+                  Share Link
+                </button>
+                <button
+                  className="w-full sm:static bg-[#EDEDED] rounded-full py-4 px-8 font-semibold leading-5"
+                  onClick={handleCloseMapCreateSuccessModal}
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </div>
         </div>

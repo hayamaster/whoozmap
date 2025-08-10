@@ -11,9 +11,21 @@ interface PostNewMapProps {
   userId: string;
 }
 
+interface CreateMapResponse {
+  message: string;
+  success: boolean;
+  data: {
+    mapId: string;
+  };
+}
+
 const usePostNewMap = () => {
   const postNewMap = async (data: PostNewMapProps) => {
-    return await apiClient.post("/api/create-map", data);
+    const response = await apiClient.post<CreateMapResponse>(
+      "/api/create-map",
+      data
+    );
+    return response;
   };
 
   return useMutation({ mutationFn: postNewMap });
